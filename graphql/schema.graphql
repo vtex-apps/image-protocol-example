@@ -1,0 +1,12 @@
+type CustomerClass {
+  customerClass: String
+}
+type Query {
+  imageUrl(userId: String!): String @cacheControl(scope: PUBLIC)
+  customerClassInfo(userId: String!): [CustomerClass]
+    @cacheControl(scope: PUBLIC)
+}
+
+type Mutation {
+  nouse: String
+}

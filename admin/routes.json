@@ -1,0 +1,6 @@
+{
+  "admin.app.imageprotocol": {
+    "component": "CustomerClassInfo",
+    "path": "/admin/app/imageprotocol"
+  }
+}

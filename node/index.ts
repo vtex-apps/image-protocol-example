@@ -1,9 +1,10 @@
 // import type { ClientsConfig } from '@vtex/api'
-import type { IOClients, ServiceContext } from '@vtex/api'
+import type { ServiceContext } from '@vtex/api'
 import { Service } from '@vtex/api'
 
-import { imageUrl } from './resolvers/imageUrl'
+import { getImgUrl } from './resolvers/getImgUrl'
 import { customerClassInfo } from './resolvers/customerClassInfo'
+
 // import { Clients } from './clients'
 // import { status } from './middlewares/status'
 // import { validate } from './middlewares/validate'
@@ -37,6 +38,10 @@ declare global {
   // We declare a global Context type just to avoid re-writing ServiceContext<Clients, State> in every handler and resolver
   type Context = ServiceContext
 
+  interface ClientMasterdataEntityType {
+    customerClass: string
+    where: string
+  }
   // The shape of our State object found in `ctx.state`. This is used as state bag to communicate between middlewares.
   // interface State extends RecorderState {
   //   code: number
@@ -48,7 +53,9 @@ export default new Service({
   graphql: {
     resolvers: {
       Query: {
-        imageUrl,
+        getImgUrl,
+      },
+      Mutation: {
         customerClassInfo,
       },
     },

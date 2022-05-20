@@ -1,25 +1,46 @@
-/* eslint-disable no-console */
+interface CustomerClassInfo {
+  customerClassValue: string
+  url: string
+  urlMobile: string
+  idImg: string
+}
+
+const BUCKET = 'imageprotocol'
+const CONFIG_PATH = 'mappings'
+
 export const customerClassInfo = async (
-  _: any,
-  { userId }: { userId: string },
+  _: unknown,
+  args: CustomerClassInfo,
   ctx: Context
 ) => {
-  if (userId === '') {
-    return ''
-  }
-
   const {
-    clients: { masterdata },
+    clients: { vbase },
   } = ctx
 
-  const aux = await masterdata.searchDocuments({
-    dataEntity: 'CL',
-    where: `userId=${userId}`,
-    fields: ['customerClass'],
-    pagination: { page: 1, pageSize: 10 },
-  })
+  const { customerClassValue, url, urlMobile, idImg } = args
+  const key = `${customerClassValue}-${idImg}`
 
-  console.log(aux)
+  // eslint-disable-next-line no-console
+  console.log('key', key, ' url: ', url, 'urlMobile: ', urlMobile)
 
-  return aux
+  try {
+    const resGetJson: Record<string, unknown> = await vbase.getJSON(
+      BUCKET,
+      CONFIG_PATH
+    )
+
+    console.info('before saving, getJSON res: ', resGetJson)
+    resGetJson[key] = { url, urlMobile }
+    const resSaveJson = await vbase.saveJSON(BUCKET, CONFIG_PATH, resGetJson)
+
+    console.info('savedJSON res: ', resSaveJson)
+
+    const resGetJsonAfter = await vbase.getJSON(BUCKET, CONFIG_PATH)
+
+    console.info('getJSON res: ', resGetJsonAfter)
+
+    return args
+  } catch (e) {
+    return e
+  }
 }

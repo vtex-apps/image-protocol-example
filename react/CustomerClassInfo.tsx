@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 import type { FC } from 'react'
 import React, { useState } from 'react'
-import { Layout, Dropzone, Input, Button } from 'vtex.styleguide'
+import { Layout, Input, Button } from 'vtex.styleguide'
 import { useMutation } from 'react-apollo'
 
+import UploadImage from './UploadImage'
 import POST_CustomerClassInfo from './graphql/customerClassInfo.graphql'
 import UPLOAD_mutation from './graphql/uploadFile.graphql'
 
@@ -17,12 +18,23 @@ const CustomerClassInfo: FC = () => {
   const [urlMobile, setURLMobile] = useState<string>('')
   const [idImg, setIdImg] = useState<string>('')
   const [uploadFile] = useMutation<IncomingFile>(UPLOAD_mutation)
-  const [postCustomerClassInfo, { data2, loading2, error2 }] = useMutation(
+  const [postCustomerClassInfo, { data, loading, error }] = useMutation(
     POST_CustomerClassInfo
   )
 
+  const handleUrlReset = () => {
+    setURL('')
+    console.log('url desktop: ', url)
+  }
+
+  const handleUrlMobileReset = () => {
+    setURLMobile('')
+    console.log('url mobile: ', urlMobile)
+  }
+
   const handleImageDesktop = async (acceptedFiles: File[]) => {
     if (acceptedFiles?.[0]) {
+      console.log('desktop file added: ', acceptedFiles[0])
       try {
         const resp = await uploadFile({
           variables: { file: acceptedFiles[0] },
@@ -30,6 +42,7 @@ const CustomerClassInfo: FC = () => {
 
         const { fileUrl } = resp.data.uploadFile
 
+        console.log('Desktop fileUrl: ', fileUrl)
         setURL(fileUrl)
       } catch (e) {
         console.log('error message', e)
@@ -41,6 +54,7 @@ const CustomerClassInfo: FC = () => {
 
   const handleImageMobile = async (acceptedFiles: File[]) => {
     if (acceptedFiles?.[0]) {
+      console.log('mobile file added: ', acceptedFiles[0])
       try {
         const resp = await uploadFile({
           variables: { file: acceptedFiles[0] },
@@ -48,8 +62,8 @@ const CustomerClassInfo: FC = () => {
 
         const { fileUrl } = resp.data.uploadFile
 
+        console.log('Mobile fileUrl: ', fileUrl)
         setURLMobile(fileUrl)
-        console.log('response uploadFile url:', url)
       } catch (e) {
         console.log('error message', e)
       }
@@ -62,18 +76,32 @@ const CustomerClassInfo: FC = () => {
     e.preventDefault()
     console.log('customerClassValue: ', customerClassValue)
     console.log('idImg: ', idImg)
+
+    if (!url || !urlMobile) {
+      // eslint-disable-next-line no-alert
+      alert('image(s) missing')
+
+      return
+    }
+
     postCustomerClassInfo({
       variables: { customerClassValue, url, urlMobile, idImg },
     })
-    if (loading2) {
+
+    if (loading) {
       console.log('loading')
     }
 
-    if (error2) {
-      console.log('error: ', error2)
+    if (error) {
+      console.log('error: ', error)
     }
 
-    return data2
+    setCustomerClassValue('')
+    setIdImg('')
+    handleUrlReset()
+    handleUrlMobileReset()
+
+    return data
   }
 
   return (
@@ -94,32 +122,12 @@ const CustomerClassInfo: FC = () => {
             onChange={(e: any) => setCustomerClassValue(e.target.value)}
           />
         </div>
-        <div className="w-40 mt4 mb4">
-          <span>Select an image for desktop</span>
-          <Dropzone onDropAccepted={handleImageDesktop}>
-            <div className="pt7">
-              <div>
-                <span className="f4">Drop here your image or </span>
-                <span className="f4 c-link" style={{ cursor: 'pointer' }}>
-                  choose a file
-                </span>
-              </div>
-            </div>
-          </Dropzone>
-        </div>
-        <div className="w-40 mt4 mb4">
-          <span>Select an image for mobile</span>
-          <Dropzone onDropAccepted={handleImageMobile}>
-            <div className="pt7">
-              <div>
-                <span className="f4">Drop here your image or </span>
-                <span className="f4 c-link" style={{ cursor: 'pointer' }}>
-                  choose a file
-                </span>
-              </div>
-            </div>
-          </Dropzone>
-        </div>
+        <UploadImage
+          handleImageDesktop={handleImageDesktop}
+          handleUrlReset={handleUrlReset}
+          handleImageMobile={handleImageMobile}
+          handleUrlMobileReset={handleUrlMobileReset}
+        />
         <div className="w-20 ">
           <Input
             placeholder="ID"

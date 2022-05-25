@@ -1,7 +1,14 @@
 /* eslint-disable no-console */
 import type { FC } from 'react'
 import React, { useState } from 'react'
-import { Layout, Input, Button, Spinner } from 'vtex.styleguide'
+import {
+  Layout,
+  Input,
+  Alert,
+  Button,
+  Spinner,
+  IconDelete,
+} from 'vtex.styleguide'
 import { useMutation } from 'react-apollo'
 import Dropzone from 'react-dropzone'
 
@@ -23,6 +30,7 @@ const CustomerClassInfo: FC = () => {
   const [mobileFileName, setMobileFileName] = useState('')
   const [url, setUrl] = useState('')
   const [urlMobile, setUrlMobile] = useState('')
+  const [success, setSuccess] = useState(Boolean)
 
   const [postCustomerClassInfo, { data, loading, error }] = useMutation(
     POST_CustomerClassInfo
@@ -129,19 +137,27 @@ const CustomerClassInfo: FC = () => {
     setUrl('')
     setUrlMobile('')
     setIdImg('')
+    setSuccess(true)
 
     return data
   }
 
   return (
     <Layout>
+      {success && (
+        <div className="mv5">
+          <Alert onClose={() => setSuccess(false)} type="success">
+            Submitted
+          </Alert>
+        </div>
+      )}
       <h1>Image Protocol</h1>
       <form
         onSubmit={(e: any) => {
           handleSubmit(e)
         }}
       >
-        <div className="w-20">
+        <div className="w-70 w-40-m">
           <Input
             placeholder="Customer Class"
             size="Regular"
@@ -153,57 +169,76 @@ const CustomerClassInfo: FC = () => {
             }}
           />
         </div>
-        <Dropzone onDrop={(acceptedFiles) => handleDesktopFile(acceptedFiles)}>
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div
-                {...getRootProps()}
-                className={` ${
-                  isLoadingDesktopImg &&
-                  'ba b--dashed bw1 b--light-gray bg-white b--solid'
-                }`}
+        <div className="mt4 mb4">
+          <p className="t-small mb3 c-on-base">Desktop Image</p>
+          <Dropzone
+            onDrop={(acceptedFiles) => handleDesktopFile(acceptedFiles)}
+            accept="image/*"
+          >
+            {({ getRootProps, getInputProps }) => (
+              <section className="w-70 w-40-m">
+                <div
+                  {...getRootProps()}
+                  className={` ${isLoadingDesktopImg && 'b--mid-gray'}`}
+                >
+                  <input {...getInputProps()} />
+                  {isLoadingDesktopImg ? (
+                    <div className="flex justify-center items-center">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <EmptyState fileName={desktopFileName} />
+                  )}
+                </div>
+              </section>
+            )}
+          </Dropzone>
+          {url !== '' && (
+            <div className="w-70 w-40-m mt2 flex justify-end">
+              <Button
+                className="mt2"
+                variation="danger"
+                onClick={removeDesktopFile}
               >
-                <input {...getInputProps()} />
-                {isLoadingDesktopImg ? (
-                  <div className="w-100 h-100 flex justify-center items-center">
-                    <Spinner />
-                  </div>
-                ) : (
-                  <EmptyState fileName={desktopFileName} />
-                )}
-                {url !== '' && (
-                  <button onClick={removeDesktopFile}>Remove</button>
-                )}
-              </div>
-            </section>
+                <IconDelete />
+              </Button>
+            </div>
           )}
-        </Dropzone>
-        <Dropzone onDrop={(acceptedFiles) => handleMobileFile(acceptedFiles)}>
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div
-                {...getRootProps()}
-                className={` ${
-                  isLoadingMobileImg &&
-                  'ba b--dashed bw1 b--light-gray bg-white b--solid'
-                }`}
-              >
-                <input {...getInputProps()} />
-                {isLoadingMobileImg ? (
-                  <div className="w-100 h-100 flex justify-center items-center">
-                    <Spinner />
-                  </div>
-                ) : (
-                  <EmptyState fileName={mobileFileName} />
-                )}
-                {urlMobile !== '' && (
-                  <button onClick={removeMobileFile}>Remove</button>
-                )}
-              </div>
-            </section>
+        </div>
+        <div className="mb4">
+          <p className="t-small mb3 c-on-base">Mobile Image</p>
+          <Dropzone
+            onDrop={(acceptedFiles) => handleMobileFile(acceptedFiles)}
+            accept="image/*"
+          >
+            {({ getRootProps, getInputProps }) => (
+              <section className="w-70 w-40-m">
+                <div
+                  {...getRootProps()}
+                  className={` ${isLoadingMobileImg && 'b--mid-gray'}`}
+                >
+                  <input {...getInputProps()} />
+                  {isLoadingMobileImg ? (
+                    <div className="flex justify-center items-center">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <EmptyState fileName={mobileFileName} />
+                  )}
+                </div>
+              </section>
+            )}
+          </Dropzone>
+          {urlMobile !== '' && (
+            <div className="w-70 w-40-m mt2 flex justify-end">
+              <Button variation="danger" onClick={removeMobileFile}>
+                <IconDelete />
+              </Button>
+            </div>
           )}
-        </Dropzone>
-        <div className="w-20 ">
+        </div>
+
+        <div className="w-70 w-40-m">
           <Input
             placeholder="ID"
             size="Regular"
@@ -216,9 +251,7 @@ const CustomerClassInfo: FC = () => {
           />
         </div>
         <div className="mt4" style={{ alignSelf: 'end' }}>
-          <Button variation="primary" type="submit">
-            Submit
-          </Button>
+          <Button type="submit">Submit</Button>
         </div>
         {err !== '' && err !== null && (
           <p className="bg-red">Something went wrong {err}</p>

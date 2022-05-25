@@ -11,12 +11,13 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-dropzone": "^11.3.4",
     "react-intl": "^2.7.2",
-    "typescript": "3.9.7",
-    "react-dropzone": "^11.3.4"
+    "typescript": "3.9.7"
   },
   "dependencies": {
     "@types/faker": "^4.1.5",
+    "@vtex/admin-ui": "^0.131.0",
     "faker": "^4.1.0"
   }
 }

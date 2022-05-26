@@ -1,8 +1,9 @@
 // import type { ClientsConfig } from '@vtex/api'
-import type { ServiceContext } from '@vtex/api'
-import { Service } from '@vtex/api'
 
-import { getImgUrl } from './resolvers/getImgUrl'
+import type { ServiceContext } from '@vtex/api'
+import { method, Service } from '@vtex/api'
+
+import { getImgUrl } from './middlewares/getImgUrl'
 import { customerClassInfo } from './resolvers/customerClassInfo'
 
 // import { Clients } from './clients'
@@ -52,13 +53,13 @@ declare global {
 export default new Service({
   graphql: {
     resolvers: {
-      Query: {
-        getImgUrl,
-      },
       Mutation: {
         customerClassInfo,
       },
     },
+  },
+  routes: {
+    getUrl: method({ POST: [getImgUrl] }),
   },
   // routes: {
   //   // `status` is the route ID from service.json. It maps to an array of middlewares (or a single handler).

@@ -1,24 +1,20 @@
 /* eslint-disable no-console */
 import type { FC } from 'react'
 import React, { useState } from 'react'
-import { useMutation } from 'react-apollo'
-import Dropzone from 'react-dropzone'
 import {
-  createSystem,
+  Layout,
   Input,
   Alert,
   Button,
   Spinner,
-  IconTrash,
-} from '@vtex/admin-ui'
+  IconDelete,
+} from 'vtex.styleguide'
+import { useMutation } from 'react-apollo'
+import Dropzone from 'react-dropzone'
 
-import EmptyState from './components/EmptyState'
+import EmptyState from './EmptyState'
 import UPLOAD_mutation from './graphql/uploadFile.graphql'
 import POST_CustomerClassInfo from './graphql/customerClassInfo.graphql'
-
-const [ThemeProvider] = createSystem({
-  key: 'image-protocol-example',
-})
 
 interface IncomingFile {
   uploadFile: { fileUrl: string }
@@ -42,12 +38,11 @@ const CustomerClassInfo: FC = () => {
 
   const [uploadFile] = useMutation<IncomingFile>(UPLOAD_mutation)
 
-  const handleDismiss = () => setSuccess(false)
-  const handleCustomerClassValue = (e: any) => {
+  function handleCustomerClassValue(e: any) {
     setCustomerClassValue(e.target.value)
   }
 
-  const handleIdImgValue = (e: any) => {
+  function handleIdImgValue(e: any) {
     setIdImg(e.target.value)
   }
 
@@ -148,10 +143,14 @@ const CustomerClassInfo: FC = () => {
   }
 
   return (
-    <ThemeProvider>
+    <Layout>
       {success && (
         <div className="mv5">
-          <Alert visible={success} onDismiss={handleDismiss} tone="positive">
+          <Alert
+            autoClose={3000}
+            onClose={() => setSuccess(false)}
+            type="success"
+          >
             Submitted
           </Alert>
         </div>
@@ -164,14 +163,14 @@ const CustomerClassInfo: FC = () => {
       >
         <div className="w-70 w-40-m">
           <Input
-            id="customer-class"
+            placeholder="Customer Class"
+            size="Regular"
             label="Customer Class"
             required
             value={customerClassValue}
             onChange={(e: any) => {
               handleCustomerClassValue(e)
             }}
-            onClear={() => setCustomerClassValue('')}
           />
         </div>
         <div className="mt4 mb4">
@@ -200,8 +199,12 @@ const CustomerClassInfo: FC = () => {
           </Dropzone>
           {url !== '' && (
             <div className="w-70 w-40-m mt2 flex justify-end">
-              <Button onClick={removeDesktopFile}>
-                <IconTrash />
+              <Button
+                className="mt2"
+                variation="danger"
+                onClick={removeDesktopFile}
+              >
+                <IconDelete />
               </Button>
             </div>
           )}
@@ -232,8 +235,8 @@ const CustomerClassInfo: FC = () => {
           </Dropzone>
           {urlMobile !== '' && (
             <div className="w-70 w-40-m mt2 flex justify-end">
-              <Button onClick={removeMobileFile}>
-                <IconTrash />
+              <Button variation="danger" onClick={removeMobileFile}>
+                <IconDelete />
               </Button>
             </div>
           )}
@@ -241,14 +244,14 @@ const CustomerClassInfo: FC = () => {
 
         <div className="w-70 w-40-m">
           <Input
-            id="id-image"
+            placeholder="ID"
+            size="Regular"
             label="Image Protocol ID"
             required
             value={idImg}
             onChange={(e: any) => {
               handleIdImgValue(e)
             }}
-            onClear={() => setIdImg('')}
           />
         </div>
         <div className="mt4" style={{ alignSelf: 'end' }}>
@@ -258,7 +261,7 @@ const CustomerClassInfo: FC = () => {
           <p className="bg-red">Something went wrong {err}</p>
         )}
       </form>
-    </ThemeProvider>
+    </Layout>
   )
 }
 

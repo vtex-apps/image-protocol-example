@@ -1,12 +1,11 @@
+import { BUCKET, CONFIG_PATH } from '../constants/index'
+
 interface CustomerClassInfo {
   customerClassValue: string
   url: string
   urlMobile: string
   idImg: string
 }
-
-const BUCKET = 'imageprotocol'
-const CONFIG_PATH = 'mappings'
 
 export const customerClassInfo = async (
   _: unknown,

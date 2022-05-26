@@ -27,16 +27,20 @@ export async function getImgUrl(ctx: Context) {
   const key = `${customerClass}-${body.imageProtocolId}`
 
   console.info('customerClass-imgId: ', key)
-  const resVbase: Record<string, unknown> = await vbase.getJSON(
-    BUCKET,
-    CONFIG_PATH
-  )
+  try {
+    const resVbase: Record<string, unknown> = await vbase.getJSON(
+      BUCKET,
+      CONFIG_PATH
+    )
 
-  console.info('vbase Response: ', resVbase)
-  const respUrls = resVbase[key]
+    console.info('vbase Response: ', resVbase)
+    const respUrls = resVbase[key]
 
-  console.info('Urls: ', respUrls)
+    console.info('Urls: ', respUrls)
 
-  ctx.status = 200
-  ctx.body = respUrls
+    ctx.status = 200
+    ctx.body = respUrls
+  } catch (error) {
+    throw error
+  }
 }

@@ -3,7 +3,7 @@
 import type { ServiceContext } from '@vtex/api'
 import { method, Service } from '@vtex/api'
 
-import { getImgUrl } from './middlewares/getImgUrl'
+import { errorHandler, getImgUrl } from './middlewares'
 import { customerClassInfo } from './resolvers/customerClassInfo'
 
 // import { Clients } from './clients'
@@ -59,7 +59,7 @@ export default new Service({
     },
   },
   routes: {
-    getUrl: method({ POST: [getImgUrl] }),
+    getUrl: method({ POST: [errorHandler, getImgUrl] }),
   },
   // routes: {
   //   // `status` is the route ID from service.json. It maps to an array of middlewares (or a single handler).

@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import styles from './styles.css'
 
@@ -16,7 +17,9 @@ const EmptyState = ({ fileName }: EmptyStateProps) => {
         {fileName !== '' ? (
           <div className={`tc ${styles.imageUploaderText}`}>{fileName}</div>
         ) : (
-          <div> Drag and drop your file here, or click to select a file</div>
+          <div>
+            <FormattedMessage id="admin/image-protocol.dropzone.text" />
+          </div>
         )}
       </div>
     </div>

@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
 import type { FC } from 'react'
 import React, { useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 import {
   Layout,
+  PageBlock,
   Input,
   Alert,
   Button,
@@ -143,7 +145,7 @@ const CustomerClassInfo: FC = () => {
   }
 
   return (
-    <Layout>
+    <Layout fullWidth>
       {success && (
         <div className="mv5">
           <Alert
@@ -155,112 +157,127 @@ const CustomerClassInfo: FC = () => {
           </Alert>
         </div>
       )}
-      <h1>Image Protocol</h1>
-      <form
-        onSubmit={(e: any) => {
-          handleSubmit(e)
-        }}
-      >
-        <div className="w-70 w-40-m">
-          <Input
-            placeholder="Customer Class"
-            size="Regular"
-            label="Customer Class"
-            required
-            value={customerClassValue}
-            onChange={(e: any) => {
-              handleCustomerClassValue(e)
+      <div className="bg-muted-5 pa8">
+        <PageBlock
+          title={<FormattedMessage id="admin/image-protocol.title.label" />}
+        >
+          <form
+            onSubmit={(e: any) => {
+              handleSubmit(e)
             }}
-          />
-        </div>
-        <div className="mt4 mb4">
-          <p className="t-small mb3 c-on-base">Desktop Image</p>
-          <Dropzone
-            onDrop={(acceptedFiles) => handleDesktopFile(acceptedFiles)}
-            accept="image/*"
           >
-            {({ getRootProps, getInputProps }) => (
-              <section className="w-70 w-40-m">
-                <div
-                  {...getRootProps()}
-                  className={` ${isLoadingDesktopImg && 'b--mid-gray'}`}
-                >
-                  <input {...getInputProps()} />
-                  {isLoadingDesktopImg ? (
-                    <div className="flex justify-center items-center">
-                      <Spinner />
-                    </div>
-                  ) : (
-                    <EmptyState fileName={desktopFileName} />
-                  )}
-                </div>
-              </section>
-            )}
-          </Dropzone>
-          {url !== '' && (
-            <div className="w-70 w-40-m mt2 flex justify-end">
-              <Button
-                className="mt2"
-                variation="danger"
-                onClick={removeDesktopFile}
+            <div className="w-70 w-40-m">
+              <Input
+                placeholder="Customer Class"
+                size="Regular"
+                label={
+                  <FormattedMessage id="admin/image-protocol.form.customer-class.label" />
+                }
+                required
+                value={customerClassValue}
+                onChange={(e: any) => {
+                  handleCustomerClassValue(e)
+                }}
+              />
+            </div>
+            <div className="mt4 mb4">
+              <p className="t-small mb3 c-on-base">
+                <FormattedMessage id="admin/image-protocol.form.desktop-image.label" />
+              </p>
+              <Dropzone
+                onDrop={(acceptedFiles) => handleDesktopFile(acceptedFiles)}
+                accept="image/*"
               >
-                <IconDelete />
-              </Button>
-            </div>
-          )}
-        </div>
-        <div className="mb4">
-          <p className="t-small mb3 c-on-base">Mobile Image</p>
-          <Dropzone
-            onDrop={(acceptedFiles) => handleMobileFile(acceptedFiles)}
-            accept="image/*"
-          >
-            {({ getRootProps, getInputProps }) => (
-              <section className="w-70 w-40-m">
-                <div
-                  {...getRootProps()}
-                  className={` ${isLoadingMobileImg && 'b--mid-gray'}`}
-                >
-                  <input {...getInputProps()} />
-                  {isLoadingMobileImg ? (
-                    <div className="flex justify-center items-center">
-                      <Spinner />
+                {({ getRootProps, getInputProps }) => (
+                  <section className="w-70 w-40-m">
+                    <div
+                      {...getRootProps()}
+                      className={` ${isLoadingDesktopImg && 'b--mid-gray'}`}
+                    >
+                      <input {...getInputProps()} />
+                      {isLoadingDesktopImg ? (
+                        <div className="flex justify-center items-center">
+                          <Spinner />
+                        </div>
+                      ) : (
+                        <EmptyState fileName={desktopFileName} />
+                      )}
                     </div>
-                  ) : (
-                    <EmptyState fileName={mobileFileName} />
-                  )}
+                  </section>
+                )}
+              </Dropzone>
+              {url !== '' && (
+                <div className="w-70 w-40-m mt2 flex justify-end">
+                  <Button
+                    className="mt2"
+                    variation="danger"
+                    onClick={removeDesktopFile}
+                  >
+                    <IconDelete />
+                  </Button>
                 </div>
-              </section>
-            )}
-          </Dropzone>
-          {urlMobile !== '' && (
-            <div className="w-70 w-40-m mt2 flex justify-end">
-              <Button variation="danger" onClick={removeMobileFile}>
-                <IconDelete />
+              )}
+            </div>
+            <div className="mb4">
+              <p className="t-small mb3 c-on-base">
+                <FormattedMessage id="admin/image-protocol.form.mobile-image.label" />
+              </p>
+              <Dropzone
+                onDrop={(acceptedFiles) => handleMobileFile(acceptedFiles)}
+                accept="image/*"
+              >
+                {({ getRootProps, getInputProps }) => (
+                  <section className="w-70 w-40-m">
+                    <div
+                      {...getRootProps()}
+                      className={` ${isLoadingMobileImg && 'b--mid-gray'}`}
+                    >
+                      <input {...getInputProps()} />
+                      {isLoadingMobileImg ? (
+                        <div className="flex justify-center items-center">
+                          <Spinner />
+                        </div>
+                      ) : (
+                        <EmptyState fileName={mobileFileName} />
+                      )}
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+              {urlMobile !== '' && (
+                <div className="w-70 w-40-m mt2 flex justify-end">
+                  <Button variation="danger" onClick={removeMobileFile}>
+                    <IconDelete />
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className="w-70 w-40-m">
+              <Input
+                placeholder="ID"
+                size="Regular"
+                label={
+                  <FormattedMessage id="admin/image-protocol.form.image-protocol-id.label" />
+                }
+                required
+                value={idImg}
+                onChange={(e: any) => {
+                  handleIdImgValue(e)
+                }}
+              />
+            </div>
+            <div className="mt4" style={{ alignSelf: 'end' }}>
+              <Button type="submit">
+                <FormattedMessage id="admin/image-protocol.form.submit.label" />
               </Button>
             </div>
-          )}
-        </div>
-
-        <div className="w-70 w-40-m">
-          <Input
-            placeholder="ID"
-            size="Regular"
-            label="Image Protocol ID"
-            required
-            value={idImg}
-            onChange={(e: any) => {
-              handleIdImgValue(e)
-            }}
-          />
-        </div>
-        <div className="mt4" style={{ alignSelf: 'end' }}>
-          <Button type="submit">Submit</Button>
-        </div>
-        {err !== '' && err !== null && (
-          <p className="bg-red">Something went wrong {err}</p>
-        )}
-      </form>
+            {err !== '' && err !== null && (
+              <p className="bg-red">Something went wrong {err}</p>
+            )}
+          </form>
+        </PageBlock>
+      </div>
     </Layout>
   )
 }

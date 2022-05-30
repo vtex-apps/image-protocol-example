@@ -1,6 +1,5 @@
 type Query {
-  getImgUrl(userId: String!, imageProtocolId: String!): Urls
-    @cacheControl(scope: PUBLIC)
+  nouse: String
 }
 
 type Mutation {
@@ -17,9 +16,4 @@ type CustomerClass {
   url: String
   urlMobile: String
   idImg: String
-}
-
-type Urls {
-  url: String
-  urlMobile: String
 }

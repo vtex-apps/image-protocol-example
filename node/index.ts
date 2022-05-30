@@ -59,7 +59,7 @@ export default new Service({
     },
   },
   routes: {
-    getUrl: method({ POST: [errorHandler, getImgUrl] }),
+    getUrl: method({ GET: [errorHandler, getImgUrl] }),
   },
   // routes: {
   //   // `status` is the route ID from service.json. It maps to an array of middlewares (or a single handler).

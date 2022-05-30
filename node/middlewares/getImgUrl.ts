@@ -56,7 +56,15 @@ export async function getImgUrl(ctx: Context) {
     ctx.body = respUrls
 
     return respUrls
+
+    // throw new Error('testing error on protocol')
   } catch (error) {
-    throw error
+    console.log('error: ', error)
+    const respUrls = { url: null, urlMobile: null }
+
+    ctx.status = 404
+    ctx.body = respUrls
+
+    return respUrls
   }
 }

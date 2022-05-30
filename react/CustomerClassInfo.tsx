@@ -166,7 +166,7 @@ const CustomerClassInfo: FC = () => {
               handleSubmit(e)
             }}
           >
-            <div className="w-70 w-40-m">
+            <div className="w-90 w-40-m">
               <Input
                 placeholder="Customer Class"
                 size="Regular"
@@ -189,7 +189,7 @@ const CustomerClassInfo: FC = () => {
                 accept="image/*"
               >
                 {({ getRootProps, getInputProps }) => (
-                  <section className="w-70 w-40-m">
+                  <section className="w-90 w-40-m">
                     <div
                       {...getRootProps()}
                       className={` ${isLoadingDesktopImg && 'b--mid-gray'}`}
@@ -207,7 +207,7 @@ const CustomerClassInfo: FC = () => {
                 )}
               </Dropzone>
               {url !== '' && (
-                <div className="w-70 w-40-m mt2 flex justify-end">
+                <div className="w-90 w-40-m mt2 flex justify-end">
                   <Button
                     className="mt2"
                     variation="danger"
@@ -227,7 +227,7 @@ const CustomerClassInfo: FC = () => {
                 accept="image/*"
               >
                 {({ getRootProps, getInputProps }) => (
-                  <section className="w-70 w-40-m">
+                  <section className="w-90 w-40-m">
                     <div
                       {...getRootProps()}
                       className={` ${isLoadingMobileImg && 'b--mid-gray'}`}
@@ -245,7 +245,7 @@ const CustomerClassInfo: FC = () => {
                 )}
               </Dropzone>
               {urlMobile !== '' && (
-                <div className="w-70 w-40-m mt2 flex justify-end">
+                <div className="w-90 w-40-m mt2 flex justify-end">
                   <Button variation="danger" onClick={removeMobileFile}>
                     <IconDelete />
                   </Button>
@@ -253,7 +253,7 @@ const CustomerClassInfo: FC = () => {
               )}
             </div>
 
-            <div className="w-70 w-40-m">
+            <div className="w-90 w-40-m">
               <Input
                 placeholder="ID"
                 size="Regular"

@@ -1,0 +1,10 @@
+{
+  "name": "Image Protocol Example",
+  "headline": "Section in the admin to save info in vbase",
+  "overview": "Save urls for personalize your store",
+  "features": ["This is an implementation example of the image protocol"],
+  "websiteURL": "https://vtex.com/",
+  "support": {
+    "url": "https://support.vtex.com/hc/requests"
+  }
+}

@@ -4,10 +4,10 @@ type Query {
 
 type Mutation {
   customerClassInfo(
-    customerClassValue: String
-    url: String
-    urlMobile: String
-    idImg: String
+    customerClassValue: String!
+    url: String!
+    urlMobile: String!
+    idImg: String!
   ): CustomerClass
 }
 

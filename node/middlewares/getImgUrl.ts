@@ -47,6 +47,7 @@ export async function getImgUrl(ctx: Context) {
       CONFIG_PATH
     )
 
+    console.log('resp vbase: ', resVbase)
     const respUrls = resVbase[key]
 
     console.info('Urls: ', respUrls)

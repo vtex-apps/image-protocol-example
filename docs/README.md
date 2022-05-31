@@ -6,7 +6,7 @@
 
 An example app to implement image protocol. This app creates a new section in the Admin panel through which the user can save data in vbase (in this case we are saving customer class, URLs for desktop and mobile, and the id for the image component that will render the image). At the same time this app creates the API endpoint to retrieve the URLs using the customer class and id of the image passed as params.
 
-## GraphQL mutation
+## GraphQL mutations
 
 ### In this example app, there are two mutations configured
 

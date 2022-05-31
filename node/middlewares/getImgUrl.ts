@@ -20,7 +20,6 @@ export async function getImgUrl(ctx: Context) {
     req,
   } = ctx
 
-  console.log('url: ', req.url?.split('?'))
   const queryString = req.url?.split('?')[1]
   // console.log('req: ', JSON.stringify(ctx.req, null, 4))
 

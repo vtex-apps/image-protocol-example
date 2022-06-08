@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import type { FC } from 'react'
 import React, { useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import {
   Layout,
   PageBlock,
@@ -144,6 +144,8 @@ const CustomerClassInfo: FC = () => {
     return data
   }
 
+  const intl = useIntl()
+
   return (
     <Layout fullWidth>
       {success && (
@@ -168,11 +170,13 @@ const CustomerClassInfo: FC = () => {
           >
             <div className="w-90 w-40-m">
               <Input
-                placeholder="Customer Class"
+                placeholder={intl.formatMessage({
+                  id: 'admin/image-protocol.form.customer-class.label',
+                })}
                 size="Regular"
-                label={
-                  <FormattedMessage id="admin/image-protocol.form.customer-class.label" />
-                }
+                label={intl.formatMessage({
+                  id: 'admin/image-protocol.form.customer-class.label',
+                })}
                 required
                 value={customerClassValue}
                 onChange={(e: any) => {
@@ -257,9 +261,9 @@ const CustomerClassInfo: FC = () => {
               <Input
                 placeholder="ID"
                 size="Regular"
-                label={
-                  <FormattedMessage id="admin/image-protocol.form.image-protocol-id.label" />
-                }
+                label={intl.formatMessage({
+                  id: 'admin/image-protocol.form.image-protocol-id.label',
+                })}
                 required
                 value={idImg}
                 onChange={(e: any) => {

@@ -277,7 +277,7 @@ const CustomerClassInfo: FC = () => {
               </Button>
             </div>
             {err !== '' && err !== null && (
-              <p className="bg-red">Something went wrong {err}</p>
+              <p className="bg-red">Something went wrong </p>
             )}
           </form>
         </PageBlock>

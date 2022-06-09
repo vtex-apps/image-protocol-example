@@ -12,8 +12,8 @@ type Mutation {
 }
 
 type CustomerClass {
-  customerClassValue: String
-  url: String
-  urlMobile: String
-  idImg: String
+  customerClassValue: String!
+  url: String!
+  urlMobile: String!
+  idImg: String!
 }

@@ -19,22 +19,21 @@ export const customerClassInfo = async (
   const { customerClassValue, url, urlMobile, idImg } = args
   const key = `${customerClassValue}-${idImg}`
 
-  // eslint-disable-next-line no-console
-  console.log('key', key, ' url: ', url, 'urlMobile: ', urlMobile)
-
   try {
     const resGetJson: Record<string, unknown> = await vbase.getJSON(
       BUCKET,
       CONFIG_PATH
     )
 
-    console.info('before saving, getJSON res: ', resGetJson)
     resGetJson[key] = { url, urlMobile }
     const resSaveJson = await vbase.saveJSON(BUCKET, CONFIG_PATH, resGetJson)
+    // eslint-disable-next-line no-console
 
     console.info('savedJSON res: ', resSaveJson)
 
     const resGetJsonAfter = await vbase.getJSON(BUCKET, CONFIG_PATH)
+
+    // eslint-disable-next-line no-console
 
     console.info('getJSON res: ', resGetJsonAfter)
 

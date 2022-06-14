@@ -1,0 +1,18 @@
+mutation customerClassInfo(
+  $customerClassValue: String
+  $url: String
+  $urlMobile: String
+  $idImg: String
+) {
+  customerClassInfo(
+    customerClassValue: $customerClassValue
+    url: $url
+    urlMobile: $urlMobile
+    idImg: $idImg
+  ) @context(provider: "vtex.image-protocol-example") {
+    customerClassValue
+    url
+    urlMobile
+    idImg
+  }
+}

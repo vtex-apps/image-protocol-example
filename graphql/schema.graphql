@@ -1,0 +1,19 @@
+type Query {
+  nouse: String
+}
+
+type Mutation {
+  customerClassInfo(
+    customerClassValue: String
+    url: String
+    urlMobile: String
+    idImg: String
+  ): CustomerClass
+}
+
+type CustomerClass {
+  customerClassValue: String!
+  url: String!
+  urlMobile: String!
+  idImg: String!
+}

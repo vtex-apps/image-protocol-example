@@ -19,26 +19,36 @@ export const customerClassInfo = async (
   const { customerClassValue, url, urlMobile, idImg } = args
   const key = `${customerClassValue}-${idImg}`
 
-  let resGetJson: Record<string, unknown> | null = null
+  let getCustomerList: Record<string, unknown> | null = null
 
   try {
-    resGetJson = await vbase.getJSON(BUCKET, CONFIG_PATH)
+    getCustomerList = await vbase.getJSON(BUCKET, CONFIG_PATH)
+    console.info('resGetJson: ', getCustomerList)
   } catch (e) {
-    console.info('error:', e)
+    // eslint-disable-next-line no-console
+    console.log('error: ', e)
   }
 
-  if (!resGetJson) {
+  if (!getCustomerList) {
     const customerUrls = {
       [key]: { url, urlMobile },
     }
 
     console.info('customer-imgId: urls: ', customerUrls)
-    const resSaveJson = await vbase.saveJSON(BUCKET, CONFIG_PATH, customerUrls)
+    const resCustomerList = await vbase.saveJSON(
+      BUCKET,
+      CONFIG_PATH,
+      customerUrls
+    )
 
-    console.info('list does not exist, resSaveJson', resSaveJson)
+    console.info('list does not exist, resSaveJson', resCustomerList)
   } else {
-    resGetJson[key] = { url, urlMobile }
-    const resSaveJson = await vbase.saveJSON(BUCKET, CONFIG_PATH, resGetJson)
+    getCustomerList[key] = { url, urlMobile }
+    const resSaveJson = await vbase.saveJSON(
+      BUCKET,
+      CONFIG_PATH,
+      getCustomerList
+    )
 
     console.info('savedJSON res: ', resSaveJson)
 
@@ -48,4 +58,6 @@ export const customerClassInfo = async (
 
     return args
   }
+
+  return args
 }

@@ -1,5 +1,17 @@
 type Query {
-  nouse: String
+  customerClassList: [Customer]
+}
+
+type Customer {
+  customerClass: String
+  imageProtocolId: String
+  desktopUrl: String
+  mobileUrl: String
+}
+
+type Urls {
+  url: String
+  urlMobile: String
 }
 
 type Mutation {
@@ -9,8 +21,16 @@ type Mutation {
     urlMobile: String
     idImg: String
   ): CustomerClass
+  removeFromList(
+    customerClass: String
+    imageProtocolId: String
+  ): CustomerClassArg
 }
 
+type CustomerClassArg {
+  customerClass: String
+  imageProtocolId: String
+}
 type CustomerClass {
   customerClassValue: String!
   url: String!

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import type { FC } from 'react'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useIntl, FormattedMessage } from 'react-intl'
 import {
   Layout,
@@ -12,6 +12,7 @@ import {
   IconDelete,
 } from 'vtex.styleguide'
 import { useMutation } from 'react-apollo'
+import { useRuntime } from 'vtex.render-runtime'
 import Dropzone from 'react-dropzone'
 
 import EmptyState from './EmptyState'
@@ -23,16 +24,34 @@ interface IncomingFile {
 }
 
 const CustomerClassInfo: FC = () => {
+  const { query } = useRuntime()
+
   const [err, setError] = useState('')
   const [isLoadingDesktopImg, setLoadingDesktopImg] = useState(Boolean)
   const [isLoadingMobileImg, setLoadingMobileImg] = useState(Boolean)
   const [customerClassValue, setCustomerClassValue] = useState('')
+
   const [idImg, setIdImg] = useState('')
   const [desktopFileName, setDesktopFileName] = useState('')
   const [mobileFileName, setMobileFileName] = useState('')
+
   const [url, setUrl] = useState('')
   const [urlMobile, setUrlMobile] = useState('')
   const [success, setSuccess] = useState(Boolean)
+
+  useEffect(() => {
+    console.info(query)
+    const isEmpty = Object.keys(query).length === 0
+
+    if (isEmpty) {
+      return
+    }
+
+    setCustomerClassValue(query.customerClass)
+    setUrl(query.desktopUrl)
+    setUrlMobile(query.mobileUrl)
+    setIdImg(query.imageProtocolId)
+  }, [query])
 
   const [postCustomerClassInfo, { data, loading, error }] = useMutation(
     POST_CustomerClassInfo
@@ -129,7 +148,6 @@ const CustomerClassInfo: FC = () => {
 
     if (error) {
       console.log('error: ', error)
-      console.log('error message', e)
       setError('Something went wrong')
     }
 
@@ -211,12 +229,9 @@ const CustomerClassInfo: FC = () => {
                 )}
               </Dropzone>
               {url !== '' && (
-                <div className="w-90 w-40-m mt2 flex justify-end">
-                  <Button
-                    className="mt2"
-                    variation="danger"
-                    onClick={removeDesktopFile}
-                  >
+                <div className="w-90 w-40-m mt2 flex flex-column">
+                  <img src={url} alt={desktopFileName} />
+                  <Button variation="danger" onClick={removeDesktopFile}>
                     <IconDelete />
                   </Button>
                 </div>
@@ -249,7 +264,8 @@ const CustomerClassInfo: FC = () => {
                 )}
               </Dropzone>
               {urlMobile !== '' && (
-                <div className="w-90 w-40-m mt2 flex justify-end">
+                <div className="w-90 w-40-m mt2 flex flex-column">
+                  <img src={urlMobile} alt={mobileFileName} />
                   <Button variation="danger" onClick={removeMobileFile}>
                     <IconDelete />
                   </Button>

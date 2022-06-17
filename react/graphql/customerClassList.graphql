@@ -1,0 +1,8 @@
+query customerClassList {
+  customerClassList {
+    customerClass
+    imageProtocolId
+    desktopUrl
+    mobileUrl
+  }
+}

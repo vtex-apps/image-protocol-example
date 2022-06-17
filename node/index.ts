@@ -5,6 +5,8 @@ import { method, Service } from '@vtex/api'
 
 import { errorHandler, getImgUrl } from './middlewares'
 import { customerClassInfo } from './resolvers/customerClassInfo'
+import { customerClassList } from './resolvers/customerClassList'
+import { removeFromList } from './resolvers/removeFromList'
 
 // import { Clients } from './clients'
 // import { status } from './middlewares/status'
@@ -55,16 +57,14 @@ export default new Service({
     resolvers: {
       Mutation: {
         customerClassInfo,
+        removeFromList,
+      },
+      Query: {
+        customerClassList,
       },
     },
   },
   routes: {
     getUrl: method({ GET: [errorHandler, getImgUrl] }),
   },
-  // routes: {
-  //   // `status` is the route ID from service.json. It maps to an array of middlewares (or a single handler).
-  //   status: method({
-  //     GET: [validate, status],
-  //   }),
-  // },
 })

@@ -1,0 +1,9 @@
+mutation removeFromList($customerClass: String, $imageProtocolId: String) {
+  removeFromList(
+    customerClass: $customerClass
+    imageProtocolId: $imageProtocolId
+  ) {
+    customerClass
+    imageProtocolId
+  }
+}

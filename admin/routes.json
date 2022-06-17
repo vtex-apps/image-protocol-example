@@ -1,6 +1,10 @@
 {
   "admin.app.imageprotocol": {
     "component": "CustomerClassInfo",
-    "path": "/admin/app/imageprotocol"
+    "path": "/admin/app/imageprotocol/protocol"
+  },
+  "admin.app.customerclass": {
+    "component": "CustomerClassList",
+    "path": "/admin/app/imageprotocol/list"
   }
 }

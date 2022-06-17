@@ -2,5 +2,17 @@
   "section": "other",
   "titleId": "admin/image-protocol.navigation.label",
   "searchKeyWordsHelpers": "admin/image-protocol.navigation.search.kws",
-  "path": "/admin/imageprotocol"
+  "subSection": "imageprotocol",
+  "subSectionItems": [
+    {
+      "labelId": "admin/image-protocol.navigation.label-protocol",
+      "path": "/admin/imageprotocol/protocol",
+      "searchKeyWordsHelpers": "admin/image-protocol.navigation.protocol.search.kws"
+    },
+    {
+      "labelId": "admin/image-protocol.navigation.label-infolist",
+      "path": "/admin/imageprotocol/list",
+      "searchKeyWordsHelpers": "admin/image-protocol.navigation.list.search.kws"
+    }
+  ]
 }

@@ -1,6 +1,10 @@
 {
   "admin/image-protocol.navigation.label": "Protocolo de la imagem",
   "admin/image-protocol.navigation.search.kws": "imagem, protocolo",
+  "admin/image-protocol.navigation.label-protocol": "Protocolo",
+  "admin/image-protocol.navigation.protocol.search.kws": "protocolo",
+  "admin/image-protocol.navigation.label-infolist": "Dados salvos",
+  "admin/image-protocol.navigation.list.search.kws": "customerClass, list",
   "admin/image-protocol.title.label": "Protocolo de la imagem",
   "admin/image-protocol.form.customer-class.label": "Classe do cliente",
   "admin/image-protocol.form.desktop-image.label": "Imagem da área de trabalho",

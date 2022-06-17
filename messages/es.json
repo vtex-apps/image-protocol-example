@@ -1,6 +1,10 @@
 {
   "admin/image-protocol.navigation.label": "Protocolo para la imagen",
   "admin/image-protocol.navigation.search.kws": "imagen, protocolo",
+  "admin/image-protocol.navigation.label-protocol": "Protocolo",
+  "admin/image-protocol.navigation.protocol.search.kws": "protocolo",
+  "admin/image-protocol.navigation.label-infolist": "Datos guardados",
+  "admin/image-protocol.navigation.list.search.kws": "customerClass, list",
   "admin/image-protocol.title.label": "Protocolo de imagen",
   "admin/image-protocol.form.customer-class.label": "Customer Class",
   "admin/image-protocol.form.desktop-image.label": "Imagen para desktop",

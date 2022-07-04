@@ -1,5 +1,6 @@
 type Query {
   customerClassList: [Customer]
+  getPolygons: Items
 }
 
 type Customer {
@@ -12,6 +13,10 @@ type Customer {
 type Urls {
   url: String
   urlMobile: String
+}
+
+type Items {
+  polygons: [String]
 }
 
 type Mutation {

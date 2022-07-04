@@ -1,18 +1,15 @@
 // import type { ClientsConfig } from '@vtex/api'
-
-import type { ServiceContext } from '@vtex/api'
+import type { ClientsConfig, ServiceContext } from '@vtex/api'
 import { method, Service } from '@vtex/api'
 
 import { errorHandler, getImgUrl } from './middlewares'
 import { customerClassInfo } from './resolvers/customerClassInfo'
+import { getPolygons } from './resolvers/getPolygons'
 import { customerClassList } from './resolvers/customerClassList'
 import { removeFromList } from './resolvers/removeFromList'
-
-// import { Clients } from './clients'
+import { Clients } from './clients'
 // import { status } from './middlewares/status'
 // import { validate } from './middlewares/validate'
-
-// const TIMEOUT_MS = 800
 
 // Create a LRU memory cache for the Status client.
 // The @vtex/api HttpClient respects Cache-Control headers and uses the provided cache.
@@ -21,25 +18,21 @@ import { removeFromList } from './resolvers/removeFromList'
 // metrics.trackCache('status', memoryCache)
 
 // This is the configuration for clients available in `ctx.clients`.
-// const clients: ClientsConfig<Clients> = {
-//   // We pass our custom implementation of the clients bag, containing the Status client.
-//   implementation: Clients,
-//   options: {
-//     // All IO Clients will be initialized with these options, unless otherwise specified.
-//     default: {
-//       retries: 2,
-//       timeout: TIMEOUT_MS,
-//     },
-//     // This key will be merged with the default options and add this cache to our Status client.
-//     status: {
-//       memoryCache,
-//     },
-//   },
-// }
+const TIMEOUT_MS = 10000
+
+const clients: ClientsConfig<Clients> = {
+  implementation: Clients,
+  options: {
+    default: {
+      retries: 0,
+      timeout: TIMEOUT_MS,
+    },
+  },
+}
 
 declare global {
   // We declare a global Context type just to avoid re-writing ServiceContext<Clients, State> in every handler and resolver
-  type Context = ServiceContext
+  type Context = ServiceContext<Clients>
 
   interface ClientMasterdataEntityType {
     customerClass: string
@@ -53,6 +46,7 @@ declare global {
 
 // Export a service that defines route handlers and client options.
 export default new Service({
+  clients,
   graphql: {
     resolvers: {
       Mutation: {
@@ -61,6 +55,7 @@ export default new Service({
       },
       Query: {
         customerClassList,
+        getPolygons,
       },
     },
   },

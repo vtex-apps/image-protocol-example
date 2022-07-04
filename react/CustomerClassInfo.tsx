@@ -11,13 +11,14 @@ import {
   Spinner,
   IconDelete,
 } from 'vtex.styleguide'
-import { useMutation } from 'react-apollo'
+import { useMutation, useQuery } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 import Dropzone from 'react-dropzone'
 
 import EmptyState from './EmptyState'
 import UPLOAD_mutation from './graphql/uploadFile.graphql'
 import POST_CustomerClassInfo from './graphql/customerClassInfo.graphql'
+import GET_Polygons from './graphql/getPolygons.graphql'
 
 interface IncomingFile {
   uploadFile: { fileUrl: string }
@@ -25,6 +26,20 @@ interface IncomingFile {
 
 const CustomerClassInfo: FC = () => {
   const { query } = useRuntime()
+  const { data, loading, error } = useQuery(GET_Polygons)
+
+  let polygons
+
+  useEffect(() => {
+    console.log('loading:', loading)
+    console.log('error:', error)
+    console.log('polygons: ', data)
+  }, [data, loading, error])
+
+  if (data) {
+    polygons = data.items
+    console.log('polygons: ', polygons)
+  }
 
   const [err, setError] = useState('')
   const [isLoadingDesktopImg, setLoadingDesktopImg] = useState(Boolean)
@@ -53,9 +68,10 @@ const CustomerClassInfo: FC = () => {
     setIdImg(query.imageProtocolId)
   }, [query])
 
-  const [postCustomerClassInfo, { data, loading, error }] = useMutation(
-    POST_CustomerClassInfo
-  )
+  const [
+    postCustomerClassInfo,
+    { data: data2, loading: loading2, error: error2 },
+  ] = useMutation(POST_CustomerClassInfo)
 
   const [uploadFile] = useMutation<IncomingFile>(UPLOAD_mutation)
 
@@ -142,11 +158,11 @@ const CustomerClassInfo: FC = () => {
       variables: { customerClassValue, url, urlMobile, idImg },
     })
 
-    if (loading) {
+    if (loading2) {
       console.log('loading')
     }
 
-    if (error) {
+    if (error2) {
       console.log('error: ', error)
       setError('Something went wrong')
     }
@@ -159,7 +175,7 @@ const CustomerClassInfo: FC = () => {
     setIdImg('')
     setSuccess(true)
 
-    return data
+    return data2
   }
 
   const intl = useIntl()

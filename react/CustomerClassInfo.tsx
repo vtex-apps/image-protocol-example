@@ -34,7 +34,7 @@ const CustomerClassInfo: FC = () => {
   const [isLoadingMobileImg, setLoadingMobileImg] = useState(Boolean)
   const [customerClassValue, setCustomerClassValue] = useState('')
   const [polygon, setPolygon] = useState('')
-  const [hrefImage, setHrefImage] = useState('')
+  const [hrefImg, setHrefImage] = useState('')
   const [idImg, setIdImg] = useState('')
   const [desktopFileName, setDesktopFileName] = useState('')
   const [mobileFileName, setMobileFileName] = useState('')
@@ -71,8 +71,6 @@ const CustomerClassInfo: FC = () => {
     for (let i = 0; i < polygons.length; i++) {
       options.push({ value: polygons[i], label: polygons[i] })
     }
-
-    console.log('options: ', options)
   }
 
   const [
@@ -162,17 +160,24 @@ const CustomerClassInfo: FC = () => {
     console.log(
       'customerClassValue: ',
       customerClassValue,
-      'idImg: ',
+      '; idImg: ',
       idImg,
-      'polygon: ',
+      '; polygon: ',
       polygon,
-      'href: ',
-      hrefImage
+      '; href: ',
+      hrefImg
     )
 
     if (!url || !urlMobile) {
       // eslint-disable-next-line no-alert
-      alert('image(s) missing')
+      alert('url(s) missing')
+
+      return
+    }
+
+    if (!customerClassValue && !polygon) {
+      // eslint-disable-next-line no-alert
+      alert('customer class or polygon missing')
 
       return
     }
@@ -183,7 +188,7 @@ const CustomerClassInfo: FC = () => {
         polygon,
         url,
         urlMobile,
-        hrefImage,
+        hrefImg,
         idImg,
       },
     })
@@ -243,14 +248,13 @@ const CustomerClassInfo: FC = () => {
                 label={intl.formatMessage({
                   id: 'admin/image-protocol.form.customer-class.label',
                 })}
-                required
                 value={customerClassValue}
                 onChange={(e: any) => {
                   handleCustomerClassValue(e)
                 }}
               />
             </div>
-            <div className="mb4 w-90 w-40-m">
+            <div className="mb4 w-90 w-40-m flex flex-row justify-between">
               <Dropdown
                 label={intl.formatMessage({
                   id: 'admin/image-protocol.form.polygon.label',
@@ -261,6 +265,15 @@ const CustomerClassInfo: FC = () => {
                   handlePolygon(e)
                 }}
               />
+              {/* <Button
+                onClick={() => {
+                  navigate({
+                    to: '/admin/app/logistics/#/geolocation',
+                  })
+                }}
+              >
+                <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
+              </Button> */}
             </div>
             <div className="mt4 mb4">
               <p className="t-small mb3 c-on-base">
@@ -342,7 +355,7 @@ const CustomerClassInfo: FC = () => {
                   id: 'admin/image-protocol.form.href.label',
                 })}
                 required
-                value={hrefImage}
+                value={hrefImg}
                 onChange={(e: any) => {
                   handleHref(e)
                 }}

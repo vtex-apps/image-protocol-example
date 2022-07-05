@@ -25,7 +25,7 @@ type Mutation {
     polygon: String
     url: String
     urlMobile: String
-    href: String
+    hrefImg: String
     idImg: String
   ): CustomerClass
   removeFromList(
@@ -43,6 +43,6 @@ type CustomerClass {
   polygon: String
   url: String!
   urlMobile: String!
-  href: String!
+  hrefImg: String!
   idImg: String!
 }

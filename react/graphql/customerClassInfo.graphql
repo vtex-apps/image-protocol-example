@@ -3,7 +3,7 @@ mutation customerClassInfo(
   $polygon: String
   $url: String
   $urlMobile: String
-  $href: String
+  $hrefImg: String
   $idImg: String
 ) {
   customerClassInfo(
@@ -11,14 +11,14 @@ mutation customerClassInfo(
     polygon: $polygon
     url: $url
     urlMobile: $urlMobile
-    href: $href
+    hrefImg: $hrefImg
     idImg: $idImg
   ) @context(provider: "vtex.image-protocol-example") {
     customerClassValue
     polygon
     url
     urlMobile
-    href
+    hrefImg
     idImg
   }
 }

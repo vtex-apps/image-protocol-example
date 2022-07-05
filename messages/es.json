@@ -8,6 +8,7 @@
   "admin/image-protocol.title.label": "Protocolo de imagen",
   "admin/image-protocol.form.customer-class.label": "Customer Class",
   "admin/image-protocol.form.polygon.label": "Polígono",
+  "admin/image-protocol.form.create-new-polygon.label": "Crea un nuevo polígono",
   "admin/image-protocol.form.desktop-image.label": "Imagen para desktop",
   "admin/image-protocol.form.mobile-image.label": "Imagen para móvil",
   "admin/image-protocol.form.href.label": "Link para las imágenes",

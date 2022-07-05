@@ -1,11 +1,18 @@
-import { LogLevel } from '@vtex/api'
+// import { LogLevel } from '@vtex/api'
 
-import { BUCKET, CONFIG_PATH } from '../constants/index'
+import {
+  BUCKET,
+  CONFIG_PATH_CCPOLYGON,
+  CONFIG_PATH_CC,
+  CONFIG_PATH_POLYGON,
+} from '../constants/index'
 
 interface CustomerClassInfo {
   customerClassValue: string
+  polygon: string
   url: string
   urlMobile: string
+  href: string
   idImg: string
 }
 
@@ -16,113 +23,137 @@ export const customerClassInfo = async (
 ) => {
   const {
     clients: { vbase },
-    vtex: { logger },
   } = ctx
 
-  const { customerClassValue, url, urlMobile, idImg } = args
-  const key = `${customerClassValue}-${idImg}`
-
+  const { customerClassValue, polygon, url, urlMobile, href, idImg } = args
+  let key = ''
   let getCustomerList: Record<string, unknown> | null = null
 
-  try {
-    getCustomerList = await vbase.getJSON(BUCKET, CONFIG_PATH)
-    console.info('resGetJson: ', getCustomerList)
-
-    logger.log(
-      {
-        message: 'In customerClassInfo.ts, inside try vbase getCustomerList',
-        detail: {
-          data: getCustomerList,
-        },
-      },
-      LogLevel.Info
-    )
-  } catch (e) {
-    console.info('error: ', e)
-
-    logger.log(
-      {
-        message: 'In customerClassInfo.ts, inside catch',
-        detail: {
-          data: e,
-        },
-      },
-      LogLevel.Error
-    )
-  }
-
-  if (!getCustomerList) {
-    const customerUrls = {
-      [key]: { url, urlMobile },
+  if (customerClassValue && polygon) {
+    key = `${customerClassValue}-${polygon}-${idImg}`
+    try {
+      getCustomerList = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON)
+      console.info('config path: ', CONFIG_PATH_CCPOLYGON)
+      console.info('resGetJson: ', getCustomerList)
+    } catch (e) {
+      console.info('error: ', e)
     }
 
-    console.info('customer-imgId: urls: ', customerUrls)
+    if (!getCustomerList) {
+      const customerUrls = {
+        [key]: { url, urlMobile, href },
+      }
 
-    logger.log(
-      {
-        message: 'In customerClassInfo.ts, customer-imgId: urls',
-        detail: {
-          data: customerUrls,
-        },
-      },
-      LogLevel.Info
-    )
+      console.info('customerclass-polygon-imgId: urls: ', customerUrls)
+      const resCustomerList = await vbase.saveJSON(
+        BUCKET,
+        CONFIG_PATH_CCPOLYGON,
+        customerUrls
+      )
 
-    const resCustomerList = await vbase.saveJSON(
-      BUCKET,
-      CONFIG_PATH,
-      customerUrls
-    )
+      // eslint-disable-next-line no-console
+      console.info('list does not exist, resSaveJson', resCustomerList)
+    } else {
+      getCustomerList[key] = { url, urlMobile, href }
+      const resSaveJson = await vbase.saveJSON(
+        BUCKET,
+        CONFIG_PATH_CCPOLYGON,
+        getCustomerList
+      )
 
-    // eslint-disable-next-line no-console
-    console.info('list does not exist, resSaveJson', resCustomerList)
+      // eslint-disable-next-line no-console
+      console.info('savedJSON res: ', resSaveJson)
+      const resGetJsonAfter = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON)
 
-    logger.log(
-      {
-        message: 'In customerClassInfo.ts, there is no data saved yet',
-        detail: {
-          data: customerUrls,
-        },
-      },
-      LogLevel.Info
-    )
-  } else {
-    getCustomerList[key] = { url, urlMobile }
-    const resSaveJson = await vbase.saveJSON(
-      BUCKET,
-      CONFIG_PATH,
-      getCustomerList
-    )
+      // eslint-disable-next-line no-console
+      console.info('getJSON res: ', resGetJsonAfter)
 
-    // eslint-disable-next-line no-console
-    console.info('savedJSON res: ', resSaveJson)
+      return args
+    }
+  } else if (customerClassValue && !polygon) {
+    key = `${customerClassValue}-${idImg}`
+    try {
+      getCustomerList = await vbase.getJSON(BUCKET, CONFIG_PATH_CC)
+      console.info('config path: ', CONFIG_PATH_CC)
+      console.info('resGetJson: ', getCustomerList)
+    } catch (e) {
+      console.info('error: ', e)
+    }
 
-    logger.log(
-      {
-        message: 'In customerClassInfo.ts, data already saved in vbase:',
-        detail: {
-          data: resSaveJson,
-        },
-      },
-      LogLevel.Info
-    )
+    if (!getCustomerList) {
+      const customerUrls = {
+        [key]: { url, urlMobile, href },
+      }
 
-    const resGetJsonAfter = await vbase.getJSON(BUCKET, CONFIG_PATH)
+      console.info('customerclass-imgId: urls: ', customerUrls)
 
-    // eslint-disable-next-line no-console
-    console.info('getJSON res: ', resGetJsonAfter)
+      const resCustomerList = await vbase.saveJSON(
+        BUCKET,
+        CONFIG_PATH_CC,
+        customerUrls
+      )
 
-    logger.log(
-      {
-        message: 'In customerClassInfo.ts, after data saved in vbase:',
-        detail: {
-          data: resGetJsonAfter,
-        },
-      },
-      LogLevel.Info
-    )
+      // eslint-disable-next-line no-console
+      console.info('list does not exist, resSaveJson', resCustomerList)
+    } else {
+      getCustomerList[key] = { url, urlMobile, href }
+      const resSaveJson = await vbase.saveJSON(
+        BUCKET,
+        CONFIG_PATH_CC,
+        getCustomerList
+      )
 
-    return args
+      // eslint-disable-next-line no-console
+      console.info('savedJSON res: ', resSaveJson)
+      const resGetJsonAfter = await vbase.getJSON(BUCKET, CONFIG_PATH_CC)
+
+      // eslint-disable-next-line no-console
+      console.info('getJSON res: ', resGetJsonAfter)
+
+      return args
+    }
+  } else if (polygon && !customerClassValue) {
+    key = `${polygon}-${idImg}`
+    try {
+      getCustomerList = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON)
+      console.info('config path: ', CONFIG_PATH_POLYGON)
+      console.info('resGetJson: ', getCustomerList)
+    } catch (e) {
+      console.info('error: ', e)
+    }
+
+    if (!getCustomerList) {
+      const customerUrls = {
+        [key]: { url, urlMobile, href },
+      }
+
+      console.info('polygon-imgId: urls: ', customerUrls)
+
+      const resCustomerList = await vbase.saveJSON(
+        BUCKET,
+        CONFIG_PATH_POLYGON,
+        customerUrls
+      )
+
+      // eslint-disable-next-line no-console
+      console.info('list does not exist, resSaveJson', resCustomerList)
+    } else {
+      getCustomerList[key] = { url, urlMobile, href }
+      const resSaveJson = await vbase.saveJSON(
+        BUCKET,
+        CONFIG_PATH_POLYGON,
+        getCustomerList
+      )
+
+      // eslint-disable-next-line no-console
+      console.info('savedJSON res: ', resSaveJson)
+      const resGetJsonAfter = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON)
+
+      // eslint-disable-next-line no-console
+      console.info('getJSON res: ', resGetJsonAfter)
+
+      return args
+    }
   }
 
   return args

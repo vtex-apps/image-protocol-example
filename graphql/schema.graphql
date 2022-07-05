@@ -22,8 +22,10 @@ type Items {
 type Mutation {
   customerClassInfo(
     customerClassValue: String
+    polygon: String
     url: String
     urlMobile: String
+    href: String
     idImg: String
   ): CustomerClass
   removeFromList(
@@ -37,8 +39,10 @@ type CustomerClassArg {
   imageProtocolId: String
 }
 type CustomerClass {
-  customerClassValue: String!
+  customerClassValue: String
+  polygon: String
   url: String!
   urlMobile: String!
+  href: String!
   idImg: String!
 }

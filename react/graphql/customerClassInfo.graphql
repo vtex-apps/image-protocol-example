@@ -1,18 +1,24 @@
 mutation customerClassInfo(
   $customerClassValue: String
+  $polygon: String
   $url: String
   $urlMobile: String
+  $href: String
   $idImg: String
 ) {
   customerClassInfo(
     customerClassValue: $customerClassValue
+    polygon: $polygon
     url: $url
     urlMobile: $urlMobile
+    href: $href
     idImg: $idImg
   ) @context(provider: "vtex.image-protocol-example") {
     customerClassValue
+    polygon
     url
     urlMobile
+    href
     idImg
   }
 }

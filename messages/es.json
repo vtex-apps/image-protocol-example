@@ -7,8 +7,10 @@
   "admin/image-protocol.navigation.list.search.kws": "customerClass, list",
   "admin/image-protocol.title.label": "Protocolo de imagen",
   "admin/image-protocol.form.customer-class.label": "Customer Class",
+  "admin/image-protocol.form.polygon.label": "Polígono",
   "admin/image-protocol.form.desktop-image.label": "Imagen para desktop",
   "admin/image-protocol.form.mobile-image.label": "Imagen para móvil",
+  "admin/image-protocol.form.href.label": "Link para las imágenes",
   "admin/image-protocol.form.image-.protocol-id.label": "Id de la imagen del protocolo",
   "admin/image-protocol.form.submit.label": "Enviar",
   "admin/image-protocol.dropzone.text": "Arrastre y suelte su archivo aquí, o haga clic para seleccionar un archivo"

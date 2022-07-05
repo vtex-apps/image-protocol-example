@@ -5,7 +5,7 @@ export const getPolygons = async (_: unknown, __: unknown, ctx: Context) => {
 
   const listPolygons = await logistics.getListOfPolygons()
 
-  console.info('list of Polygons: ', listPolygons)
+  console.info('list of Polygons: ', listPolygons.items)
 
   return {
     polygons: listPolygons.items,

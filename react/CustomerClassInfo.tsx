@@ -10,6 +10,7 @@ import {
   Button,
   Spinner,
   IconDelete,
+  Dropdown,
 } from 'vtex.styleguide'
 import { useMutation, useQuery } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
@@ -28,24 +29,12 @@ const CustomerClassInfo: FC = () => {
   const { query } = useRuntime()
   const { data, loading, error } = useQuery(GET_Polygons)
 
-  let polygons
-
-  useEffect(() => {
-    console.log('loading:', loading)
-    console.log('error:', error)
-    console.log('polygons: ', data)
-  }, [data, loading, error])
-
-  if (data) {
-    polygons = data.items
-    console.log('polygons: ', polygons)
-  }
-
   const [err, setError] = useState('')
   const [isLoadingDesktopImg, setLoadingDesktopImg] = useState(Boolean)
   const [isLoadingMobileImg, setLoadingMobileImg] = useState(Boolean)
   const [customerClassValue, setCustomerClassValue] = useState('')
-
+  const [polygon, setPolygon] = useState('')
+  const [hrefImage, setHrefImage] = useState('')
   const [idImg, setIdImg] = useState('')
   const [desktopFileName, setDesktopFileName] = useState('')
   const [mobileFileName, setMobileFileName] = useState('')
@@ -68,6 +57,24 @@ const CustomerClassInfo: FC = () => {
     setIdImg(query.imageProtocolId)
   }, [query])
 
+  let polygons: any[] = []
+  const options: any[] = []
+
+  useEffect(() => {
+    console.log('loading:', loading)
+    console.log('error:', error)
+    console.log('polygons: ', data)
+  }, [data, loading, error])
+
+  if (data) {
+    polygons = data.getPolygons.polygons
+    for (let i = 0; i < polygons.length; i++) {
+      options.push({ value: polygons[i], label: polygons[i] })
+    }
+
+    console.log('options: ', options)
+  }
+
   const [
     postCustomerClassInfo,
     { data: data2, loading: loading2, error: error2 },
@@ -77,6 +84,14 @@ const CustomerClassInfo: FC = () => {
 
   function handleCustomerClassValue(e: any) {
     setCustomerClassValue(e.target.value)
+  }
+
+  function handlePolygon(e: any) {
+    setPolygon(e.target.value)
+  }
+
+  function handleHref(e: any) {
+    setHrefImage(e.target.value)
   }
 
   function handleIdImgValue(e: any) {
@@ -144,8 +159,16 @@ const CustomerClassInfo: FC = () => {
 
   function handleSubmit(e: any) {
     e.preventDefault()
-    console.log('customerClassValue: ', customerClassValue)
-    console.log('idImg: ', idImg)
+    console.log(
+      'customerClassValue: ',
+      customerClassValue,
+      'idImg: ',
+      idImg,
+      'polygon: ',
+      polygon,
+      'href: ',
+      hrefImage
+    )
 
     if (!url || !urlMobile) {
       // eslint-disable-next-line no-alert
@@ -155,7 +178,14 @@ const CustomerClassInfo: FC = () => {
     }
 
     postCustomerClassInfo({
-      variables: { customerClassValue, url, urlMobile, idImg },
+      variables: {
+        customerClassValue,
+        polygon,
+        url,
+        urlMobile,
+        hrefImage,
+        idImg,
+      },
     })
 
     if (loading2) {
@@ -168,10 +198,12 @@ const CustomerClassInfo: FC = () => {
     }
 
     setCustomerClassValue('')
+    setPolygon('')
     setDesktopFileName('')
     setMobileFileName('')
     setUrl('')
     setUrlMobile('')
+    setHrefImage('')
     setIdImg('')
     setSuccess(true)
 
@@ -202,7 +234,7 @@ const CustomerClassInfo: FC = () => {
               handleSubmit(e)
             }}
           >
-            <div className="w-90 w-40-m">
+            <div className="mb4 w-90 w-40-m">
               <Input
                 placeholder={intl.formatMessage({
                   id: 'admin/image-protocol.form.customer-class.label',
@@ -215,6 +247,18 @@ const CustomerClassInfo: FC = () => {
                 value={customerClassValue}
                 onChange={(e: any) => {
                   handleCustomerClassValue(e)
+                }}
+              />
+            </div>
+            <div className="mb4 w-90 w-40-m">
+              <Dropdown
+                label={intl.formatMessage({
+                  id: 'admin/image-protocol.form.polygon.label',
+                })}
+                options={options}
+                value={polygon}
+                onChange={(e: any) => {
+                  handlePolygon(e)
                 }}
               />
             </div>
@@ -288,7 +332,22 @@ const CustomerClassInfo: FC = () => {
                 </div>
               )}
             </div>
-
+            <div className="mb4 w-90 w-40-m">
+              <Input
+                placeholder={intl.formatMessage({
+                  id: 'admin/image-protocol.form.href.label',
+                })}
+                size="Regular"
+                label={intl.formatMessage({
+                  id: 'admin/image-protocol.form.href.label',
+                })}
+                required
+                value={hrefImage}
+                onChange={(e: any) => {
+                  handleHref(e)
+                }}
+              />
+            </div>
             <div className="w-90 w-40-m">
               <Input
                 placeholder="ID"

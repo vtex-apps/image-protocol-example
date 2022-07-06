@@ -13,11 +13,7 @@ interface DataArray {
   mobileUrl: string
   hrefImg: string
 }
-export const customerClassList = async (
-  _: unknown,
-  __: unknown,
-  ctx: Context
-) => {
+export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
   const {
     clients: { vbase },
   } = ctx

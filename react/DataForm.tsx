@@ -18,7 +18,7 @@ import Dropzone from 'react-dropzone'
 
 import EmptyState from './EmptyState'
 import UPLOAD_mutation from './graphql/uploadFile.graphql'
-import POST_CustomerClassInfo from './graphql/customerClassInfo.graphql'
+import POST_DataInfo from './graphql/saveDataInfo.graphql'
 import GET_Polygons from './graphql/getPolygons.graphql'
 
 interface IncomingFile {
@@ -76,9 +76,9 @@ const CustomerClassInfo: FC = () => {
   }
 
   const [
-    postCustomerClassInfo,
+    postDataInfo,
     { data: data2, loading: loading2, error: error2 },
-  ] = useMutation(POST_CustomerClassInfo)
+  ] = useMutation(POST_DataInfo)
 
   const [uploadFile] = useMutation<IncomingFile>(UPLOAD_mutation)
 
@@ -184,7 +184,7 @@ const CustomerClassInfo: FC = () => {
       return
     }
 
-    postCustomerClassInfo({
+    postDataInfo({
       variables: {
         customerClassValue,
         polygon,
@@ -216,6 +216,7 @@ const CustomerClassInfo: FC = () => {
 
     navigate({
       to: '/admin/app/imageprotocol/list',
+      query: 'updated=true',
     })
 
     return data2
@@ -271,15 +272,9 @@ const CustomerClassInfo: FC = () => {
                   handlePolygon(e)
                 }}
               />
-              {/* <Button
-                onClick={() => {
-                  navigate({
-                    to: '/admin/app/logistics/#/geolocation',
-                  })
-                }}
-              >
+              {/* <Link to="/admin/app/logistics/#/geolocation">
                 <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
-              </Button> */}
+              </Link> */}
             </div>
             <div className="mt4 mb4">
               <p className="t-small mb3 c-on-base">

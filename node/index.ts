@@ -3,9 +3,9 @@ import type { ClientsConfig, ServiceContext } from '@vtex/api'
 import { method, Service } from '@vtex/api'
 
 import { errorHandler, getImgUrl } from './middlewares'
-import { customerClassInfo } from './resolvers/customerClassInfo'
+import { saveDataInfo } from './resolvers/saveDataInfo'
 import { getPolygons } from './resolvers/getPolygons'
-import { customerClassList } from './resolvers/customerClassList'
+import { getDataList } from './resolvers/getDataList'
 import { removeFromList } from './resolvers/removeFromList'
 import { Clients } from './clients'
 // import { status } from './middlewares/status'
@@ -50,11 +50,11 @@ export default new Service({
   graphql: {
     resolvers: {
       Mutation: {
-        customerClassInfo,
+        saveDataInfo,
         removeFromList,
       },
       Query: {
-        customerClassList,
+        getDataList,
         getPolygons,
       },
     },

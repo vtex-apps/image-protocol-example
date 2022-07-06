@@ -6,7 +6,7 @@ import { Layout, PageBlock, Table } from 'vtex.styleguide'
 import { useQuery, useMutation } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 
-import GET_DATA_LIST from './graphql/customerClassList.graphql'
+import GET_DATA_LIST from './graphql/getDataList.graphql'
 import REMOVE_FROM_LIST from './graphql/removeFromList.graphql'
 
 interface TableItem {
@@ -23,9 +23,35 @@ interface DataInfo {
   mobileUrl: string
   hrefImg: string
 }
-const CustomerClassList: FC = () => {
-  const { navigate } = useRuntime()
+const DataList: FC = () => {
+  const { navigate, query } = useRuntime()
+
   const [list, setList] = useState<DataInfo[]>([])
+  const [updated, setUpdated] = useState(false)
+  const { data, loading, error, refetch } = useQuery(GET_DATA_LIST)
+
+  useEffect(() => {
+    console.info('query: ', query)
+    const isEmpty = Object.keys(query).length === 0
+
+    if (isEmpty) {
+      return
+    }
+
+    setUpdated(query.updated)
+    console.log('updated: ', updated)
+    refetch()
+  }, [query, updated, refetch])
+
+  useEffect(() => {
+    console.log('loading:', loading)
+    console.log('error2:', error)
+    console.log('data saved in vbase: ', data)
+    if (data) {
+      setList(data.getDataList)
+    }
+  }, [data, loading, error])
+
   const [
     removeFromList,
     { data: data2, loading: loading2, error: error2 },
@@ -105,17 +131,6 @@ const CustomerClassList: FC = () => {
     },
   ]
 
-  const { data, loading, error } = useQuery(GET_DATA_LIST)
-
-  useEffect(() => {
-    console.log('loading:', loading)
-    console.log('error2:', error)
-    console.log('data saved in vbase: ', data)
-    if (data) {
-      setList(data.customerClassList)
-    }
-  }, [data, loading, error])
-
   const dataSchema = {
     properties: {
       customerClass: {
@@ -179,4 +194,4 @@ const CustomerClassList: FC = () => {
   )
 }
 
-export default CustomerClassList
+export default DataList

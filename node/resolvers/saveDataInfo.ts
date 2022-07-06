@@ -16,7 +16,7 @@ interface CustomerClassInfo {
   idImg: string
 }
 
-export const customerClassInfo = async (
+export const saveDataInfo = async (
   _: unknown,
   args: CustomerClassInfo,
   ctx: Context

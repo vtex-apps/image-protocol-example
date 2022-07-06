@@ -26,7 +26,7 @@ interface IncomingFile {
 }
 
 const CustomerClassInfo: FC = () => {
-  const { query } = useRuntime()
+  const { query, navigate } = useRuntime()
   const { data, loading, error } = useQuery(GET_Polygons)
 
   const [err, setError] = useState('')
@@ -52,8 +52,10 @@ const CustomerClassInfo: FC = () => {
     }
 
     setCustomerClassValue(query.customerClass)
+    setPolygon(query.polygon)
     setUrl(query.desktopUrl)
     setUrlMobile(query.mobileUrl)
+    setHrefImage(query.hrefImg)
     setIdImg(query.imageProtocolId)
   }, [query])
 
@@ -211,6 +213,10 @@ const CustomerClassInfo: FC = () => {
     setHrefImage('')
     setIdImg('')
     setSuccess(true)
+
+    navigate({
+      to: '/admin/app/imageprotocol/list',
+    })
 
     return data2
   }

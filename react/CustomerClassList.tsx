@@ -68,18 +68,6 @@ const CustomerClassList: FC = () => {
         }
 
         console.info('data: ', data2)
-        /*  const updatedList: DataInfo[] = []
-
-        list.forEach((row: DataInfo) => {
-          if (
-            row.customerClass !== rowData.customerClass &&
-            row.polygon !== rowData.polygon
-          ) {
-            console.log('inside if row: ', row)
-            updatedList.push(row)
-          }
-        })
-        setList(updatedList) */
         let key = ''
         let rowKey = ''
         const updatedList: DataInfo[] = []

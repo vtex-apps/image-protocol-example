@@ -254,7 +254,7 @@ const CustomerClassInfo: FC = () => {
                 }}
               />
             </div>
-            <div className="mb4 w-90 w-40-m flex flex-row justify-between">
+            <div className="mb4 w-90 w-40-m">
               <Dropdown
                 label={intl.formatMessage({
                   id: 'admin/image-protocol.form.polygon.label',

@@ -5,9 +5,11 @@ type Query {
 
 type Customer {
   customerClass: String
+  polygon: String
   imageProtocolId: String
   desktopUrl: String
   mobileUrl: String
+  hrefImg: String
 }
 
 type Urls {
@@ -30,12 +32,14 @@ type Mutation {
   ): CustomerClass
   removeFromList(
     customerClass: String
+    polygon: String
     imageProtocolId: String
-  ): CustomerClassArg
+  ): DataArg
 }
 
-type CustomerClassArg {
+type DataArg {
   customerClass: String
+  polygon: String
   imageProtocolId: String
 }
 type CustomerClass {

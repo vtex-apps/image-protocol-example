@@ -6,28 +6,30 @@ import { Layout, PageBlock, Table } from 'vtex.styleguide'
 import { useQuery, useMutation } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 
-import GET_CUSTOMERCLASS_LIST from './graphql/customerClassList.graphql'
-import REMOVE_FROM_CUSTOMERCLASS_LIST from './graphql/removeFromList.graphql'
+import GET_DATA_LIST from './graphql/customerClassList.graphql'
+import REMOVE_FROM_LIST from './graphql/removeFromList.graphql'
 
 interface TableItem {
   cellData: unknown
-  rowData: CustomerClassInfo
+  rowData: DataInfo
   updateCellMeasurements: () => void
 }
 
-interface CustomerClassInfo {
+interface DataInfo {
   customerClass: string
+  polygon: string
   imageProtocolId: string
   desktopUrl: string
   mobileUrl: string
+  hrefImg: string
 }
 const CustomerClassList: FC = () => {
   const { navigate } = useRuntime()
-  const [list, setList] = useState([])
+  const [list, setList] = useState<DataInfo[]>([])
   const [
     removeFromList,
     { data: data2, loading: loading2, error: error2 },
-  ] = useMutation(REMOVE_FROM_CUSTOMERCLASS_LIST)
+  ] = useMutation(REMOVE_FROM_LIST)
 
   const lineActions = [
     {
@@ -35,7 +37,7 @@ const CustomerClassList: FC = () => {
       onClick: ({ rowData }: TableItem) => {
         navigate({
           to: '/admin/app/imageprotocol/protocol',
-          query: `customerClass=${rowData.customerClass}&imageProtocolId=${rowData.imageProtocolId}&desktopUrl=${rowData.desktopUrl}&mobileUrl=${rowData.mobileUrl}`,
+          query: `customerClass=${rowData.customerClass}&polygon=${rowData.polygon}&imageProtocolId=${rowData.imageProtocolId}&desktopUrl=${rowData.desktopUrl}&mobileUrl=${rowData.mobileUrl}&hrefImg=${rowData.hrefImg}`,
         })
       },
     },
@@ -43,10 +45,18 @@ const CustomerClassList: FC = () => {
       label: () => `Delete`,
       isDangerous: true,
       onClick: ({ rowData }: TableItem) => {
-        const { customerClass, imageProtocolId } = rowData
+        const { customerClass, polygon, imageProtocolId } = rowData
 
+        console.info(
+          'on click to delete: ',
+          customerClass,
+          ' ',
+          polygon,
+          ' ',
+          imageProtocolId
+        )
         removeFromList({
-          variables: { customerClass, imageProtocolId },
+          variables: { customerClass, polygon, imageProtocolId },
         })
 
         if (loading2) {
@@ -58,18 +68,56 @@ const CustomerClassList: FC = () => {
         }
 
         console.info('data: ', data2)
-        const updatedList = list.filter(
-          (row: CustomerClassInfo) =>
-            row.customerClass !== rowData.customerClass
-        )
+        /*  const updatedList: DataInfo[] = []
 
+        list.forEach((row: DataInfo) => {
+          if (
+            row.customerClass !== rowData.customerClass &&
+            row.polygon !== rowData.polygon
+          ) {
+            console.log('inside if row: ', row)
+            updatedList.push(row)
+          }
+        })
+        setList(updatedList) */
+        let key = ''
+        let rowKey = ''
+        const updatedList: DataInfo[] = []
+
+        list.forEach((row: DataInfo) => {
+          if (rowData.customerClass.length > 0 && rowData.polygon.length > 0) {
+            key = `${rowData.customerClass}-${rowData.polygon}-${rowData.imageProtocolId}`
+          } else if (
+            rowData.customerClass.length > 0 &&
+            rowData.polygon.length === 0
+          ) {
+            key = `${rowData.customerClass}-empty-${rowData.imageProtocolId}`
+          } else if (
+            rowData.polygon.length > 0 &&
+            rowData.customerClass.length === 0
+          ) {
+            key = `empty-${rowData.polygon}-${rowData.imageProtocolId}`
+          }
+
+          if (row.customerClass.length > 0 && row.polygon.length > 0) {
+            rowKey = `${row.customerClass}-${row.polygon}-${row.imageProtocolId}`
+          } else if (row.customerClass.length > 0 && row.polygon.length === 0) {
+            rowKey = `${row.customerClass}-empty-${row.imageProtocolId}`
+          } else if (row.polygon.length > 0 && row.customerClass.length === 0) {
+            rowKey = `empty-${row.polygon}-${row.imageProtocolId}`
+          }
+
+          if (key !== rowKey) {
+            updatedList.push(row)
+          }
+        })
         setList(updatedList)
         console.log('updated list:', updatedList)
       },
     },
   ]
 
-  const { data, loading, error } = useQuery(GET_CUSTOMERCLASS_LIST)
+  const { data, loading, error } = useQuery(GET_DATA_LIST)
 
   useEffect(() => {
     console.log('loading:', loading)
@@ -84,6 +132,10 @@ const CustomerClassList: FC = () => {
     properties: {
       customerClass: {
         title: 'Customer Class',
+        minWidth: 50,
+      },
+      polygon: {
+        title: 'Polygon',
         minWidth: 50,
       },
       imageProtocolId: {
@@ -101,6 +153,10 @@ const CustomerClassList: FC = () => {
         cellRenderer: ({ cellData }: any) => {
           return <img src={cellData} alt="mobile url" />
         },
+      },
+      hrefImg: {
+        title: 'Link url',
+        minWidth: 50,
       },
     },
   }

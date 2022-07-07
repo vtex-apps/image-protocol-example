@@ -94,7 +94,7 @@ export const saveDataInfo = async (
         [key]: { url, urlMobile, hrefImg },
       }
 
-      console.info('customerclass-imgId: urls: ', customerUrls)
+      console.info('customerclass-imgId: data: ', customerUrls)
 
       const resCustomerList = await vbase.saveJSON(
         BUCKET,

@@ -12,11 +12,6 @@ type Record {
   hrefImg: String
 }
 
-type Urls {
-  url: String
-  urlMobile: String
-}
-
 type Items {
   polygons: [String]
 }

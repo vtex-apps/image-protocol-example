@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { BUCKET, CONFIG_PATH } from '../constants/index'
+import { BUCKET, CONFIG_PATH_CC } from '../constants/index'
 
 function parseQueryString(queryString: string) {
   const queries = queryString.split('&')
@@ -45,27 +45,27 @@ export async function getImgUrl(ctx: Context) {
   try {
     const resVbase: Record<string, unknown> = await vbase.getJSON(
       BUCKET,
-      CONFIG_PATH
+      CONFIG_PATH_CC
     )
 
     console.log('resp vbase: ', resVbase)
-    const respUrls = resVbase[key]
+    const response = resVbase[key]
 
-    console.info('Urls: ', respUrls)
+    console.info('response: ', response)
 
     ctx.status = 200
-    ctx.body = respUrls
+    ctx.body = response
 
-    return respUrls
+    return response
 
     // throw new Error('testing error on protocol')
   } catch (error) {
     console.log('error: ', error)
-    const respUrls = { url: null, urlMobile: null }
+    const response = { url: null, urlMobile: null, hrefImg: null }
 
     ctx.status = 404
-    ctx.body = respUrls
+    ctx.body = response
 
-    return respUrls
+    return response
   }
 }

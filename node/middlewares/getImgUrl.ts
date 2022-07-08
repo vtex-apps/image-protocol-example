@@ -22,11 +22,8 @@ export async function getImgUrl(ctx: Context) {
 
   const queryString = req.url?.split('?')[1]
 
-  console.log('req.url: ', req.url)
-
   const parsedQuery = parseQueryString(queryString as string)
 
-  console.log('parsedQuery: ', parsedQuery)
   const aux: ClientMasterdataEntityType[] = await masterdata.searchDocuments({
     dataEntity: 'CL',
     where: `userId=${parsedQuery.userId}`,
@@ -41,17 +38,13 @@ export async function getImgUrl(ctx: Context) {
 
   const key = `${customerClass}-${imgId}`
 
-  console.info('customerClass-imgId: ', key)
   try {
     const resVbase: Record<string, unknown> = await vbase.getJSON(
       BUCKET,
       CONFIG_PATH
     )
 
-    console.log('resp vbase: ', resVbase)
     const respUrls = resVbase[key]
-
-    console.info('Urls: ', respUrls)
 
     ctx.status = 200
     ctx.body = respUrls

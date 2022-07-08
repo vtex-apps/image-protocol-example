@@ -2,7 +2,7 @@
 import type { ClientsConfig, ServiceContext } from '@vtex/api'
 import { method, Service } from '@vtex/api'
 
-import { errorHandler, getImgUrl } from './middlewares'
+import { errorHandler, getImgUrl, getPolygonId } from './middlewares'
 import { customerClassInfo } from './resolvers/customerClassInfo'
 import { getPolygons } from './resolvers/getPolygons'
 import { customerClassList } from './resolvers/customerClassList'
@@ -60,6 +60,6 @@ export default new Service({
     },
   },
   routes: {
-    getUrl: method({ GET: [errorHandler, getImgUrl] }),
+    getUrl: method({ GET: [errorHandler, getPolygonId, getImgUrl] }),
   },
 })

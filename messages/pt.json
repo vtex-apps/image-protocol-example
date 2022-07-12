@@ -7,6 +7,7 @@
   "admin/image-protocol.navigation.list.search.kws": "customerClass, list",
   "admin/image-protocol.title.label": "Protocolo de la imagem",
   "admin/image-protocol.form.customer-class.label": "Classe do cliente",
+  "admin/image-protocol.form.helpText": "Este campo diferencia maiúsculas de minúsculas",
   "admin/image-protocol.form.polygon.label": "Polígono",
   "admin/image-protocol.form.create-new-polygon.label": "Criar novo polígono",
   "admin/image-protocol.form.desktop-image.label": "Imagem da área de trabalho",
@@ -14,5 +15,7 @@
   "admin/image-protocol.form.href.label": "Link para imagens",
   "admin/image-protocol.form.image-protocol-id.label": "ID da imagem do protocolo",
   "admin/image-protocol.form.submit.label": "Enviar",
-  "admin/image-protocol.dropzone.text": "Arraste e solte seu arquivo aqui ou clique para selecionar um arquivo"
+  "admin/image-protocol.dropzone.text": "Arraste e solte seu arquivo aqui ou clique para selecionar um arquivo",
+  "admin/image-protocol.create-new": "Crie um novo",
+  "admin/image-protocol.table-no-data": "Nenhum dado para exibir"
 }

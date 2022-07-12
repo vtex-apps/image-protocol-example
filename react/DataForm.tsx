@@ -16,6 +16,7 @@ import { useMutation, useQuery } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 import Dropzone from 'react-dropzone'
 
+import styles from './styles.css'
 import EmptyState from './EmptyState'
 import UPLOAD_mutation from './graphql/uploadFile.graphql'
 import POST_DataInfo from './graphql/saveDataInfo.graphql'
@@ -81,6 +82,13 @@ const CustomerClassInfo: FC = () => {
   ] = useMutation(POST_DataInfo)
 
   const [uploadFile] = useMutation<IncomingFile>(UPLOAD_mutation)
+
+  const validateHref = (href: string) => {
+    const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gm
+    const regExp = new RegExp(expression)
+
+    return regExp.test(href)
+  }
 
   function handleCustomerClassValue(e: any) {
     setCustomerClassValue(e.target.value)
@@ -184,6 +192,13 @@ const CustomerClassInfo: FC = () => {
       return
     }
 
+    if (hrefImg) {
+      // check if hrefImg is valid
+      if (!validateHref(hrefImg)) {
+        return
+      }
+    }
+
     postDataInfo({
       variables: {
         customerClassValue,
@@ -248,6 +263,9 @@ const CustomerClassInfo: FC = () => {
           >
             <div className="mb4 w-90 w-40-m">
               <Input
+                id={`${styles.classname}`}
+                type="text"
+                pattern="^[A-Za-z0-9]*$"
                 placeholder={intl.formatMessage({
                   id: 'admin/image-protocol.form.customer-class.label',
                 })}
@@ -259,6 +277,9 @@ const CustomerClassInfo: FC = () => {
                 onChange={(e: any) => {
                   handleCustomerClassValue(e)
                 }}
+                helpText={intl.formatMessage({
+                  id: 'admin/image-protocol.form.helpText',
+                })}
               />
             </div>
             <div className="mb4 w-90 w-40-m">
@@ -348,6 +369,7 @@ const CustomerClassInfo: FC = () => {
             </div>
             <div className="mb4 w-90 w-40-m">
               <Input
+                id={`${styles.hrefUrl}`}
                 placeholder={intl.formatMessage({
                   id: 'admin/image-protocol.form.href.label',
                 })}
@@ -356,6 +378,9 @@ const CustomerClassInfo: FC = () => {
                   id: 'admin/image-protocol.form.href.label',
                 })}
                 required
+                type="url"
+                pattern="https?://.*"
+                title="Url should start with http(s) "
                 value={hrefImg}
                 onChange={(e: any) => {
                   handleHref(e)
@@ -364,6 +389,9 @@ const CustomerClassInfo: FC = () => {
             </div>
             <div className="w-90 w-40-m">
               <Input
+                id={`${styles.imageid}`}
+                type="text"
+                pattern="^[A-Za-z0-9]*$"
                 placeholder="ID"
                 size="Regular"
                 label={intl.formatMessage({

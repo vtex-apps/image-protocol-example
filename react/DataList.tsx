@@ -2,7 +2,7 @@
 import type { FC } from 'react'
 import React, { useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Layout, PageBlock, Table } from 'vtex.styleguide'
+import { Layout, PageBlock, Table, Button } from 'vtex.styleguide'
 import { useQuery, useMutation } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 
@@ -184,11 +184,18 @@ const DataList: FC = () => {
               />
             ) : (
               <div>
-                <h1>No data to display</h1>
+                <h1>
+                  <FormattedMessage id="admin/image-protocol.table-no-data" />
+                </h1>
               </div>
             )}
           </div>
         </PageBlock>
+        <div>
+          <Button href="/admin/app/imageprotocol/protocol">
+            <FormattedMessage id="admin/image-protocol.create-new" />
+          </Button>
+        </div>
       </div>
     </Layout>
   )

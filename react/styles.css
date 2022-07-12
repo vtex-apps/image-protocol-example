@@ -21,3 +21,14 @@
 .imageUploaderText {
   max-width: 20rem;
 }
+
+#hrefUrl:valid,
+#classname:valid,
+#imageid:valid {
+  color: green;
+}
+#hrefUrl:invalid,
+#classname:invalid,
+#imageid:invalid {
+  color: red;
+}

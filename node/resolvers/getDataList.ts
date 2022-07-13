@@ -1,3 +1,5 @@
+import { LogLevel } from '@vtex/api'
+
 import {
   BUCKET,
   CONFIG_PATH_CCPOLYGON,
@@ -16,6 +18,7 @@ interface DataArray {
 export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
   const {
     clients: { vbase },
+    vtex: { logger },
   } = ctx
 
   let getCCPolygonData: Record<string, any> = {}
@@ -54,7 +57,17 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
         hrefImg: getCCPolygonData[key].hrefImg,
       })
     })
-    console.info('responseCCPolygonVbase: ', responseCCPolygonVbase)
+    logger.log(
+      {
+        message: 'In getDataList.ts resolver. responseCCPolygonVbase ',
+        detail: {
+          data: {
+            responseCCPolygonVbase,
+          },
+        },
+      },
+      LogLevel.Info
+    )
   }
 
   if (getCCData) {
@@ -73,7 +86,17 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
         hrefImg: getCCData[key].hrefImg,
       })
     })
-    console.info('responseCCVbase: ', responseCCVbase)
+    logger.log(
+      {
+        message: 'In getDataList.ts resolver. responseCCVbase ',
+        detail: {
+          data: {
+            responseCCVbase,
+          },
+        },
+      },
+      LogLevel.Info
+    )
   }
 
   if (getPolygonData) {
@@ -92,7 +115,17 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
         hrefImg: getPolygonData[key].hrefImg,
       })
     })
-    console.info('responsePolygonVbase: ', responsePolygonVbase)
+    logger.log(
+      {
+        message: 'In getDataList.ts resolver. responsePolygonVbase ',
+        detail: {
+          data: {
+            responsePolygonVbase,
+          },
+        },
+      },
+      LogLevel.Info
+    )
   }
 
   const allData = [
@@ -101,7 +134,17 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
     ...responsePolygonVbase,
   ]
 
-  console.info('All data: ', allData)
+  logger.log(
+    {
+      message: 'In getDataList.ts resolver. All data ',
+      detail: {
+        data: {
+          allData,
+        },
+      },
+    },
+    LogLevel.Info
+  )
 
   return allData
 }

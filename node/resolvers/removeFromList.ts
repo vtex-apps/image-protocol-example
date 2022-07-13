@@ -1,3 +1,5 @@
+import { LogLevel } from '@vtex/api'
+
 import {
   BUCKET,
   CONFIG_PATH_CCPOLYGON,
@@ -18,36 +20,32 @@ export const removeFromList = async (
 ) => {
   const {
     clients: { vbase },
+    vtex: { logger },
   } = ctx
 
   const { customerClass, polygon, imageProtocolId } = args
 
-  console.info(
-    'customerClass: ',
-    customerClass,
-    ' polygon: ',
-    polygon,
-    ' imagePorotocolId: ',
-    imageProtocolId
+  logger.log(
+    {
+      message: 'In removeFromList.ts resolver. Args',
+      detail: {
+        data: {
+          customerClass,
+          polygon,
+          imageProtocolId,
+        },
+      },
+    },
+    LogLevel.Info
   )
   let key = ''
   let getDataList: Record<string, unknown> = {}
   let entries: Record<string, unknown>
 
   if (customerClass.length > 0 && polygon.length > 0) {
-    console.info(
-      'customerClass: ',
-      customerClass,
-      ' and polygon: ',
-      polygon,
-      'polygon length: ',
-      polygon.length
-    )
     key = `${customerClass}-${polygon}-${imageProtocolId}`
-    console.info('KEY TO DELETE: ', key)
 
     getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON, true)
-    console.info('resGetJson: ', getDataList)
 
     if (getDataList) {
       entries = Object.keys(getDataList)
@@ -58,20 +56,35 @@ export const removeFromList = async (
           })
         }, {})
 
-      const savedCustomerList = await vbase.saveJSON(
-        BUCKET,
-        CONFIG_PATH_CCPOLYGON,
-        entries
-      )
+      await vbase.saveJSON(BUCKET, CONFIG_PATH_CCPOLYGON, entries)
 
-      console.info(
-        'entries saved info after deleting: ',
-        entries,
-        ' savedCustomerList:',
-        savedCustomerList
+      logger.log(
+        {
+          message:
+            'In removeFromList.ts resolver. Key to delete. Data saved after deleting',
+          detail: {
+            data: {
+              key,
+              entries,
+            },
+          },
+        },
+        LogLevel.Info
       )
     } else {
-      console.info('any data found')
+      logger.log(
+        {
+          message:
+            'In removeFromList.ts resolver. No data returned from bucket',
+          detail: {
+            data: {
+              CONFIG_PATH_CCPOLYGON,
+              getDataList,
+            },
+          },
+        },
+        LogLevel.Info
+      )
 
       return args
     }
@@ -82,12 +95,9 @@ export const removeFromList = async (
       polygon === '' ||
       polygon.length === 0)
   ) {
-    console.info('customerClass: ', customerClass)
     key = `${customerClass}-${imageProtocolId}`
-    console.info('KEY TO DELETE: ', key)
 
     getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CC, true)
-    console.info('resGetJson: ', getDataList)
 
     if (getDataList) {
       entries = Object.keys(getDataList)
@@ -98,20 +108,35 @@ export const removeFromList = async (
           })
         }, {})
 
-      const savedCustomerList = await vbase.saveJSON(
-        BUCKET,
-        CONFIG_PATH_CC,
-        entries
-      )
+      await vbase.saveJSON(BUCKET, CONFIG_PATH_CC, entries)
 
-      console.info(
-        'entries saved info after deleting: ',
-        entries,
-        ' savedCustomerList:',
-        savedCustomerList
+      logger.log(
+        {
+          message:
+            'In removeFromList.ts resolver. Key to delete. Data saved after deleting',
+          detail: {
+            data: {
+              key,
+              entries,
+            },
+          },
+        },
+        LogLevel.Info
       )
     } else {
-      console.info('any data found')
+      logger.log(
+        {
+          message:
+            'In removeFromList.ts resolver. No data returned from bucket',
+          detail: {
+            data: {
+              CONFIG_PATH_CCPOLYGON,
+              getDataList,
+            },
+          },
+        },
+        LogLevel.Info
+      )
 
       return args
     }
@@ -122,12 +147,9 @@ export const removeFromList = async (
       customerClass === '' ||
       customerClass.length === 0)
   ) {
-    console.info('polygon: ', polygon)
     key = `${polygon}-${imageProtocolId}`
-    console.info('KEY TO DELETE: ', key)
 
     getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON, true)
-    console.info('resGetJson: ', getDataList)
 
     if (getDataList) {
       entries = Object.keys(getDataList)
@@ -138,20 +160,35 @@ export const removeFromList = async (
           })
         }, {})
 
-      const savedCustomerList = await vbase.saveJSON(
-        BUCKET,
-        CONFIG_PATH_POLYGON,
-        entries
-      )
+      await vbase.saveJSON(BUCKET, CONFIG_PATH_POLYGON, entries)
 
-      console.info(
-        'entries saved info after deleting: ',
-        entries,
-        ' savedCustomerList:',
-        savedCustomerList
+      logger.log(
+        {
+          message:
+            'In removeFromList.ts resolver. Key to delete. Data saved after deleting',
+          detail: {
+            data: {
+              key,
+              entries,
+            },
+          },
+        },
+        LogLevel.Info
       )
     } else {
-      console.info('any data found')
+      logger.log(
+        {
+          message:
+            'In removeFromList.ts resolver. No data returned from bucket',
+          detail: {
+            data: {
+              CONFIG_PATH_CCPOLYGON,
+              getDataList,
+            },
+          },
+        },
+        LogLevel.Info
+      )
 
       return args
     }

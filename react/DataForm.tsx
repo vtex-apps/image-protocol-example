@@ -33,7 +33,7 @@ const CustomerClassInfo: FC = () => {
   const { query, navigate } = useRuntime()
   const { data, loading, error } = useQuery(GET_Polygons)
 
-  const [err, setError] = useState('')
+  const [err, setError] = useState(false)
   const [isLoadingDesktopImg, setLoadingDesktopImg] = useState(Boolean)
   const [isLoadingMobileImg, setLoadingMobileImg] = useState(Boolean)
   const [customerClassValue, setCustomerClassValue] = useState('')
@@ -137,7 +137,7 @@ const CustomerClassInfo: FC = () => {
         setLoadingDesktopImg(false)
       } catch (e) {
         console.log('error message', e)
-        setError('Something went wrong')
+        setError(true)
       }
     } else {
       console.log('no accepted files')
@@ -161,7 +161,7 @@ const CustomerClassInfo: FC = () => {
         setLoadingMobileImg(false)
       } catch (e) {
         console.log('error message', e)
-        setError('Something went wrong')
+        setError(true)
       }
     } else {
       console.log('no accepted files')
@@ -219,7 +219,7 @@ const CustomerClassInfo: FC = () => {
 
     if (error2) {
       console.log('error: ', error)
-      setError('Something went wrong')
+      setError(true)
     }
 
     setCustomerClassValue('')
@@ -251,7 +251,7 @@ const CustomerClassInfo: FC = () => {
             onClose={() => setSuccess(false)}
             type="success"
           >
-            Submitted
+            <FormattedMessage id="admin/image-protocol.form.success" />
           </Alert>
         </div>
       )}
@@ -418,8 +418,19 @@ const CustomerClassInfo: FC = () => {
                 <FormattedMessage id="admin/image-protocol.form.submit.label" />
               </Button>
             </div>
-            {err !== '' && err !== null && (
-              <p className="bg-red">Something went wrong </p>
+            {err === true && (
+              <div className="mv5">
+                <Alert
+                  autoClose={3000}
+                  onClose={() => {
+                    setSuccess(false)
+                    setError(false)
+                  }}
+                  type="error"
+                >
+                  <FormattedMessage id="admin/image-protocol.form.error" />
+                </Alert>
+              </div>
             )}
           </form>
         </PageBlock>

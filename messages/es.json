@@ -20,5 +20,7 @@
   "admin/image-protocol.create-new": "Crear nuevo",
   "admin/image-protocol.table-no-data": "No hay datos para mostrar",
   "admin/image-protocol.table.edit": "Editar",
-  "admin/image-protocol.table.delete": "Eliminar"
+  "admin/image-protocol.table.delete": "Eliminar",
+  "admin/image-protocol.form.error": "Hubo un error",
+  "admin/image-protocol.form.success": "Enviado"
 }

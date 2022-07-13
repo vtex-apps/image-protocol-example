@@ -281,7 +281,7 @@ const CustomerClassInfo: FC = () => {
                   handleCustomerClassValue(e)
                 }}
                 helpText={intl.formatMessage({
-                  id: 'admin/image-protocol.form.helpText',
+                  id: 'admin/image-protocol.form.class-name.helpText',
                 })}
               />
             </div>

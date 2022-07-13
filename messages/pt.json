@@ -7,7 +7,7 @@
   "admin/image-protocol.navigation.list.search.kws": "customerClass, list",
   "admin/image-protocol.title.label": "Protocolo de la imagem",
   "admin/image-protocol.form.customer-class.label": "Classe do cliente",
-  "admin/image-protocol.form.helpText": "Este campo diferencia maiúsculas de minúsculas",
+  "admin/image-protocol.form.class-name.helpText": "Este campo diferencia maiúsculas de minúsculas. Apenas letras e números são permitidos",
   "admin/image-protocol.form.polygon.label": "Polígono",
   "admin/image-protocol.form.create-new-polygon.label": "Criar novo polígono",
   "admin/image-protocol.form.desktop-image.label": "Imagem da área de trabalho",

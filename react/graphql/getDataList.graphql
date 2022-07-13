@@ -1,8 +1,10 @@
-query customerClassList {
-  customerClassList {
+query getDataList {
+  getDataList {
     customerClass
+    polygon
     imageProtocolId
     desktopUrl
     mobileUrl
+    hrefImg
   }
 }

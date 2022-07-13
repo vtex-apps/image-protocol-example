@@ -1,18 +1,15 @@
 type Query {
-  customerClassList: [Customer]
+  getDataList: [Record]
   getPolygons: Items
 }
 
-type Customer {
+type Record {
   customerClass: String
+  polygon: String
   imageProtocolId: String
   desktopUrl: String
   mobileUrl: String
-}
-
-type Urls {
-  url: String
-  urlMobile: String
+  hrefImg: String
 }
 
 type Items {
@@ -20,25 +17,27 @@ type Items {
 }
 
 type Mutation {
-  customerClassInfo(
+  saveDataInfo(
     customerClassValue: String
     polygon: String
     url: String
     urlMobile: String
     hrefImg: String
     idImg: String
-  ): CustomerClass
+  ): Data
   removeFromList(
     customerClass: String
+    polygon: String
     imageProtocolId: String
-  ): CustomerClassArg
+  ): DataArg
 }
 
-type CustomerClassArg {
+type DataArg {
   customerClass: String
+  polygon: String
   imageProtocolId: String
 }
-type CustomerClass {
+type Data {
   customerClassValue: String
   polygon: String
   url: String!

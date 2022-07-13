@@ -7,12 +7,20 @@
   "admin/image-protocol.navigation.list.search.kws": "customerClass, list",
   "admin/image-protocol.title.label": "Image protocol",
   "admin/image-protocol.form.customer-class.label": "Customer Class",
+  "admin/image-protocol.form.class-name.helpText": "This field is case sensitive. Only numbers and letters are allowed",
   "admin/image-protocol.form.polygon.label": "Polygon",
   "admin/image-protocol.form.create-new-polygon.label": "Create new polygon",
   "admin/image-protocol.form.desktop-image.label": "Desktop Image",
   "admin/image-protocol.form.mobile-image.label": "Mobile Image",
   "admin/image-protocol.form.href.label": "Link for the images",
+  "admin/image-protocol.form.href.helpText": "URL format example: https://www.google.es",
   "admin/image-protocol.form.image-protocol-id.label": "Image Protocol ID",
   "admin/image-protocol.form.submit.label": "Submit",
-  "admin/image-protocol.dropzone.text": "Drag and drop your file here, or click to select a file"
+  "admin/image-protocol.dropzone.text": "Drag and drop your file here, or click to select a file",
+  "admin/image-protocol.create-new": "Create new",
+  "admin/image-protocol.table-no-data": "There is no data to display",
+  "admin/image-protocol.table.edit": "Edit",
+  "admin/image-protocol.table.delete": "Delete",
+  "admin/image-protocol.form.error": "Something went wrong",
+  "admin/image-protocol.form.success": "Submitted"
 }

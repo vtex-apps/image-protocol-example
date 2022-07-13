@@ -16,20 +16,24 @@ import { useMutation, useQuery } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 import Dropzone from 'react-dropzone'
 
+import styles from './styles.css'
 import EmptyState from './EmptyState'
 import UPLOAD_mutation from './graphql/uploadFile.graphql'
-import POST_CustomerClassInfo from './graphql/customerClassInfo.graphql'
+import POST_DataInfo from './graphql/saveDataInfo.graphql'
 import GET_Polygons from './graphql/getPolygons.graphql'
 
 interface IncomingFile {
   uploadFile: { fileUrl: string }
 }
-
+interface Option {
+  value: string
+  label: string
+}
 const CustomerClassInfo: FC = () => {
-  const { query } = useRuntime()
+  const { query, navigate } = useRuntime()
   const { data, loading, error } = useQuery(GET_Polygons)
 
-  const [err, setError] = useState('')
+  const [err, setError] = useState(false)
   const [isLoadingDesktopImg, setLoadingDesktopImg] = useState(Boolean)
   const [isLoadingMobileImg, setLoadingMobileImg] = useState(Boolean)
   const [customerClassValue, setCustomerClassValue] = useState('')
@@ -52,13 +56,15 @@ const CustomerClassInfo: FC = () => {
     }
 
     setCustomerClassValue(query.customerClass)
+    setPolygon(query.polygon)
     setUrl(query.desktopUrl)
     setUrlMobile(query.mobileUrl)
+    setHrefImage(query.hrefImg)
     setIdImg(query.imageProtocolId)
   }, [query])
 
-  let polygons: any[] = []
-  const options: any[] = []
+  let polygons: string[] = []
+  const options: Option[] = []
 
   useEffect(() => {
     console.log('loading:', loading)
@@ -74,25 +80,32 @@ const CustomerClassInfo: FC = () => {
   }
 
   const [
-    postCustomerClassInfo,
+    postDataInfo,
     { data: data2, loading: loading2, error: error2 },
-  ] = useMutation(POST_CustomerClassInfo)
+  ] = useMutation(POST_DataInfo)
 
   const [uploadFile] = useMutation<IncomingFile>(UPLOAD_mutation)
 
-  function handleCustomerClassValue(e: any) {
+  const validateHref = (href: string) => {
+    const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gm
+    const regExp = new RegExp(expression)
+
+    return regExp.test(href)
+  }
+
+  const handleCustomerClassValue = (e: any) => {
     setCustomerClassValue(e.target.value)
   }
 
-  function handlePolygon(e: any) {
+  const handlePolygon = (e: any) => {
     setPolygon(e.target.value)
   }
 
-  function handleHref(e: any) {
+  const handleHref = (e: any) => {
     setHrefImage(e.target.value)
   }
 
-  function handleIdImgValue(e: any) {
+  const handleIdImgValue = (e: any) => {
     setIdImg(e.target.value)
   }
 
@@ -124,7 +137,7 @@ const CustomerClassInfo: FC = () => {
         setLoadingDesktopImg(false)
       } catch (e) {
         console.log('error message', e)
-        setError('Something went wrong')
+        setError(true)
       }
     } else {
       console.log('no accepted files')
@@ -148,14 +161,14 @@ const CustomerClassInfo: FC = () => {
         setLoadingMobileImg(false)
       } catch (e) {
         console.log('error message', e)
-        setError('Something went wrong')
+        setError(true)
       }
     } else {
       console.log('no accepted files')
     }
   }
 
-  function handleSubmit(e: any) {
+  const handleSubmit = (e: any) => {
     e.preventDefault()
     console.log(
       'customerClassValue: ',
@@ -182,7 +195,14 @@ const CustomerClassInfo: FC = () => {
       return
     }
 
-    postCustomerClassInfo({
+    if (hrefImg) {
+      // check if hrefImg is valid
+      if (!validateHref(hrefImg)) {
+        return
+      }
+    }
+
+    postDataInfo({
       variables: {
         customerClassValue,
         polygon,
@@ -199,7 +219,7 @@ const CustomerClassInfo: FC = () => {
 
     if (error2) {
       console.log('error: ', error)
-      setError('Something went wrong')
+      setError(true)
     }
 
     setCustomerClassValue('')
@@ -211,6 +231,11 @@ const CustomerClassInfo: FC = () => {
     setHrefImage('')
     setIdImg('')
     setSuccess(true)
+
+    navigate({
+      to: '/admin/app/imageprotocol/list',
+      query: 'updated=true',
+    })
 
     return data2
   }
@@ -226,7 +251,7 @@ const CustomerClassInfo: FC = () => {
             onClose={() => setSuccess(false)}
             type="success"
           >
-            Submitted
+            <FormattedMessage id="admin/image-protocol.form.success" />
           </Alert>
         </div>
       )}
@@ -241,6 +266,9 @@ const CustomerClassInfo: FC = () => {
           >
             <div className="mb4 w-90 w-40-m">
               <Input
+                id={`${styles.classname}`}
+                type="text"
+                pattern="^[A-Za-z0-9]*$"
                 placeholder={intl.formatMessage({
                   id: 'admin/image-protocol.form.customer-class.label',
                 })}
@@ -252,29 +280,29 @@ const CustomerClassInfo: FC = () => {
                 onChange={(e: any) => {
                   handleCustomerClassValue(e)
                 }}
+                helpText={intl.formatMessage({
+                  id: 'admin/image-protocol.form.class-name.helpText',
+                })}
               />
             </div>
-            <div className="mb4 w-90 w-40-m flex flex-row justify-between">
-              <Dropdown
-                label={intl.formatMessage({
-                  id: 'admin/image-protocol.form.polygon.label',
-                })}
-                options={options}
-                value={polygon}
-                onChange={(e: any) => {
-                  handlePolygon(e)
-                }}
-              />
-              {/* <Button
-                onClick={() => {
-                  navigate({
-                    to: '/admin/app/logistics/#/geolocation',
-                  })
-                }}
-              >
+            {options.length !== 0 && (
+              <div className="mb4 w-90 w-40-m">
+                <Dropdown
+                  label={intl.formatMessage({
+                    id: 'admin/image-protocol.form.polygon.label',
+                  })}
+                  options={options}
+                  value={polygon}
+                  onChange={(e: any) => {
+                    handlePolygon(e)
+                  }}
+                />
+                {/* <Button href="/admin/logistics/#/geolocation">
                 <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
               </Button> */}
-            </div>
+              </div>
+            )}
+
             <div className="mt4 mb4">
               <p className="t-small mb3 c-on-base">
                 <FormattedMessage id="admin/image-protocol.form.desktop-image.label" />
@@ -347,6 +375,7 @@ const CustomerClassInfo: FC = () => {
             </div>
             <div className="mb4 w-90 w-40-m">
               <Input
+                id={`${styles.hrefUrl}`}
                 placeholder={intl.formatMessage({
                   id: 'admin/image-protocol.form.href.label',
                 })}
@@ -355,14 +384,23 @@ const CustomerClassInfo: FC = () => {
                   id: 'admin/image-protocol.form.href.label',
                 })}
                 required
+                type="url"
+                pattern="https?://.*"
+                title="Url should start with http(s) "
                 value={hrefImg}
                 onChange={(e: any) => {
                   handleHref(e)
                 }}
+                helpText={intl.formatMessage({
+                  id: 'admin/image-protocol.form.href.helpText',
+                })}
               />
             </div>
             <div className="w-90 w-40-m">
               <Input
+                id={`${styles.imageid}`}
+                type="text"
+                pattern="^[A-Za-z0-9]*$"
                 placeholder="ID"
                 size="Regular"
                 label={intl.formatMessage({
@@ -380,8 +418,19 @@ const CustomerClassInfo: FC = () => {
                 <FormattedMessage id="admin/image-protocol.form.submit.label" />
               </Button>
             </div>
-            {err !== '' && err !== null && (
-              <p className="bg-red">Something went wrong </p>
+            {err === true && (
+              <div className="mv5">
+                <Alert
+                  autoClose={3000}
+                  onClose={() => {
+                    setSuccess(false)
+                    setError(false)
+                  }}
+                  type="error"
+                >
+                  <FormattedMessage id="admin/image-protocol.form.error" />
+                </Alert>
+              </div>
             )}
           </form>
         </PageBlock>

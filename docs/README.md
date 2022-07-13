@@ -31,21 +31,27 @@ mutation($file: Upload!) {
 - The second one related to saving data in vbase
 
 ```graphql
-mutation(
+mutation saveDataInfo(
   $customerClassValue: String
+  $polygon: String
   $url: String
   $urlMobile: String
+  $hrefImg: String
   $idImg: String
 ) {
-  customerClassInfo(
+  saveDataInfo(
     customerClassValue: $customerClassValue
+    polygon: $polygon
     url: $url
     urlMobile: $urlMobile
+    hrefImg: $hrefImg
     idImg: $idImg
   ) {
     customerClassValue
+    polygon
     url
     urlMobile
+    hrefImg
     idImg
   }
 }
@@ -56,8 +62,10 @@ Query variables:
 ```json
 {
   "customerClassValue": "test",
-  "url": "some url",
-  "urlMobile": "some url",
+  "polygon": "test",
+  "url": "url",
+  "urlMobile": "url",
+  "hrefImg": "url",
   "idImg": "banner"
 }
 ```
@@ -73,7 +81,8 @@ After doing that, you will receive a response similar to this one:
 ```json
 {
   "url": "https://lreyes.vtexassets.com/assets/vtex.file-manager-graphql/images/261f8852-22b6-4048-b688-37a7d61ddd48___200c03de6f2e80dc23434cff4caf7f9a.jpeg",
-  "urlMobile": "https://lreyes.vtexassets.com/assets/vtex.file-manager-graphql/images/0500ef76-eaf4-4b6c-bd01-08e69c4e4744___a3cf5c6525b1c13fdf06eb4a256f958d.jpg"
+  "urlMobile": "https://lreyes.vtexassets.com/assets/vtex.file-manager-graphql/images/0500ef76-eaf4-4b6c-bd01-08e69c4e4744___a3cf5c6525b1c13fdf06eb4a256f958d.jpg",
+  "hrefImg": "https://www.unsplash.com/es"
 }
 ```
 

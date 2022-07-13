@@ -1,4 +1,4 @@
-mutation customerClassInfo(
+mutation saveDataInfo(
   $customerClassValue: String
   $polygon: String
   $url: String
@@ -6,7 +6,7 @@ mutation customerClassInfo(
   $hrefImg: String
   $idImg: String
 ) {
-  customerClassInfo(
+  saveDataInfo(
     customerClassValue: $customerClassValue
     polygon: $polygon
     url: $url

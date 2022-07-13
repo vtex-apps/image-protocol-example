@@ -21,3 +21,7 @@
 .imageUploaderText {
   max-width: 20rem;
 }
+
+input:invalid {
+  color: #ff0000;
+}

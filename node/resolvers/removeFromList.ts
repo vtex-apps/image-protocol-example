@@ -1,88 +1,160 @@
-import { LogLevel } from '@vtex/api'
+import {
+  BUCKET,
+  CONFIG_PATH_CCPOLYGON,
+  CONFIG_PATH_CC,
+  CONFIG_PATH_POLYGON,
+} from '../constants/index'
 
-import { BUCKET, CONFIG_PATH } from '../constants/index'
-
-interface CustomerClassToDelete {
+interface DataToDelete {
   customerClass: string
+  polygon: string
   imageProtocolId: string
 }
 
 export const removeFromList = async (
   _: unknown,
-  args: CustomerClassToDelete,
+  args: DataToDelete,
   ctx: Context
 ) => {
   const {
     clients: { vbase },
-    vtex: { logger },
   } = ctx
 
-  const { customerClass, imageProtocolId } = args
-  const key = `${customerClass}-${imageProtocolId}`
+  const { customerClass, polygon, imageProtocolId } = args
 
-  console.info('KEY TO DELETE: ', key)
-  let getCustomerList: Record<string, unknown>
+  console.info(
+    'customerClass: ',
+    customerClass,
+    ' polygon: ',
+    polygon,
+    ' imagePorotocolId: ',
+    imageProtocolId
+  )
+  let key = ''
+  let getDataList: Record<string, unknown> = {}
   let entries: Record<string, unknown>
 
-  try {
-    getCustomerList = await vbase.getJSON(BUCKET, CONFIG_PATH)
-    console.info('resGetJson: ', getCustomerList)
-
-    logger.log(
-      {
-        message: 'In removeFromList.ts, inside try vbase getCustomerList',
-        detail: {
-          data: getCustomerList,
-        },
-      },
-      LogLevel.Info
+  if (customerClass.length > 0 && polygon.length > 0) {
+    console.info(
+      'customerClass: ',
+      customerClass,
+      ' and polygon: ',
+      polygon,
+      'polygon length: ',
+      polygon.length
     )
+    key = `${customerClass}-${polygon}-${imageProtocolId}`
+    console.info('KEY TO DELETE: ', key)
 
-    if (getCustomerList) {
-      entries = Object.keys(getCustomerList)
+    getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON, true)
+    console.info('resGetJson: ', getDataList)
+
+    if (getDataList) {
+      entries = Object.keys(getDataList)
         .filter((idx) => idx !== key)
         .reduce((obj, idx) => {
           return Object.assign(obj, {
-            [idx]: getCustomerList[idx],
+            [idx]: getDataList[idx],
           })
         }, {})
 
-      console.info('ENTRIES:', entries)
       const savedCustomerList = await vbase.saveJSON(
         BUCKET,
-        CONFIG_PATH,
+        CONFIG_PATH_CCPOLYGON,
         entries
       )
 
-      logger.log(
-        {
-          message:
-            'In removeFromList.ts, inside try vbase savedCustomerList after deleting',
-          detail: {
-            data: savedCustomerList,
-          },
-        },
-        LogLevel.Info
+      console.info(
+        'entries saved info after deleting: ',
+        entries,
+        ' savedCustomerList:',
+        savedCustomerList
       )
-      console.info('saved info after deleting: ', savedCustomerList)
     } else {
       console.info('any data found')
 
       return args
     }
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('error: ', e)
+  } else if (
+    customerClass.length > 0 &&
+    (!polygon ||
+      polygon === undefined ||
+      polygon === '' ||
+      polygon.length === 0)
+  ) {
+    console.info('customerClass: ', customerClass)
+    key = `${customerClass}-${imageProtocolId}`
+    console.info('KEY TO DELETE: ', key)
 
-    logger.log(
-      {
-        message: 'In removeFromList.ts, inside catch',
-        detail: {
-          data: e,
-        },
-      },
-      LogLevel.Error
-    )
+    getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CC, true)
+    console.info('resGetJson: ', getDataList)
+
+    if (getDataList) {
+      entries = Object.keys(getDataList)
+        .filter((idx) => idx !== key)
+        .reduce((obj, idx) => {
+          return Object.assign(obj, {
+            [idx]: getDataList[idx],
+          })
+        }, {})
+
+      const savedCustomerList = await vbase.saveJSON(
+        BUCKET,
+        CONFIG_PATH_CC,
+        entries
+      )
+
+      console.info(
+        'entries saved info after deleting: ',
+        entries,
+        ' savedCustomerList:',
+        savedCustomerList
+      )
+    } else {
+      console.info('any data found')
+
+      return args
+    }
+  } else if (
+    polygon.length > 0 &&
+    (!customerClass ||
+      customerClass === undefined ||
+      customerClass === '' ||
+      customerClass.length === 0)
+  ) {
+    console.info('polygon: ', polygon)
+    key = `${polygon}-${imageProtocolId}`
+    console.info('KEY TO DELETE: ', key)
+
+    getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON, true)
+    console.info('resGetJson: ', getDataList)
+
+    if (getDataList) {
+      entries = Object.keys(getDataList)
+        .filter((idx) => idx !== key)
+        .reduce((obj, idx) => {
+          return Object.assign(obj, {
+            [idx]: getDataList[idx],
+          })
+        }, {})
+
+      const savedCustomerList = await vbase.saveJSON(
+        BUCKET,
+        CONFIG_PATH_POLYGON,
+        entries
+      )
+
+      console.info(
+        'entries saved info after deleting: ',
+        entries,
+        ' savedCustomerList:',
+        savedCustomerList
+      )
+    } else {
+      console.info('any data found')
+
+      return args
+    }
   }
 
   return args

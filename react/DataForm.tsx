@@ -25,7 +25,10 @@ import GET_Polygons from './graphql/getPolygons.graphql'
 interface IncomingFile {
   uploadFile: { fileUrl: string }
 }
-
+interface Option {
+  value: string
+  label: string
+}
 const CustomerClassInfo: FC = () => {
   const { query, navigate } = useRuntime()
   const { data, loading, error } = useQuery(GET_Polygons)
@@ -60,13 +63,13 @@ const CustomerClassInfo: FC = () => {
     setIdImg(query.imageProtocolId)
   }, [query])
 
-  let polygons: any[] = []
-  const options: any[] = []
+  let polygons: string[] = []
+  const options: Option[] = []
 
   useEffect(() => {
     console.log('loading:', loading)
     console.log('error:', error)
-    console.log('polygons: ', data)
+    console.log('polygons: ', data.getPolygons.polygons)
   }, [data, loading, error])
 
   if (data) {
@@ -90,19 +93,19 @@ const CustomerClassInfo: FC = () => {
     return regExp.test(href)
   }
 
-  function handleCustomerClassValue(e: any) {
+  const handleCustomerClassValue = (e: any) => {
     setCustomerClassValue(e.target.value)
   }
 
-  function handlePolygon(e: any) {
+  const handlePolygon = (e: any) => {
     setPolygon(e.target.value)
   }
 
-  function handleHref(e: any) {
+  const handleHref = (e: any) => {
     setHrefImage(e.target.value)
   }
 
-  function handleIdImgValue(e: any) {
+  const handleIdImgValue = (e: any) => {
     setIdImg(e.target.value)
   }
 
@@ -165,7 +168,7 @@ const CustomerClassInfo: FC = () => {
     }
   }
 
-  function handleSubmit(e: any) {
+  const handleSubmit = (e: any) => {
     e.preventDefault()
     console.log(
       'customerClassValue: ',
@@ -282,21 +285,24 @@ const CustomerClassInfo: FC = () => {
                 })}
               />
             </div>
-            <div className="mb4 w-90 w-40-m">
-              <Dropdown
-                label={intl.formatMessage({
-                  id: 'admin/image-protocol.form.polygon.label',
-                })}
-                options={options}
-                value={polygon}
-                onChange={(e: any) => {
-                  handlePolygon(e)
-                }}
-              />
-              {/* <Link to="/admin/app/logistics/#/geolocation">
+            {options.length !== 0 && (
+              <div className="mb4 w-90 w-40-m">
+                <Dropdown
+                  label={intl.formatMessage({
+                    id: 'admin/image-protocol.form.polygon.label',
+                  })}
+                  options={options}
+                  value={polygon}
+                  onChange={(e: any) => {
+                    handlePolygon(e)
+                  }}
+                />
+                {/* <Button href="/admin/logistics/#/geolocation">
                 <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
-              </Link> */}
-            </div>
+              </Button> */}
+              </div>
+            )}
+
             <div className="mt4 mb4">
               <p className="t-small mb3 c-on-base">
                 <FormattedMessage id="admin/image-protocol.form.desktop-image.label" />
@@ -385,6 +391,9 @@ const CustomerClassInfo: FC = () => {
                 onChange={(e: any) => {
                   handleHref(e)
                 }}
+                helpText={intl.formatMessage({
+                  id: 'admin/image-protocol.form.href.helpText',
+                })}
               />
             </div>
             <div className="w-90 w-40-m">

@@ -28,7 +28,7 @@ const DataList: FC = () => {
 
   const [list, setList] = useState<DataInfo[]>([])
   const [updated, setUpdated] = useState(false)
-  const { data, loading, error, refetch } = useQuery(GET_DATA_LIST)
+  const { data, loading, refetch } = useQuery(GET_DATA_LIST)
 
   useEffect(() => {
     console.info('query: ', query)
@@ -44,13 +44,10 @@ const DataList: FC = () => {
   }, [query, updated, refetch])
 
   useEffect(() => {
-    console.log('loading:', loading)
-    console.log('error2:', error)
     console.log('data saved in vbase: ', data)
-    if (data) {
-      setList(data.getDataList)
-    }
-  }, [data, loading, error])
+
+    if (data) setList(data.getDataList)
+  }, [data])
 
   const [
     removeFromList,
@@ -59,7 +56,7 @@ const DataList: FC = () => {
 
   const lineActions = [
     {
-      label: () => `Edit`,
+      label: () => <FormattedMessage id="admin/image-protocol.table.edit" />,
       onClick: ({ rowData }: TableItem) => {
         navigate({
           to: '/admin/app/imageprotocol/protocol',
@@ -68,7 +65,7 @@ const DataList: FC = () => {
       },
     },
     {
-      label: () => `Delete`,
+      label: () => <FormattedMessage id="admin/image-protocol.table.delete" />,
       isDangerous: true,
       onClick: ({ rowData }: TableItem) => {
         const { customerClass, polygon, imageProtocolId } = rowData
@@ -148,13 +145,17 @@ const DataList: FC = () => {
       desktopUrl: {
         title: 'Desktop URL',
         cellRenderer: ({ cellData }: any) => {
-          return <img src={cellData} alt="desktop url" />
+          return (
+            <img src={cellData} alt="desktop url" style={{ height: '100px' }} />
+          )
         },
       },
       mobileUrl: {
         title: 'Mobile URL',
         cellRenderer: ({ cellData }: any) => {
-          return <img src={cellData} alt="mobile url" />
+          return (
+            <img src={cellData} alt="mobile url" style={{ height: '100px' }} />
+          )
         },
       },
       hrefImg: {
@@ -173,22 +174,17 @@ const DataList: FC = () => {
           }
         >
           <div className="mt4 mb4">
-            {list ? (
-              <Table
-                fullWidth
-                schema={dataSchema}
-                items={list}
-                density="high"
-                dynamicRowHeight
-                lineActions={lineActions}
-              />
-            ) : (
-              <div>
-                <h1>
-                  <FormattedMessage id="admin/image-protocol.table-no-data" />
-                </h1>
-              </div>
-            )}
+            <Table
+              loading={loading}
+              fullWidth
+              schema={dataSchema}
+              items={list}
+              dynamicRowHeight
+              lineActions={lineActions}
+              emptyStateLabel={
+                <FormattedMessage id="admin/image-protocol.table-no-data" />
+              }
+            />
           </div>
         </PageBlock>
         <div>

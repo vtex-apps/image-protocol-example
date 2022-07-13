@@ -25,10 +25,10 @@
 #hrefUrl:valid,
 #classname:valid,
 #imageid:valid {
-  color: green;
+  color: #3f3f40;
 }
 #hrefUrl:invalid,
 #classname:invalid,
 #imageid:invalid {
-  color: red;
+  color: #ff0000;
 }

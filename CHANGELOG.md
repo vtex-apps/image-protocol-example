@@ -16,3 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Image Protocol Example Created
+
+### Fixed
+
+- Issue saving data in vbase solved

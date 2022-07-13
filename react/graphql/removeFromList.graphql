@@ -1,0 +1,15 @@
+mutation removeFromList(
+  $customerClass: String
+  $polygon: String
+  $imageProtocolId: String
+) {
+  removeFromList(
+    customerClass: $customerClass
+    polygon: $polygon
+    imageProtocolId: $imageProtocolId
+  ) {
+    customerClass
+    polygon
+    imageProtocolId
+  }
+}

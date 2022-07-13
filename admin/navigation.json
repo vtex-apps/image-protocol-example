@@ -2,5 +2,5 @@
   "section": "other",
   "titleId": "admin/image-protocol.navigation.label",
   "searchKeyWordsHelpers": "admin/image-protocol.navigation.search.kws",
-  "path": "/admin/imageprotocol"
+  "path": "/admin/imageprotocol/list"
 }

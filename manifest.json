@@ -70,5 +70,22 @@
       "name": "LogisticsAdmin"
     }
   ],
+  "settingsSchema": {
+    "title": "Priority Settings",
+    "type": "object",
+    "description": "Set the priority for each of the following",
+    "properties": {
+      "customerclass": {
+        "title": "Customer Class",
+        "type": "number",
+        "description": "Only numbers 1,2,3..."
+      },
+      "endpoint": {
+        "title": "Polygon",
+        "type": "number",
+        "description": "Only numbers 1,2,3..."
+      }
+    }
+  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }

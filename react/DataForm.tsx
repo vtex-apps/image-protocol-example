@@ -69,7 +69,7 @@ const CustomerClassInfo: FC = () => {
   useEffect(() => {
     console.log('loading:', loading)
     console.log('error:', error)
-    console.log('polygons: ', data.getPolygons.polygons)
+    console.log('polygons: ', data)
   }, [data, loading, error])
 
   if (data) {

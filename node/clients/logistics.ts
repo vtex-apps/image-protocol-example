@@ -12,10 +12,41 @@ export default class LogisticsClient extends JanusClient {
     })
   }
 
-  public getPolygonById = (polygonId: string) =>
+  public getPolygonById = (polygonId: string): Promise<PolygonDetail> =>
     this.http.get(this.routes.polygon(polygonId))
 
-  public getListOfPolygons = () => this.http.get(this.routes.polygons())
+  public getListOfPolygons = (
+    page = 1,
+    perPage = 50
+  ): Promise<PolygonsResponse> =>
+    this.http.get(this.routes.polygons(), {
+      params: {
+        page,
+        perPage,
+      },
+    })
+
+  public getPolygonsCoordinates = async (): Promise<PolygonDetail[]> => {
+    const { items } = await this.getListOfPolygons()
+
+    // if (polygons.pages > 1) {
+    //   for (let index = 0; index < polygons.pages; index++) {
+    //     const polygonPage = await this.getListOfPolygons(index)
+    //   }
+    // }
+
+    const polygonsDataPromises: any[] = []
+
+    for (const polygonId of items) {
+      const promise = this.getPolygonById(polygonId)
+
+      polygonsDataPromises.push(promise)
+    }
+
+    const polygonsData = await Promise.all(polygonsDataPromises)
+
+    return polygonsData
+  }
 
   private get routes() {
     return {

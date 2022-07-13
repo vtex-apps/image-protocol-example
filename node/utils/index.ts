@@ -10,3 +10,21 @@ export const parseQueryString = (queryString: string) => {
 
   return parsedQueryString
 }
+
+export const protocolKeyGenerator = (
+  protocolId: string,
+  customerData: CustomerData = {
+    customerClass: undefined,
+    polygonId: undefined,
+  }
+) => {
+  const { customerClass, polygonId } = customerData
+
+  if (customerClass && polygonId) {
+    return `${customerClass}-${polygonId}-${protocolId}`
+  }
+
+  if (customerClass) return `${customerClass}-${protocolId}`
+
+  return `${polygonId}-${protocolId}`
+}

@@ -13,7 +13,10 @@ export const parseQueryString = (queryString: string) => {
 
 export const protocolKeyGenerator = (
   protocolId: string,
-  customerData: CustomerData = {
+  customerData: {
+    customerClass?: string
+    polygonId?: string
+  } = {
     customerClass: undefined,
     polygonId: undefined,
   }
@@ -27,4 +30,8 @@ export const protocolKeyGenerator = (
   if (customerClass) return `${customerClass}-${protocolId}`
 
   return `${polygonId}-${protocolId}`
+}
+
+export const getAppId = (): string => {
+  return process.env.VTEX_APP_ID ?? ''
 }

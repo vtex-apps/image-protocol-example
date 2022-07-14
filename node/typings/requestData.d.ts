@@ -7,5 +7,5 @@ interface RequestData {
 
 interface CustomerData {
   customerClass?: string | undefined
-  polygonId?: string | undefined
+  polygons?: string[] | undefined
 }

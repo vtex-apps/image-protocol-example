@@ -37,7 +37,7 @@ const clients: ClientsConfig<Clients> = {
 declare global {
   interface State extends RecorderState {
     customerClass: string | undefined
-    polygon: string | undefined
+    polygons: string[] | undefined
   }
 
   // We declare a global Context type just to avoid re-writing ServiceContext<Clients, State> in every handler and resolver

@@ -12,7 +12,7 @@ export async function getUsersPolygon(ctx: Context, next: () => Promise<void>) {
 
   const queryString = parse(querystring)
 
-  let currentPolygon: string | undefined
+  let currentPolygons: string[] | undefined
 
   if (queryString.latitude && queryString.longitude) {
     const [latitude, longitude] = [
@@ -37,9 +37,9 @@ export async function getUsersPolygon(ctx: Context, next: () => Promise<void>) {
       )
     }
 
-    currentPolygon = availablePolygons[0].name
+    currentPolygons = availablePolygons.map((polygonData) => polygonData.name)
   }
 
-  ctx.state.polygon = currentPolygon
+  ctx.state.polygons = currentPolygons
   await next()
 }

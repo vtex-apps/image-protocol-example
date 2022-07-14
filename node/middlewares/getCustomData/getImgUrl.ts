@@ -1,5 +1,4 @@
-/* eslint-disable vtex/prefer-early-return */
-/* eslint-disable no-console */
+/* eslint-disable no-await-in-loop */
 import { parse } from 'querystring'
 
 import { protocolKeyGenerator } from '../../utils'
@@ -14,15 +13,24 @@ export async function getImgUrl(ctx: Context) {
   const {
     querystring,
     clients: { vbase },
-    state: { customerClass, polygon },
+    state: { customerClass, polygons },
   } = ctx
 
   const getVbaseProtcolData = async (
     configPath: string,
     protocolId: string,
-    customerData: CustomerData
+    customerData: {
+      customerClass?: string
+      polygonId?: string
+    }
   ) => {
-    const bucketKey = protocolKeyGenerator(protocolId, customerData)
+    const { polygonId, customerClass: customerClassName } = customerData
+
+    const bucketKey = protocolKeyGenerator(protocolId, {
+      customerClass: customerClassName,
+      polygonId,
+    })
+
     const bucketData: Record<string, unknown> = await vbase.getJSON(
       BUCKET,
       configPath,
@@ -32,20 +40,42 @@ export async function getImgUrl(ctx: Context) {
     return bucketData?.[bucketKey] ? bucketData[bucketKey] : null
   }
 
-  const queryString = parse(querystring)
+  const getPolygonProtocolData = async (
+    configPath: string,
+    protocolId: string,
+    customerData: {
+      polygons: string[]
+      customerClass?: string
+    }
+  ) => {
+    let polygonProtocolData
+    const { polygons: polygonsArray } = customerData
 
-  console.log('QUERYSTRING', queryString)
-  console.log('CUSTOMERCLASS', customerClass)
-  console.log('POLYGON', polygon)
+    for (const polygonId of polygonsArray) {
+      if (!polygonProtocolData) {
+        const data = await getVbaseProtcolData(configPath, protocolId, {
+          customerClass,
+          polygonId,
+        })
+
+        polygonProtocolData = data || null
+      }
+    }
+
+    return polygonProtocolData
+  }
+
+  const queryString = parse(querystring)
 
   let protocolData
   const protocolId = String(queryString.imageProtocolId)
+  const polygonsAvailable = polygons && polygons?.length > 1
 
-  if (customerClass && polygon) {
-    const customerClassAndPolygon = await getVbaseProtcolData(
+  if (customerClass && polygons) {
+    const customerClassAndPolygon = await getPolygonProtocolData(
       CONFIG_PATH_CCPOLYGON,
       protocolId,
-      { polygonId: polygon, customerClass }
+      { polygons, customerClass }
     )
 
     protocolData = customerClassAndPolygon
@@ -58,15 +88,13 @@ export async function getImgUrl(ctx: Context) {
         { customerClass }
       )
 
-      console.log('CUSTOMERCLASSPRTOCOL', customerClassProtocol)
-
       protocolData = customerClassProtocol
 
       if (!customerClassProtocol) {
-        const polygonProtocol = await getVbaseProtcolData(
+        const polygonProtocol = await getPolygonProtocolData(
           CONFIG_PATH_POLYGON,
           protocolId,
-          { polygonId: polygon }
+          { polygons }
         )
 
         protocolData = polygonProtocol
@@ -74,19 +102,19 @@ export async function getImgUrl(ctx: Context) {
     }
   }
 
-  if (customerClass && !polygon) {
+  if (customerClass && !polygonsAvailable) {
     protocolData = await getVbaseProtcolData(CONFIG_PATH_CC, protocolId, {
       customerClass,
     })
   }
 
-  if (polygon && !customerClass) {
-    protocolData = await getVbaseProtcolData(CONFIG_PATH_POLYGON, protocolId, {
-      polygonId: polygon,
-    })
+  if (polygons && !customerClass) {
+    protocolData = await getPolygonProtocolData(
+      CONFIG_PATH_POLYGON,
+      protocolId,
+      { polygons }
+    )
   }
-
-  console.log('PRTOTOCOL DATA', protocolData)
 
   ctx.status = 200
   ctx.body = protocolData

@@ -18,7 +18,7 @@ import { Clients } from './clients'
 // metrics.trackCache('status', memoryCache)
 
 // This is the configuration for clients available in `ctx.clients`.
-const TIMEOUT_MS = 10000
+const TIMEOUT_MS = 2000
 
 const clients: ClientsConfig<Clients> = {
   implementation: Clients,

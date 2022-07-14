@@ -1,6 +1,8 @@
 /* eslint-disable no-await-in-loop */
 import { parse } from 'querystring'
 
+import { LogLevel } from '@vtex/api'
+
 import { protocolKeyGenerator } from '../../utils'
 import {
   BUCKET,
@@ -12,109 +14,145 @@ import {
 export async function getImgUrl(ctx: Context) {
   const {
     querystring,
-    clients: { vbase },
+    vtex: { logger },
+    clients: { vbase, apps },
     state: { customerClass, polygons },
   } = ctx
 
-  const getVbaseProtcolData = async (
-    configPath: string,
+  const getVbaseData = async (
     protocolId: string,
+    configPath: string,
     customerData: {
       customerClass?: string
       polygonId?: string
     }
   ) => {
     const { polygonId, customerClass: customerClassName } = customerData
-
-    const bucketKey = protocolKeyGenerator(protocolId, {
-      customerClass: customerClassName,
-      polygonId,
-    })
-
     const bucketData: Record<string, unknown> = await vbase.getJSON(
       BUCKET,
       configPath,
       true
     )
 
+    const bucketKey = protocolKeyGenerator(protocolId, {
+      customerClass: customerClassName,
+      polygonId,
+    })
+
     return bucketData?.[bucketKey] ? bucketData[bucketKey] : null
   }
 
-  const getPolygonProtocolData = async (
-    configPath: string,
+  const getProtcolData = async (
     protocolId: string,
     customerData: {
-      polygons: string[]
       customerClass?: string
+      polygons?: string[]
     }
   ) => {
-    let polygonProtocolData
-    const { polygons: polygonsArray } = customerData
+    const {
+      polygons: polygonsArray,
+      customerClass: customerClassName,
+    } = customerData
 
-    for (const polygonId of polygonsArray) {
-      if (!polygonProtocolData) {
-        const data = await getVbaseProtcolData(configPath, protocolId, {
-          customerClass,
-          polygonId,
-        })
+    let protocolData
 
-        polygonProtocolData = data || null
+    if (polygonsArray) {
+      for (const polygonId of polygonsArray) {
+        if (!protocolData) {
+          const configPath = customerClass
+            ? CONFIG_PATH_CCPOLYGON
+            : CONFIG_PATH_POLYGON
+
+          protocolData = await getVbaseData(protocolId, configPath, {
+            customerClass,
+            polygonId,
+          })
+        }
       }
+    } else {
+      const bucketData: Record<string, unknown> = await vbase.getJSON(
+        BUCKET,
+        CONFIG_PATH_CC,
+        true
+      )
+
+      const bucketKey = protocolKeyGenerator(protocolId, {
+        customerClass: customerClassName,
+      })
+
+      protocolData = bucketData?.[bucketKey] ? bucketData[bucketKey] : null
     }
 
-    return polygonProtocolData
+    return protocolData
   }
 
   const queryString = parse(querystring)
 
+  logger.log(
+    {
+      message: `Data received for customer class: ${customerClass} & polygons: ${polygons}`,
+      detail: {
+        ...queryString,
+        customerClass,
+        polygons,
+      },
+    },
+    LogLevel.Info
+  )
+
   let protocolData
-  const protocolId = String(queryString.imageProtocolId)
-  const polygonsAvailable = polygons && polygons?.length > 1
+  const protocolId = queryString.imageProtocolId as string
 
   if (customerClass && polygons) {
-    const customerClassAndPolygon = await getPolygonProtocolData(
-      CONFIG_PATH_CCPOLYGON,
-      protocolId,
-      { polygons, customerClass }
-    )
+    const customerClassAndPolygon = await getProtcolData(protocolId, {
+      polygons,
+      customerClass,
+    })
 
     protocolData = customerClassAndPolygon
 
     if (!customerClassAndPolygon) {
       // TODO: Check app preference -> Switch
-      const customerClassProtocol = await getVbaseProtcolData(
-        CONFIG_PATH_CC,
-        protocolId,
-        { customerClass }
-      )
+
+      // console.log(process.env.VTEX_APP_ID)
+      // const appId: string = process.env.VTEX_APP_ID as string
+      // const {
+      //   customerClassPriority,
+      //   polygonPriority,
+      // } = await apps.getAppSettings(appId)
+
+      // Priority Check
+      const customerClassProtocol = await getProtcolData(protocolId, {
+        customerClass,
+      })
 
       protocolData = customerClassProtocol
 
       if (!customerClassProtocol) {
-        const polygonProtocol = await getPolygonProtocolData(
-          CONFIG_PATH_POLYGON,
-          protocolId,
-          { polygons }
-        )
+        const polygonProtocol = await getProtcolData(protocolId, { polygons })
 
         protocolData = polygonProtocol
       }
     }
   }
 
-  if (customerClass && !polygonsAvailable) {
-    protocolData = await getVbaseProtcolData(CONFIG_PATH_CC, protocolId, {
+  if (customerClass && !polygons) {
+    protocolData = await getProtcolData(protocolId, {
       customerClass,
     })
   }
 
   if (polygons && !customerClass) {
-    protocolData = await getPolygonProtocolData(
-      CONFIG_PATH_POLYGON,
-      protocolId,
-      { polygons }
-    )
+    protocolData = await getProtcolData(protocolId, { polygons })
   }
+
+  logger.log(
+    {
+      message: `Protocol returned data for customer class: ${customerClass} & polygons: ${polygons}`,
+      detail: protocolData,
+    },
+    LogLevel.Info
+  )
 
   ctx.status = 200
   ctx.body = protocolData

@@ -66,8 +66,13 @@ export default new Service<Clients, State, Context>({
     },
   },
   routes: {
+<<<<<<< HEAD
     getUrl: method({
       GET: [errorHandler, getUsersPolygon, getUserCustomerClass, getImgUrl],
     }),
+=======
+    getUrl: method({ GET: [errorHandler, getImgUrl] }),
+    saveInfo: method({ POST: [saveInfo] }),
+>>>>>>> 717715f (saveInfo.ts middleware)
   },
 })

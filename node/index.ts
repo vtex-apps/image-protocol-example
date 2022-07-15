@@ -61,6 +61,6 @@ export default new Service({
   },
   routes: {
     getUrl: method({ GET: [errorHandler, getImgUrl] }),
-    saveInfo: method({ POST: [saveInfo] }),
+    saveDataInfo: method({ POST: [saveInfo] }),
   },
 })

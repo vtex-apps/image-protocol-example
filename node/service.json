@@ -10,7 +10,7 @@
       "path": "/_v/image-protocol-example/get-url",
       "public": true
     },
-    "saveInfo": {
+    "saveDataInfo": {
       "path": "/_v/image-protocol-example/save-info",
       "public": true
     }

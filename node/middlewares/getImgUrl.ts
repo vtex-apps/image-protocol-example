@@ -41,6 +41,8 @@ export async function getImgUrl(ctx: Context) {
 
   const key = `${customerClass}-${imgId}`
 
+  let response
+
   console.info('customerClass-imgId: ', key)
   try {
     const resVbase: Record<string, unknown> = await vbase.getJSON(
@@ -49,19 +51,27 @@ export async function getImgUrl(ctx: Context) {
     )
 
     console.log('resp vbase: ', resVbase)
-    const response = resVbase[key]
+    response = resVbase[key]
+
+    if (response === undefined) {
+      response = { url: null, urlMobile: null, hrefImg: null }
+      ctx.status = 200
+      ctx.body = response
+      console.info('response: ', response)
+    } else {
+      ctx.status = 200
+      ctx.body = response
+      console.info('response: ', response)
+    }
 
     console.info('response: ', response)
-
-    ctx.status = 200
-    ctx.body = response
 
     return response
 
     // throw new Error('testing error on protocol')
   } catch (error) {
     console.log('error: ', error)
-    const response = { url: null, urlMobile: null, hrefImg: null }
+    response = { url: null, urlMobile: null, hrefImg: null }
 
     ctx.status = 404
     ctx.body = response

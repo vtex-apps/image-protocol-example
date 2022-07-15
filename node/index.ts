@@ -2,7 +2,7 @@
 import type { ClientsConfig, ServiceContext } from '@vtex/api'
 import { method, Service } from '@vtex/api'
 
-import { errorHandler, getImgUrl, saveInfo } from './middlewares'
+import { errorHandler, getImgUrl, saveInfo, deleteRecord } from './middlewares'
 import { saveDataInfo } from './resolvers/saveDataInfo'
 import { getPolygons } from './resolvers/getPolygons'
 import { getDataList } from './resolvers/getDataList'
@@ -62,5 +62,6 @@ export default new Service({
   routes: {
     getUrl: method({ GET: [errorHandler, getImgUrl] }),
     saveDataInfo: method({ POST: [saveInfo] }),
+    deleteRecord: method({ DELETE: [deleteRecord] }),
   },
 })

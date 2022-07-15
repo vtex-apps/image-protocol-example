@@ -17,13 +17,14 @@ export async function saveInfo(ctx: Context) {
     ctx.req
   )
 
-  console.log(customerClass, polygon, imgId, url, urlMobile, hrefImg)
+  let key = ''
+  let getCustomerList: Record<string, unknown> | null = null
 
   const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gm
   const regExp = new RegExp(expression)
 
-  /* const expr = /[^A-Za-z0-9]*$/g
-  const regExp2 = new RegExp(expr) */
+  const expr = /^[A-Za-z0-9]*$/
+  const regExp2 = new RegExp(expr)
 
   if (!regExp.test(hrefImg)) {
     ctx.status = 400
@@ -32,20 +33,13 @@ export async function saveInfo(ctx: Context) {
     return
   }
 
-  /* console.log('** test customerClass', regExp2.test(customerClass))
-  console.log('** test polygon', regExp2.test(polygon))
   if (!regExp2.test(customerClass) || !regExp2.test(polygon)) {
-    console.log('test customerClass', regExp2.test(customerClass))
-    console.log('test polygon', regExp2.test(polygon))
     ctx.status = 400
     ctx.body =
       'Wrong format for customerClass and/or polygon. Only letters and numbers are allowed'
 
     return
-  } */
-
-  let key = ''
-  let getCustomerList: Record<string, unknown> | null = null
+  }
 
   if (
     (imgId.length === 0 &&
@@ -63,17 +57,7 @@ export async function saveInfo(ctx: Context) {
     return
   }
 
-  if (customerClass.trim().length > 1 && polygon.trim().length > 1) {
-    console.log(
-      'customerClass',
-      customerClass,
-      ' ',
-      customerClass.length,
-      ' polygon',
-      polygon,
-      ' ',
-      polygon.length
-    )
+  if (customerClass.trim().length > 0 && polygon.trim().length > 0) {
     try {
       key = `${customerClass}-${polygon}-${imgId}`
       getCustomerList = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON, true)
@@ -106,7 +90,7 @@ export async function saveInfo(ctx: Context) {
       ctx.body = response
     }
   } else if (
-    customerClass.trim().length > 1 &&
+    customerClass.trim().length > 0 &&
     (!polygon || polygon.trim().length === 0)
   ) {
     try {

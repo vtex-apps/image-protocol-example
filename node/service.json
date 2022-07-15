@@ -13,6 +13,10 @@
     "saveDataInfo": {
       "path": "/_v/image-protocol-example/save-info",
       "public": true
+    },
+    "deleteRecord": {
+      "path": "/_v/image-protocol-example/remove",
+      "public": true
     }
   }
 }

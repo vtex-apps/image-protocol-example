@@ -22,11 +22,8 @@ export async function getImgUrl(ctx: Context) {
 
   const queryString = req.url?.split('?')[1]
 
-  console.log('req.url: ', req.url)
-
   const parsedQuery = parseQueryString(queryString as string)
 
-  console.log('parsedQuery: ', parsedQuery)
   const aux: ClientMasterdataEntityType[] = await masterdata.searchDocuments({
     dataEntity: 'CL',
     where: `userId=${parsedQuery.userId}`,
@@ -41,27 +38,30 @@ export async function getImgUrl(ctx: Context) {
 
   const key = `${customerClass}-${imgId}`
 
-  console.info('customerClass-imgId: ', key)
+  let response
+
   try {
     const resVbase: Record<string, unknown> = await vbase.getJSON(
       BUCKET,
       CONFIG_PATH_CC
     )
 
-    console.log('resp vbase: ', resVbase)
-    const response = resVbase[key]
+    response = resVbase[key]
 
-    console.info('response: ', response)
-
-    ctx.status = 200
-    ctx.body = response
+    if (response === undefined) {
+      response = { url: null, urlMobile: null, hrefImg: null }
+      ctx.status = 200
+      ctx.body = response
+    } else {
+      ctx.status = 200
+      ctx.body = response
+    }
 
     return response
 
     // throw new Error('testing error on protocol')
   } catch (error) {
-    console.log('error: ', error)
-    const response = { url: null, urlMobile: null, hrefImg: null }
+    response = { url: null, urlMobile: null, hrefImg: null }
 
     ctx.status = 404
     ctx.body = response

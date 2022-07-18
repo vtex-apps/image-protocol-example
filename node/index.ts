@@ -61,7 +61,7 @@ export default new Service({
   },
   routes: {
     getUrl: method({ GET: [errorHandler, getImgUrl] }),
-    saveDataInfo: method({ POST: [saveInfo] }),
-    deleteRecord: method({ DELETE: [deleteRecord] }),
+    saveDataInfo: method({ POST: [errorHandler, saveInfo] }),
+    deleteRecord: method({ DELETE: [errorHandler, deleteRecord] }),
   },
 })

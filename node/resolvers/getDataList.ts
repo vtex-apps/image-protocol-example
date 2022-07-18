@@ -15,35 +15,36 @@ interface DataArray {
   mobileUrl: string
   hrefImg: string
 }
+
+interface DataObject {
+  url: string
+  urlMobile: string
+  hrefImg: string
+}
 export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
   const {
     clients: { vbase },
     vtex: { logger },
   } = ctx
 
-  let getCCPolygonData: Record<string, any> = {}
-  let getCCData: Record<string, any> = {}
-  let getPolygonData: Record<string, any> = {}
-  // let allData: Record<string, any> = {}
+  let getCCPolygonData: Record<string, DataObject> = {}
+  let getCCData: Record<string, DataObject> = {}
+  let getPolygonData: Record<string, DataObject> = {}
 
   const responseCCPolygonVbase: DataArray[] = []
-
   const responseCCVbase: DataArray[] = []
-
   const responsePolygonVbase: DataArray[] = []
 
   let keys: string[] = []
 
   getCCPolygonData = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON, true)
-  console.info('getCCPolygonData: ', getCCPolygonData)
-  getCCData = await vbase.getJSON(BUCKET, CONFIG_PATH_CC, true)
-  console.info('getCCData: ', getCCData)
-  getPolygonData = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON, true)
-  console.info('getPolygonData: ', getPolygonData)
 
-  if (getCCPolygonData) {
+  getCCData = await vbase.getJSON(BUCKET, CONFIG_PATH_CC, true)
+
+  getPolygonData = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON, true)
+
+  if (Object.keys(getCCPolygonData).length !== 0) {
     keys = Object.keys(getCCPolygonData)
-    console.info('entries for getCCPolygonData: ', keys)
 
     keys.forEach((key) => {
       const [cc, polygon, id] = key.split('-')
@@ -70,9 +71,8 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
     )
   }
 
-  if (getCCData) {
+  if (Object.keys(getCCData).length !== 0) {
     keys = Object.keys(getCCData)
-    console.info('entries for getCCData: ', keys)
 
     keys.forEach((key) => {
       const [cc, id] = key.split('-')
@@ -99,9 +99,8 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
     )
   }
 
-  if (getPolygonData) {
+  if (Object.keys(getPolygonData).length !== 0) {
     keys = Object.keys(getPolygonData)
-    console.info('entries for getPolygonData: ', keys)
 
     keys.forEach((key) => {
       const [polygon, id] = key.split('-')

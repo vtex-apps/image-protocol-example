@@ -39,17 +39,17 @@ export async function deleteRecord(ctx: Context) {
           ctx.status = 200
           ctx.body = 'Record deleted'
         } else {
-          ctx.status = 200
+          ctx.status = 404
           ctx.body = 'Record not found'
         }
 
         await vbase.saveJSON(BUCKET, CONFIG_PATH_CCPOLYGON, entries)
       } else {
-        ctx.status = 400
+        ctx.status = 404
         ctx.body = 'No data saved'
       }
     } catch (e) {
-      ctx.status = 404
+      ctx.status = 500
       ctx.body = `error: ${e}`
     }
   } else if (
@@ -77,15 +77,15 @@ export async function deleteRecord(ctx: Context) {
           ctx.status = 200
           ctx.body = 'Record deleted'
         } else {
-          ctx.status = 200
+          ctx.status = 404
           ctx.body = 'Record not found'
         }
       } else {
-        ctx.status = 400
+        ctx.status = 404
         ctx.body = 'No data saved'
       }
     } catch (e) {
-      ctx.status = 404
+      ctx.status = 500
       ctx.body = `error: ${e}`
     }
   } else if (
@@ -112,17 +112,17 @@ export async function deleteRecord(ctx: Context) {
           ctx.status = 200
           ctx.body = 'Record deleted'
         } else {
-          ctx.status = 200
+          ctx.status = 404
           ctx.body = 'Record not found'
         }
 
         await vbase.saveJSON(BUCKET, CONFIG_PATH_POLYGON, entries)
       } else {
-        ctx.status = 400
+        ctx.status = 404
         ctx.body = 'No data saved'
       }
     } catch (e) {
-      ctx.status = 404
+      ctx.status = 500
       ctx.body = `error: ${e}`
     }
   } else {

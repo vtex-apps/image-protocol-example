@@ -79,7 +79,7 @@ export async function saveInfo(ctx: Context) {
 
         await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON)
 
-        ctx.status = 200
+        ctx.status = 201
         ctx.body = getCustomerList[key]
       }
     } catch (e) {
@@ -104,7 +104,7 @@ export async function saveInfo(ctx: Context) {
 
         await vbase.saveJSON(BUCKET, CONFIG_PATH_CC, customerUrls)
 
-        ctx.status = 200
+        ctx.status = 201
         ctx.body = customerUrls
       } else {
         getCustomerList[key] = { url, urlMobile, hrefImg }
@@ -135,7 +135,7 @@ export async function saveInfo(ctx: Context) {
 
         await vbase.saveJSON(BUCKET, CONFIG_PATH_POLYGON, customerUrls)
 
-        ctx.status = 200
+        ctx.status = 201
         ctx.body = customerUrls
       } else {
         getCustomerList[key] = { url, urlMobile, hrefImg }

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import type { FC } from 'react'
+import type { FC, ChangeEvent } from 'react'
 import React, { useState, useEffect } from 'react'
 import { useIntl, FormattedMessage } from 'react-intl'
 import {
@@ -93,19 +93,19 @@ const CustomerClassInfo: FC = () => {
     return regExp.test(href)
   }
 
-  const handleCustomerClassValue = (e: any) => {
+  const handleCustomerClassValue = (e: ChangeEvent<HTMLInputElement>) => {
     setCustomerClassValue(e.target.value)
   }
 
-  const handlePolygon = (e: any) => {
+  const handlePolygon = (e: ChangeEvent<HTMLInputElement>) => {
     setPolygon(e.target.value)
   }
 
-  const handleHref = (e: any) => {
+  const handleHref = (e: ChangeEvent<HTMLInputElement>) => {
     setHrefImage(e.target.value)
   }
 
-  const handleIdImgValue = (e: any) => {
+  const handleIdImgValue = (e: ChangeEvent<HTMLInputElement>) => {
     setIdImg(e.target.value)
   }
 
@@ -168,7 +168,7 @@ const CustomerClassInfo: FC = () => {
     }
   }
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
     console.log(
       'customerClassValue: ',

@@ -1,16 +1,13 @@
 import type { ClientsConfig, RecorderState, ServiceContext } from '@vtex/api'
 import { LRUCache, method, Service } from '@vtex/api'
 
-<<<<<<< HEAD
 import {
   errorHandler,
   getImgUrl,
   getUsersPolygon,
   getUserCustomerClass,
 } from './middlewares'
-=======
-import { errorHandler, getImgUrl, saveInfo, deleteRecord } from './middlewares'
->>>>>>> 8365036 (delete record middleware)
+
 import { saveDataInfo } from './resolvers/saveDataInfo'
 import { getPolygons } from './resolvers/getPolygons'
 import { getDataList } from './resolvers/getDataList'
@@ -76,8 +73,13 @@ export default new Service<Clients, State, Context>({
     }),
 =======
     getUrl: method({ GET: [errorHandler, getImgUrl] }),
+<<<<<<< HEAD
     saveDataInfo: method({ POST: [saveInfo] }),
     deleteRecord: method({ DELETE: [deleteRecord] }),
 >>>>>>> 8365036 (delete record middleware)
+=======
+    saveDataInfo: method({ POST: [errorHandler, saveInfo] }),
+    deleteRecord: method({ DELETE: [errorHandler, deleteRecord] }),
+>>>>>>> e7e701e (errorHandler)
   },
 })

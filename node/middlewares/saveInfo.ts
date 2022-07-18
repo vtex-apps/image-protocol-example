@@ -71,7 +71,7 @@ export async function saveInfo(ctx: Context) {
 
         console.info('data saved: ', customerUrls)
 
-        ctx.status = 200
+        ctx.status = 201
         ctx.body = customerUrls
       } else {
         getCustomerList[key] = { url, urlMobile, hrefImg }
@@ -110,7 +110,7 @@ export async function saveInfo(ctx: Context) {
         getCustomerList[key] = { url, urlMobile, hrefImg }
         await vbase.saveJSON(BUCKET, CONFIG_PATH_CC, getCustomerList)
 
-        ctx.status = 404
+        ctx.status = 201
         ctx.body = getCustomerList[key]
       }
     } catch (e) {
@@ -141,7 +141,7 @@ export async function saveInfo(ctx: Context) {
         getCustomerList[key] = { url, urlMobile, hrefImg }
         await vbase.saveJSON(BUCKET, CONFIG_PATH_POLYGON, getCustomerList)
 
-        ctx.status = 404
+        ctx.status = 201
         ctx.body = getCustomerList[key]
       }
     } catch (e) {

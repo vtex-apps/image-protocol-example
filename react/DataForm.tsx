@@ -297,9 +297,11 @@ const CustomerClassInfo: FC = () => {
                     handlePolygon(e)
                   }}
                 />
-                {/* <Button href="/admin/logistics/#/geolocation">
-                <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
-              </Button> */}
+                <div className="mt4">
+                  <Button href="/admin/iframe/logistics/#/geolocation">
+                    <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
+                  </Button>
+                </div>
               </div>
             )}
 

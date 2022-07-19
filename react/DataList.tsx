@@ -9,20 +9,6 @@ import { useRuntime } from 'vtex.render-runtime'
 import GET_DATA_LIST from './graphql/getDataList.graphql'
 import REMOVE_FROM_LIST from './graphql/removeFromList.graphql'
 
-interface TableItem {
-  cellData: unknown
-  rowData: DataInfo
-  updateCellMeasurements: () => void
-}
-
-interface DataInfo {
-  customerClass: string
-  polygon: string
-  imageProtocolId: string
-  desktopUrl: string
-  mobileUrl: string
-  hrefImg: string
-}
 const DataList: FC = () => {
   const { navigate, query } = useRuntime()
 

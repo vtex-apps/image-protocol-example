@@ -22,13 +22,6 @@ import UPLOAD_mutation from './graphql/uploadFile.graphql'
 import POST_DataInfo from './graphql/saveDataInfo.graphql'
 import GET_Polygons from './graphql/getPolygons.graphql'
 
-interface IncomingFile {
-  uploadFile: { fileUrl: string }
-}
-interface Option {
-  value: string
-  label: string
-}
 const CustomerClassInfo: FC = () => {
   const { query, navigate } = useRuntime()
   const { data } = useQuery(GET_Polygons)
@@ -249,7 +242,7 @@ const CustomerClassInfo: FC = () => {
                   id: 'admin/image-protocol.form.customer-class.label',
                 })}
                 value={customerClassValue}
-                onChange={(e: any) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   handleCustomerClassValue(e)
                 }}
                 helpText={intl.formatMessage({
@@ -362,7 +355,7 @@ const CustomerClassInfo: FC = () => {
                 pattern="https?://.*"
                 title="Url should start with http(s) "
                 value={hrefImg}
-                onChange={(e: any) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   handleHref(e)
                 }}
                 helpText={intl.formatMessage({
@@ -382,7 +375,7 @@ const CustomerClassInfo: FC = () => {
                 })}
                 required
                 value={idImg}
-                onChange={(e: any) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   handleIdImgValue(e)
                 }}
               />

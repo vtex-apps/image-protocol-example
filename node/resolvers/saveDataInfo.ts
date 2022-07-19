@@ -7,18 +7,9 @@ import {
   CONFIG_PATH_POLYGON,
 } from '../constants/index'
 
-interface CustomerClassInfo {
-  customerClassValue: string
-  polygon: string
-  url: string
-  urlMobile: string
-  hrefImg: string
-  idImg: string
-}
-
 export const saveDataInfo = async (
   _: unknown,
-  args: CustomerClassInfo,
+  args: CustomerInfo,
   ctx: Context
 ) => {
   const {

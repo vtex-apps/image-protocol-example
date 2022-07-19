@@ -7,20 +7,6 @@ import {
   CONFIG_PATH_POLYGON,
 } from '../constants/index'
 
-interface DataArray {
-  customerClass: string
-  polygon: string
-  imageProtocolId: string
-  desktopUrl: string
-  mobileUrl: string
-  hrefImg: string
-}
-
-interface DataObject {
-  url: string
-  urlMobile: string
-  hrefImg: string
-}
 export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
   const {
     clients: { vbase },

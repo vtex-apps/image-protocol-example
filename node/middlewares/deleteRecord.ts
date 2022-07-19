@@ -15,8 +15,6 @@ export async function deleteRecord(ctx: Context) {
 
   const { customerClass, polygon, imgId } = await json(ctx.req)
 
-  console.log('ctx.req.body: ', customerClass, polygon, imgId)
-
   let key = ''
   let getDataList: Record<string, unknown> = {}
   let entries: Record<string, unknown>
@@ -25,8 +23,6 @@ export async function deleteRecord(ctx: Context) {
     try {
       key = `${customerClass}-${polygon}-${imgId}`
       getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON, true)
-      console.log('inside first if', ' bucket: ', CONFIG_PATH_CCPOLYGON)
-      console.log('getDataList[key]:', getDataList[key])
       if (getDataList) {
         entries = Object.keys(getDataList)
           .filter((idx) => idx !== key)
@@ -62,8 +58,6 @@ export async function deleteRecord(ctx: Context) {
     try {
       key = `${customerClass}-${imgId}`
       getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CC, true)
-      console.log('inside second if', ' bucket: ', CONFIG_PATH_CC)
-      console.log('getDataList[key]:', getDataList[key])
       if (getDataList) {
         entries = Object.keys(getDataList)
           .filter((idx) => idx !== key)
@@ -98,8 +92,6 @@ export async function deleteRecord(ctx: Context) {
     try {
       key = `${polygon}-${imgId}`
       getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON, true)
-      console.log('inside third if', ' bucket: ', CONFIG_PATH_POLYGON)
-      console.log('getDataList[key]:', getDataList[key])
       if (getDataList) {
         entries = Object.keys(getDataList)
           .filter((idx) => idx !== key)

@@ -8,7 +8,6 @@ export const getPolygons = async (_: unknown, __: unknown, ctx: Context) => {
 
   const listPolygons = await logistics.getListOfPolygons()
 
-  console.info('list of Polygons: ', listPolygons.items)
   logger.log(
     {
       message: 'In getPolygons.ts resolver. List of Polygons',

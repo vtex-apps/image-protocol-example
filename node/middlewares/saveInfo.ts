@@ -69,8 +69,6 @@ export async function saveInfo(ctx: Context) {
 
         await vbase.saveJSON(BUCKET, CONFIG_PATH_CCPOLYGON, customerUrls)
 
-        console.info('data saved: ', customerUrls)
-
         ctx.status = 201
         ctx.body = customerUrls
       } else {
@@ -83,7 +81,6 @@ export async function saveInfo(ctx: Context) {
         ctx.body = getCustomerList[key]
       }
     } catch (e) {
-      console.log('error: ', e)
       const response = { url: null, urlMobile: null, hrefImg: null }
 
       ctx.status = 404
@@ -114,7 +111,6 @@ export async function saveInfo(ctx: Context) {
         ctx.body = getCustomerList[key]
       }
     } catch (e) {
-      console.log('error: ', e)
       const response = { url: null, urlMobile: null, hrefImg: null }
 
       ctx.status = 404
@@ -145,7 +141,6 @@ export async function saveInfo(ctx: Context) {
         ctx.body = getCustomerList[key]
       }
     } catch (e) {
-      console.log('error: ', e)
       const response = { url: null, urlMobile: null, hrefImg: null }
 
       ctx.status = 404

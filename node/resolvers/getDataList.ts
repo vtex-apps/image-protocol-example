@@ -39,15 +39,13 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
   let keys: string[] = []
 
   getCCPolygonData = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON, true)
-  console.info('getCCPolygonData: ', getCCPolygonData)
+
   getCCData = await vbase.getJSON(BUCKET, CONFIG_PATH_CC, true)
-  console.info('getCCData: ', getCCData)
+
   getPolygonData = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON, true)
-  console.info('getPolygonData: ', getPolygonData)
 
   if (getCCPolygonData) {
     keys = Object.keys(getCCPolygonData)
-    console.info('entries for getCCPolygonData: ', keys)
 
     keys.forEach((key) => {
       const [cc, polygon, id] = key.split('-')
@@ -76,7 +74,6 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
 
   if (getCCData) {
     keys = Object.keys(getCCData)
-    console.info('entries for getCCData: ', keys)
 
     keys.forEach((key) => {
       const [cc, id] = key.split('-')
@@ -105,7 +102,6 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
 
   if (getPolygonData) {
     keys = Object.keys(getPolygonData)
-    console.info('entries for getPolygonData: ', keys)
 
     keys.forEach((key) => {
       const [polygon, id] = key.split('-')
@@ -137,8 +133,6 @@ export const getDataList = async (_: unknown, __: unknown, ctx: Context) => {
     ...responseCCVbase,
     ...responsePolygonVbase,
   ]
-
-  console.info(allData)
 
   logger.log(
     {

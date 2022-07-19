@@ -19,7 +19,8 @@ const memoryCache = new LRUCache<string, any>({ max: 5000 })
 
 metrics.trackCache('status', memoryCache)
 
-const TIMEOUT_MS = 10000
+// This is the configuration for clients available in `ctx.clients`.
+const TIMEOUT_MS = 2000
 
 const clients: ClientsConfig<Clients> = {
   implementation: Clients,

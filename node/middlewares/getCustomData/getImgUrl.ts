@@ -67,9 +67,10 @@ export async function getImgUrl(ctx: Context) {
               sortedPriorityData = await getProtcolData(vbase, protocolId, {
                 polygons,
               })
+              break
 
-            // eslint-disable-next-line no-fallthrough
             default:
+              sortedPriorityData = { url: null, urlMobile: null, hrefImg: null }
               break
           }
         }
@@ -98,7 +99,7 @@ export async function getImgUrl(ctx: Context) {
   )
 
   ctx.status = 200
-  ctx.body = protocolData
+  ctx.body = protocolData ?? { url: null, urlMobile: null, hrefImg: null }
 
   return protocolData
 }

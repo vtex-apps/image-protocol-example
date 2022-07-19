@@ -56,6 +56,7 @@ export async function getImgUrl(ctx: Context) {
 
       for (const priority of sortedPrioritySettings) {
         if (!sortedPriorityData) {
+          // eslint-disable-next-line default-case
           switch (priority) {
             case CUSTOMER_CLASS_PRIORITY_SETTING:
               sortedPriorityData = await getProtcolData(vbase, protocolId, {
@@ -67,10 +68,6 @@ export async function getImgUrl(ctx: Context) {
               sortedPriorityData = await getProtcolData(vbase, protocolId, {
                 polygons,
               })
-              break
-
-            default:
-              sortedPriorityData = { url: null, urlMobile: null, hrefImg: null }
               break
           }
         }

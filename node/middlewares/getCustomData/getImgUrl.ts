@@ -3,7 +3,7 @@ import { parse } from 'querystring'
 
 import { LogLevel } from '@vtex/api'
 
-import { getAppPrioritySettings, getProtcolData } from '../../utils'
+import { getAppPrioritySettings } from '../../utils'
 import {
   POLYGON_PRIORITY_SETTING,
   CUSTOMER_CLASS_PRIORITY_SETTING,
@@ -13,7 +13,7 @@ export async function getImgUrl(ctx: Context) {
   const {
     querystring,
     vtex: { logger },
-    clients: { vbase, apps },
+    clients: { vbase, apps, customDataManager },
     state: { customerClass, polygons },
   } = ctx
 
@@ -35,7 +35,7 @@ export async function getImgUrl(ctx: Context) {
   const protocolId = queryString.imageProtocolId as string
 
   if (customerClass && polygons) {
-    const customerClassAndPolygonData = await getProtcolData(
+    const customerClassAndPolygonData = await customDataManager.getProtcolData(
       vbase,
       protocolId,
       {
@@ -59,15 +59,23 @@ export async function getImgUrl(ctx: Context) {
           // eslint-disable-next-line default-case
           switch (priority) {
             case CUSTOMER_CLASS_PRIORITY_SETTING:
-              sortedPriorityData = await getProtcolData(vbase, protocolId, {
-                customerClass,
-              })
+              sortedPriorityData = await customDataManager.getProtcolData(
+                vbase,
+                protocolId,
+                {
+                  customerClass,
+                }
+              )
               break
 
             case POLYGON_PRIORITY_SETTING:
-              sortedPriorityData = await getProtcolData(vbase, protocolId, {
-                polygons,
-              })
+              sortedPriorityData = await customDataManager.getProtcolData(
+                vbase,
+                protocolId,
+                {
+                  polygons,
+                }
+              )
               break
           }
         }
@@ -78,13 +86,15 @@ export async function getImgUrl(ctx: Context) {
   }
 
   if (customerClass && !polygons) {
-    protocolData = await getProtcolData(vbase, protocolId, {
+    protocolData = await customDataManager.getProtcolData(vbase, protocolId, {
       customerClass,
     })
   }
 
   if (polygons && !customerClass) {
-    protocolData = await getProtcolData(vbase, protocolId, { polygons })
+    protocolData = await customDataManager.getProtcolData(vbase, protocolId, {
+      polygons,
+    })
   }
 
   logger.log(

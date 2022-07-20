@@ -19,18 +19,24 @@ export async function deleteRecord(ctx: Context) {
   let getDataList: Record<string, unknown> = {}
   let entries: Record<string, unknown>
 
+  const filter = (data: any, k: any) => {
+    entries = Object.keys(data)
+      .filter((idx) => idx !== k)
+      .reduce((obj, idx) => {
+        return Object.assign(obj, {
+          [idx]: getDataList[idx],
+        })
+      }, {})
+
+    return entries
+  }
+
   if (customerClass.length > 0 && polygon.length > 0) {
     try {
       key = `${customerClass}-${polygon}-${imgId}`
       getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON, true)
       if (getDataList) {
-        entries = Object.keys(getDataList)
-          .filter((idx) => idx !== key)
-          .reduce((obj, idx) => {
-            return Object.assign(obj, {
-              [idx]: getDataList[idx],
-            })
-          }, {})
+        entries = filter(getDataList, key)
         if (getDataList[key]) {
           ctx.status = 200
           ctx.body = 'Record deleted'
@@ -59,13 +65,7 @@ export async function deleteRecord(ctx: Context) {
       key = `${customerClass}-${imgId}`
       getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CC, true)
       if (getDataList) {
-        entries = Object.keys(getDataList)
-          .filter((idx) => idx !== key)
-          .reduce((obj, idx) => {
-            return Object.assign(obj, {
-              [idx]: getDataList[idx],
-            })
-          }, {})
+        entries = filter(getDataList, key)
         await vbase.saveJSON(BUCKET, CONFIG_PATH_CC, entries)
         if (getDataList[key]) {
           ctx.status = 200
@@ -93,13 +93,7 @@ export async function deleteRecord(ctx: Context) {
       key = `${polygon}-${imgId}`
       getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_POLYGON, true)
       if (getDataList) {
-        entries = Object.keys(getDataList)
-          .filter((idx) => idx !== key)
-          .reduce((obj, idx) => {
-            return Object.assign(obj, {
-              [idx]: getDataList[idx],
-            })
-          }, {})
+        entries = filter(getDataList, key)
         if (getDataList[key]) {
           ctx.status = 200
           ctx.body = 'Record deleted'

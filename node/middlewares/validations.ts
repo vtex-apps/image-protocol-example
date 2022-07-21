@@ -6,9 +6,11 @@ export async function validations(ctx: Context, next: () => Promise<unknown>) {
   const { fields, files } = await asyncBusboy(req)
 
   if (
-    (fields.imgId.length === 0 && !files && fields.hrefImg.length === 0) ||
+    (fields.imgId.length === 0 &&
+      files?.length === 0 &&
+      fields.hrefImg.length === 0) ||
     fields.imgId.length === 0 ||
-    !files ||
+    files?.length === 0 ||
     fields.hrefImg.length === 0 ||
     (fields.customerClass.trim().length === 0 &&
       fields.polygon.trim().length === 0)
@@ -17,6 +19,15 @@ export async function validations(ctx: Context, next: () => Promise<unknown>) {
     ctx.body = 'Required data missing'
 
     return
+  }
+
+  if (files) {
+    if (files?.length < 2) {
+      ctx.status = 400
+      ctx.body = 'One file missing'
+
+      return
+    }
   }
 
   const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gm

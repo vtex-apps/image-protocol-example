@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
-import { json } from 'co-body'
+
+import type { ReadStream } from 'fs'
+
+import asyncBusboy from 'async-busboy'
 
 import {
   BUCKET,
@@ -8,14 +11,30 @@ import {
   CONFIG_PATH_POLYGON,
 } from '../constants/index'
 
+export interface MultipartFile extends ReadStream {
+  fieldname: string
+  filename: string
+  path: string
+  encoding: string
+  mimeType: string
+}
+
+type ImagesLinks = Array<{
+  fileLink: string
+  fileName: string
+  fieldName: string
+}>
+
+interface ObjLinks {
+  [key: string]: string
+}
+
 export async function saveInfo(ctx: Context) {
   const {
-    clients: { vbase },
+    clients: { fileManager, vbase },
   } = ctx
 
-  const { customerClass, polygon, imgId, url, urlMobile, hrefImg } = await json(
-    ctx.req
-  )
+  const { fields, files } = await asyncBusboy(ctx.req)
 
   let key = ''
   let getCustomerList: Record<string, unknown> | null = null
@@ -26,14 +45,14 @@ export async function saveInfo(ctx: Context) {
   const expr = /^[A-Za-z0-9]*$/
   const regExp2 = new RegExp(expr)
 
-  if (!regExp.test(hrefImg)) {
+  if (!regExp.test(fields.hrefImg)) {
     ctx.status = 400
     ctx.body = 'wrong format for hrefImg'
 
     return
   }
 
-  if (!regExp2.test(customerClass) || !regExp2.test(polygon)) {
+  if (!regExp2.test(fields.customerClass) || !regExp2.test(fields.polygon)) {
     ctx.status = 400
     ctx.body =
       'Wrong format for customerClass and/or polygon. Only letters and numbers are allowed'
@@ -42,20 +61,46 @@ export async function saveInfo(ctx: Context) {
   }
 
   if (
-    (imgId.length === 0 &&
-      url.length === 0 &&
-      urlMobile.length === 0 &&
-      hrefImg.length === 0) ||
-    imgId.length === 0 ||
-    url.length === 0 ||
-    urlMobile.length === 0 ||
-    hrefImg.length === 0
+    (fields.imgId.length === 0 && !files && fields.hrefImg.length === 0) ||
+    fields.imgId.length === 0 ||
+    !files ||
+    fields.hrefImg.length === 0
   ) {
     ctx.status = 400
     ctx.body = 'required data missing'
 
     return
   }
+
+  const imagesLinks: ImagesLinks = []
+
+  const objLinks: ObjLinks = {}
+
+  const fieldNames: string[] = ['url', 'urlMobile']
+  const { customerClass, polygon, imgId, hrefImg } = fields
+
+  if (files) {
+    for (const f of files) {
+      const file = f as MultipartFile
+      const fileName = file.filename
+      const fieldName = file.fieldname
+
+      if (fieldNames.includes(fieldName)) {
+        imagesLinks.push({
+          // eslint-disable-next-line no-await-in-loop
+          fileLink: await fileManager.saveFile(file),
+          fileName,
+          fieldName,
+        })
+      }
+    }
+
+    imagesLinks.forEach((image) => {
+      objLinks[image.fieldName] = image.fileLink
+    })
+  }
+
+  const { url, urlMobile } = objLinks
 
   if (customerClass.trim().length > 0 && polygon.trim().length > 0) {
     try {

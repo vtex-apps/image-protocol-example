@@ -16,7 +16,8 @@
     "vtex.pixel-manager": "1.x",
     "vtex.on-view": "1.x",
     "vtex.session-client": "1.x",
-    "vtex.file-manager-graphql": "0.x"
+    "vtex.file-manager-graphql": "0.x",
+    "vtex.file-manager": "0.x"
   },
   "builders": {
     "react": "3.x",
@@ -68,6 +69,9 @@
     },
     {
       "name": "LogisticsAdmin"
+    },
+    {
+      "name": "vtex.file-manager:file-manager-read-write"
     }
   ],
   "settingsSchema": {

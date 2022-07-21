@@ -995,6 +995,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/async-busboy@^0.7.1":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@types/async-busboy/-/async-busboy-0.7.2.tgz#0b90f69aa95b20e0265fefc39f3fca363ae9eb00"
+  integrity sha512-3sl8EEbPZeehrRF6Xtp0vI00KLRaLTUAh+OCXapbhwCLvbtfEHutkMt/lAns2XSGUrupVAj8Ig8ti7/sTOZWKA==
+  dependencies:
+    "@types/busboy" "*"
+
 "@types/atob@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@types/atob/-/atob-2.1.2.tgz#157eb0cc46264a8c55f2273a836c7a1a644fb820"
@@ -1038,6 +1045,13 @@
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.0.tgz#9f5c9d9bd04bb54be32d5eb9fc0d8c974e6cf58c"
   dependencies:
     "@types/connect" "*"
+    "@types/node" "*"
+
+"@types/busboy@*":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@types/busboy/-/busboy-1.5.0.tgz#62681556cbbd2afc8d2efa6bafaa15602f0838b9"
+  integrity sha512-ncOOhwmyFDW76c/Tuvv9MA9VGYUCn8blzyWmzYELcNGDb0WXWLSmFi7hJq25YdRBYJrmMBB5jZZwUjlJe9HCjQ==
+  dependencies:
     "@types/node" "*"
 
 "@types/co-body@^0.0.3":
@@ -1258,6 +1272,11 @@
   dependencies:
     "@types/react-dom" "*"
     "@types/testing-library__dom" "*"
+
+"@types/uuid@^8.3.4":
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
+  integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
 
 "@types/yargs-parser@*":
   version "13.1.0"
@@ -1674,6 +1693,13 @@ astral-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-1.0.0.tgz#6c8c3fb827dd43ee3918f27b82782ab7658a6fd9"
   integrity sha512-+Ryf6g3BKoRc7jfp7ad8tM4TtMiaWvbF/1/sQcZPkkS7ag3D5nMBCe2UfOTONtAkaG0tO0ij3C5Lwmf1EiyjHg==
+
+async-busboy@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/async-busboy/-/async-busboy-1.1.0.tgz#7511ace723c41e2986e0f5d7cf144888c1d6df66"
+  integrity sha512-6PKzCbx//XQLMwi8IitM/kBcrw9RuUL7T5rvHWHwudZzcNp+dJPVnH2FmYIKO/8x//iCHunkDjxtEomfjRwjSQ==
+  dependencies:
+    busboy "^0.3.1"
 
 async-limiter@~1.0.0:
   version "1.0.0"
@@ -5747,6 +5773,11 @@ uuid@^3.3.2:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"

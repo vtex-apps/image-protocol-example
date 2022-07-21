@@ -9,7 +9,7 @@ import {
 
 export const saveDataInfo = async (
   _: unknown,
-  args: CustomerInfo,
+  args: CustomerInfoToSave,
   ctx: Context
 ) => {
   const {

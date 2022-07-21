@@ -1,0 +1,22 @@
+filemanager client to save files through api rest
+
+# Por favor ingresa el mensaje del commit para tus cambios. Las
+#  líneas que comiencen con '#' serán ignoradas, y un mensaje
+#  vacío aborta el commit.
+#
+# rebase interactivo en progreso; sobre 40d1075
+# Last commands done (18 commands done):
+#    pick a260c8e filter function
+#    pick 709232c filemanager client to save files through api rest
+# Next commands to do (7 remaining commands):
+#    pick d38e4ac validations middleware
+#    pick 54e8e11 validations.ts
+# Estás aplicando un rebase de la rama 'img-protocol-middlewares' sobre '40d1075.
+#
+# Cambios a ser confirmados:
+#	modificados:     manifest.json
+#	nuevos archivos: node/clients/fileManager.ts
+#	modificados:     node/middlewares/saveInfo.ts
+#	modificados:     node/package.json
+#	modificados:     node/yarn.lock
+#

@@ -7,7 +7,6 @@ import {
   getUsersPolygon,
   getUserCustomerClass,
 } from './middlewares'
-
 import { saveDataInfo } from './resolvers/saveDataInfo'
 import { getPolygons } from './resolvers/getPolygons'
 import { getDataList } from './resolvers/getDataList'
@@ -67,19 +66,8 @@ export default new Service<Clients, State, Context>({
     },
   },
   routes: {
-<<<<<<< HEAD
     getUrl: method({
       GET: [errorHandler, getUsersPolygon, getUserCustomerClass, getImgUrl],
     }),
-=======
-    getUrl: method({ GET: [errorHandler, getImgUrl] }),
-<<<<<<< HEAD
-    saveDataInfo: method({ POST: [saveInfo] }),
-    deleteRecord: method({ DELETE: [deleteRecord] }),
->>>>>>> 8365036 (delete record middleware)
-=======
-    saveDataInfo: method({ POST: [errorHandler, saveInfo] }),
-    deleteRecord: method({ DELETE: [errorHandler, deleteRecord] }),
->>>>>>> e7e701e (errorHandler)
   },
 })

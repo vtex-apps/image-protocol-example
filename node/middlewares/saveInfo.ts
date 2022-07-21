@@ -2,8 +2,6 @@
 
 import type { ReadStream } from 'fs'
 
-import asyncBusboy from 'async-busboy'
-
 import {
   BUCKET,
   CONFIG_PATH_CCPOLYGON,
@@ -34,43 +32,9 @@ export async function saveInfo(ctx: Context) {
     clients: { fileManager, vbase },
   } = ctx
 
-  const { fields, files } = await asyncBusboy(ctx.req)
-
+  const { fields, files } = ctx.state.request
   let key = ''
   let getCustomerList: Record<string, unknown> | null = null
-
-  const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gm
-  const regExp = new RegExp(expression)
-
-  const expr = /^[A-Za-z0-9]*$/
-  const regExp2 = new RegExp(expr)
-
-  if (!regExp.test(fields.hrefImg)) {
-    ctx.status = 400
-    ctx.body = 'wrong format for hrefImg'
-
-    return
-  }
-
-  if (!regExp2.test(fields.customerClass) || !regExp2.test(fields.polygon)) {
-    ctx.status = 400
-    ctx.body =
-      'Wrong format for customerClass and/or polygon. Only letters and numbers are allowed'
-
-    return
-  }
-
-  if (
-    (fields.imgId.length === 0 && !files && fields.hrefImg.length === 0) ||
-    fields.imgId.length === 0 ||
-    !files ||
-    fields.hrefImg.length === 0
-  ) {
-    ctx.status = 400
-    ctx.body = 'required data missing'
-
-    return
-  }
 
   const imagesLinks: ImagesLinks = []
 

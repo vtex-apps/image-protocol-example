@@ -1,19 +1,22 @@
 import asyncBusboy from 'async-busboy'
 
 export async function validations(ctx: Context, next: () => Promise<unknown>) {
-  const { req } = ctx
+  const {
+    clients: { logistics },
+    req,
+  } = ctx
 
   const { fields, files } = await asyncBusboy(req)
+  const { customerClass, polygon, imgId, hrefImg } = fields
+  const response = await logistics.getListOfPolygons()
+  const polygons = response.items
 
   if (
-    (fields.imgId.length === 0 &&
-      files?.length === 0 &&
-      fields.hrefImg.length === 0) ||
-    fields.imgId.length === 0 ||
+    (imgId.length === 0 && files?.length === 0 && hrefImg.length === 0) ||
+    imgId.length === 0 ||
     files?.length === 0 ||
-    fields.hrefImg.length === 0 ||
-    (fields.customerClass.trim().length === 0 &&
-      fields.polygon.trim().length === 0)
+    hrefImg.length === 0 ||
+    (customerClass.trim().length === 0 && polygon.trim().length === 0)
   ) {
     ctx.status = 400
     ctx.body = 'Required data missing'
@@ -28,6 +31,13 @@ export async function validations(ctx: Context, next: () => Promise<unknown>) {
 
       return
     }
+  }
+
+  if (!polygons.includes(polygon)) {
+    ctx.status = 400
+    ctx.body = 'This polygon does not exist'
+
+    return
   }
 
   const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)?/gm

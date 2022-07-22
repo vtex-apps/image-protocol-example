@@ -134,3 +134,8 @@ In this case we use the GET method:
 ## Testing the app
 
 In order to test it, first you need to link this application to your workspace and check if you see the section in the Admin panel. Then you can try in GraphiQL the mutation to save data and then test the endpoint on Postman to make sure this work as expected and you get the data saved.
+
+
+**Upcoming documentation:**
+
+ - [Customer class & polygon image selection](https://github.com/vtex-apps/image-protocol-example/pull/5)

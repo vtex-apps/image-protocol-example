@@ -75,13 +75,13 @@
     "type": "object",
     "description": "Set the priority for each of the following",
     "properties": {
-      "customerclass": {
+      "customerClassPriority": {
         "title": "Customer Class",
         "type": "number",
         "default": 1,
         "description": "Only numbers 1,2,3..."
       },
-      "endpoint": {
+      "polygonPriority": {
         "title": "Polygon",
         "type": "number",
         "default": 2,

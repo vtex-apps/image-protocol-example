@@ -1273,7 +1273,7 @@
     "@types/react-dom" "*"
     "@types/testing-library__dom" "*"
 
-"@types/uuid@^8.3.4":
+"@types/uuid@^8.3.1":
   version "8.3.4"
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-8.3.4.tgz#bd86a43617df0594787d38b735f55c805becf1bc"
   integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
@@ -1693,13 +1693,6 @@ astral-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-1.0.0.tgz#6c8c3fb827dd43ee3918f27b82782ab7658a6fd9"
   integrity sha512-+Ryf6g3BKoRc7jfp7ad8tM4TtMiaWvbF/1/sQcZPkkS7ag3D5nMBCe2UfOTONtAkaG0tO0ij3C5Lwmf1EiyjHg==
-
-async-busboy@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/async-busboy/-/async-busboy-1.1.0.tgz#7511ace723c41e2986e0f5d7cf144888c1d6df66"
-  integrity sha512-6PKzCbx//XQLMwi8IitM/kBcrw9RuUL7T5rvHWHwudZzcNp+dJPVnH2FmYIKO/8x//iCHunkDjxtEomfjRwjSQ==
-  dependencies:
-    busboy "^0.3.1"
 
 async-limiter@~1.0.0:
   version "1.0.0"
@@ -5774,7 +5767,7 @@ uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
 
-uuid@^8.3.2:
+uuid@^8.2.0:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==

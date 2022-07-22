@@ -139,3 +139,4 @@ In order to test it, first you need to link this application to your workspace a
 **Upcoming documentation:**
 
  - [Customer class & polygon image selection](https://github.com/vtex-apps/image-protocol-example/pull/5)
+ - [Img protocol middlewares](https://github.com/vtex-apps/image-protocol-example/pull/4)

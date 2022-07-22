@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- API endpoints to save and delete data created
+
+### Fixed
+
 - Personalization based on latitude-longitude added
 
 ## [0.3.1] - 2022-07-13

@@ -6,6 +6,7 @@ import {
   getImgUrl,
   getUsersPolygon,
   getUserCustomerClass,
+  validations,
   saveInfo,
 } from './middlewares'
 import { saveDataInfo } from './resolvers/saveDataInfo'
@@ -37,10 +38,20 @@ const clients: ClientsConfig<Clients> = {
 }
 
 declare global {
+  interface DataRequest {
+    fields: Fields
+    files: ReadableStream[]
+  }
+  interface Fields {
+    customerClass: string
+    polygon: string
+    imgId: string
+    hrefImg: string
+  }
   interface State extends RecorderState {
     customerClass: string | undefined
     polygons: string[] | undefined
-    request: any
+    request: DataRequest
   }
 
   // We declare a global Context type just to avoid re-writing ServiceContext<Clients, State> in every handler and resolver
@@ -71,6 +82,6 @@ export default new Service<Clients, State, Context>({
     getUrl: method({
       GET: [errorHandler, getUsersPolygon, getUserCustomerClass, getImgUrl],
     }),
-    saveInfo: method({ POST: [saveInfo] }),
+    saveInfo: method({ POST: [validations, saveInfo] }),
   },
 })

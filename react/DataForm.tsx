@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import type { FC } from 'react'
+import type { FC, ChangeEvent } from 'react'
 import React, { useState, useEffect } from 'react'
 import { useIntl, FormattedMessage } from 'react-intl'
 import {
@@ -22,16 +22,9 @@ import UPLOAD_mutation from './graphql/uploadFile.graphql'
 import POST_DataInfo from './graphql/saveDataInfo.graphql'
 import GET_Polygons from './graphql/getPolygons.graphql'
 
-interface IncomingFile {
-  uploadFile: { fileUrl: string }
-}
-interface Option {
-  value: string
-  label: string
-}
 const CustomerClassInfo: FC = () => {
   const { query, navigate } = useRuntime()
-  const { data, loading, error } = useQuery(GET_Polygons)
+  const { data } = useQuery(GET_Polygons)
 
   const [err, setError] = useState(false)
   const [isLoadingDesktopImg, setLoadingDesktopImg] = useState(Boolean)
@@ -48,7 +41,6 @@ const CustomerClassInfo: FC = () => {
   const [success, setSuccess] = useState(Boolean)
 
   useEffect(() => {
-    console.info(query)
     const isEmpty = Object.keys(query).length === 0
 
     if (isEmpty) {
@@ -67,10 +59,8 @@ const CustomerClassInfo: FC = () => {
   const options: Option[] = []
 
   useEffect(() => {
-    console.log('loading:', loading)
-    console.log('error:', error)
     console.log('polygons: ', data)
-  }, [data, loading, error])
+  }, [data])
 
   if (data) {
     polygons = data.getPolygons.polygons
@@ -79,10 +69,7 @@ const CustomerClassInfo: FC = () => {
     }
   }
 
-  const [
-    postDataInfo,
-    { data: data2, loading: loading2, error: error2 },
-  ] = useMutation(POST_DataInfo)
+  const [postDataInfo, { data: data2, error }] = useMutation(POST_DataInfo)
 
   const [uploadFile] = useMutation<IncomingFile>(UPLOAD_mutation)
 
@@ -93,19 +80,19 @@ const CustomerClassInfo: FC = () => {
     return regExp.test(href)
   }
 
-  const handleCustomerClassValue = (e: any) => {
+  const handleCustomerClassValue = (e: ChangeEvent<HTMLInputElement>) => {
     setCustomerClassValue(e.target.value)
   }
 
-  const handlePolygon = (e: any) => {
+  const handlePolygon = (e: ChangeEvent<HTMLInputElement>) => {
     setPolygon(e.target.value)
   }
 
-  const handleHref = (e: any) => {
+  const handleHref = (e: ChangeEvent<HTMLInputElement>) => {
     setHrefImage(e.target.value)
   }
 
-  const handleIdImgValue = (e: any) => {
+  const handleIdImgValue = (e: ChangeEvent<HTMLInputElement>) => {
     setIdImg(e.target.value)
   }
 
@@ -122,32 +109,27 @@ const CustomerClassInfo: FC = () => {
   const handleDesktopFile = async (acceptedFiles: File[]) => {
     setLoadingDesktopImg(true)
     if (acceptedFiles?.[0]) {
-      console.log('desktop file added: ', acceptedFiles[0])
       try {
         const resp = await uploadFile({
           variables: { file: acceptedFiles[0] },
         })
 
-        console.log('upload file', resp.data.uploadFile)
         const { fileUrl } = resp.data.uploadFile
 
-        console.log('Desktop fileUrl: ', fileUrl)
         setDesktopFileName(acceptedFiles[0].name)
         setUrl(fileUrl)
         setLoadingDesktopImg(false)
       } catch (e) {
-        console.log('error message', e)
         setError(true)
       }
     } else {
-      console.log('no accepted files')
+      setError(true)
     }
   }
 
   const handleMobileFile = async (acceptedFiles: File[]) => {
     setLoadingMobileImg(true)
     if (acceptedFiles?.[0]) {
-      console.log('mobile file added: ', acceptedFiles[0])
       try {
         const resp = await uploadFile({
           variables: { file: acceptedFiles[0] },
@@ -155,31 +137,19 @@ const CustomerClassInfo: FC = () => {
 
         const { fileUrl } = resp.data.uploadFile
 
-        console.log('Mobile fileUrl: ', fileUrl)
         setMobileFileName(acceptedFiles[0].name)
         setUrlMobile(fileUrl)
         setLoadingMobileImg(false)
       } catch (e) {
-        console.log('error message', e)
         setError(true)
       }
     } else {
-      console.log('no accepted files')
+      setError(true)
     }
   }
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-    console.log(
-      'customerClassValue: ',
-      customerClassValue,
-      '; idImg: ',
-      idImg,
-      '; polygon: ',
-      polygon,
-      '; href: ',
-      hrefImg
-    )
 
     if (!url || !urlMobile) {
       // eslint-disable-next-line no-alert
@@ -213,12 +183,7 @@ const CustomerClassInfo: FC = () => {
       },
     })
 
-    if (loading2) {
-      console.log('loading')
-    }
-
-    if (error2) {
-      console.log('error: ', error)
+    if (error) {
       setError(true)
     }
 
@@ -277,7 +242,7 @@ const CustomerClassInfo: FC = () => {
                   id: 'admin/image-protocol.form.customer-class.label',
                 })}
                 value={customerClassValue}
-                onChange={(e: any) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   handleCustomerClassValue(e)
                 }}
                 helpText={intl.formatMessage({
@@ -297,9 +262,11 @@ const CustomerClassInfo: FC = () => {
                     handlePolygon(e)
                   }}
                 />
-                {/* <Button href="/admin/logistics/#/geolocation">
-                <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
-              </Button> */}
+                <div className="mt4">
+                  <Button href="/admin/iframe/logistics/#/geolocation">
+                    <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
+                  </Button>
+                </div>
               </div>
             )}
 
@@ -388,7 +355,7 @@ const CustomerClassInfo: FC = () => {
                 pattern="https?://.*"
                 title="Url should start with http(s) "
                 value={hrefImg}
-                onChange={(e: any) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   handleHref(e)
                 }}
                 helpText={intl.formatMessage({
@@ -408,7 +375,7 @@ const CustomerClassInfo: FC = () => {
                 })}
                 required
                 value={idImg}
-                onChange={(e: any) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   handleIdImgValue(e)
                 }}
               />

@@ -7,6 +7,6 @@
     "module": "esnext",
     "strict": true
   },
-  "include": ["./**/*"],
+  "include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"],
   "exclude": ["node_modules"]
 }

@@ -9,20 +9,6 @@ import { useRuntime } from 'vtex.render-runtime'
 import GET_DATA_LIST from './graphql/getDataList.graphql'
 import REMOVE_FROM_LIST from './graphql/removeFromList.graphql'
 
-interface TableItem {
-  cellData: unknown
-  rowData: DataInfo
-  updateCellMeasurements: () => void
-}
-
-interface DataInfo {
-  customerClass: string
-  polygon: string
-  imageProtocolId: string
-  desktopUrl: string
-  mobileUrl: string
-  hrefImg: string
-}
 const DataList: FC = () => {
   const { navigate, query } = useRuntime()
 
@@ -31,7 +17,6 @@ const DataList: FC = () => {
   const { data, loading, refetch } = useQuery(GET_DATA_LIST)
 
   useEffect(() => {
-    console.info('query: ', query)
     const isEmpty = Object.keys(query).length === 0
 
     if (isEmpty) {
@@ -39,20 +24,14 @@ const DataList: FC = () => {
     }
 
     setUpdated(query.updated)
-    console.log('updated: ', updated)
     refetch()
   }, [query, updated, refetch])
 
   useEffect(() => {
-    console.log('data saved in vbase: ', data)
-
     if (data) setList(data.getDataList)
   }, [data])
 
-  const [
-    removeFromList,
-    { data: data2, loading: loading2, error: error2 },
-  ] = useMutation(REMOVE_FROM_LIST)
+  const [removeFromList] = useMutation(REMOVE_FROM_LIST)
 
   const lineActions = [
     {
@@ -70,27 +49,10 @@ const DataList: FC = () => {
       onClick: ({ rowData }: TableItem) => {
         const { customerClass, polygon, imageProtocolId } = rowData
 
-        console.info(
-          'on click to delete: ',
-          customerClass,
-          ' ',
-          polygon,
-          ' ',
-          imageProtocolId
-        )
         removeFromList({
           variables: { customerClass, polygon, imageProtocolId },
         })
 
-        if (loading2) {
-          console.log('loading')
-        }
-
-        if (error2) {
-          console.log('error: ', error2)
-        }
-
-        console.info('data: ', data2)
         let key = ''
         let rowKey = ''
         const updatedList: DataInfo[] = []
@@ -123,7 +85,6 @@ const DataList: FC = () => {
           }
         })
         setList(updatedList)
-        console.log('updated list:', updatedList)
       },
     },
   ]

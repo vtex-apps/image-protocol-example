@@ -40,13 +40,10 @@ const clients: ClientsConfig<Clients> = {
 declare global {
   interface DataRequest {
     fields: Fields
-    files: ReadableStream[]
+    files: any[] | undefined
   }
   interface Fields {
-    customerClass: string
-    polygon: string
-    imgId: string
-    hrefImg: string
+    [key: string]: any
   }
   interface State extends RecorderState {
     customerClass: string | undefined

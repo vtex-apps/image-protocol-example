@@ -34,9 +34,11 @@ export async function getUserCustomerClass(
       LogLevel.Info
     )
 
-    const [{ customerClass }] = client
+    if (client.length) {
+      const [{ customerClass }] = client
 
-    ctx.state.customerClass = customerClass
+      ctx.state.customerClass = customerClass ?? null
+    }
 
     await next()
   } else {

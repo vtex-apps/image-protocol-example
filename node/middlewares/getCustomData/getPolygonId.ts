@@ -14,7 +14,10 @@ export async function getUsersPolygon(ctx: Context, next: () => Promise<void>) {
 
   let currentPolygons: string[] | undefined
 
-  if (queryString.latitude && queryString.longitude) {
+  if (
+    queryString?.latitude !== 'undefined' &&
+    queryString?.longitude !== 'undefined'
+  ) {
     const [latitude, longitude] = [
       Number(queryString.latitude),
       Number(queryString.longitude),

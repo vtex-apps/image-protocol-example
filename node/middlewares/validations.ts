@@ -5,16 +5,74 @@ export async function validations(ctx: Context, next: () => Promise<unknown>) {
     clients: { logistics },
     req,
   } = ctx
+  let filePromises: Promise<any>[] = [];
+ 
+  const { fields } = await asyncBusboy(req, {
+    onFile: async function(fieldname, file, filename, encoding, mimetype) {
+      const filePromise = new Promise((resolve, reject) => {
+        let bufs: any[] = [];
+        
+        file
+          .on('error', err => {
+            file.resume();
+            reject(err);
+          })
+          .on('data', (d: any) => {
+            bufs.push(d);
+          })
+          .on('end', () => {
+            const buf = Buffer.concat(bufs);
+            resolve({
+              size: buf.length,
+              encoding: encoding,
+              fieldname: fieldname,
+              filename: filename,
+              mimeType: mimetype,
+              data: buf
+            });
+          });
+      });
+      filePromises.push(filePromise);
+    }
+  });
 
-  const { fields, files } = await asyncBusboy(req)
+
+  let files: any[] = [];
+
+  for (const filePromise of filePromises) {
+    let file;
+    try {
+      file = await filePromise;
+      files.push(file)
+      console.info('arrFiles: ',files)
+    } catch (error) {
+      console.info(`Error: ${error}`)
+    }
+  }
+
+  if(files){
+    for(const file of files){
+      if(file.size === 0 && !file.filename){
+        ctx.status = 400
+        ctx.body = 'Required file(s) is missing'
+
+        return
+      }
+      if(file.mimeType !== 'image/jpeg'){
+        ctx.status = 400
+        ctx.body = 'Format of file(s) is not correct'
+
+        return
+      }
+    }
+  }
   const { customerClass, polygon, imgId, hrefImg } = fields
   const response = await logistics.getListOfPolygons()
   const polygons = response.items
 
   if (
-    (imgId.length === 0 && files?.length === 0 && hrefImg.length === 0) ||
+    (imgId.length === 0 && hrefImg.length === 0) ||
     imgId.length === 0 ||
-    files?.length === 0 ||
     hrefImg.length === 0 ||
     (customerClass.trim().length === 0 && polygon.trim().length === 0)
   ) {
@@ -24,14 +82,6 @@ export async function validations(ctx: Context, next: () => Promise<unknown>) {
     return
   }
 
-  if (files) {
-    if (files?.length < 2) {
-      ctx.status = 400
-      ctx.body = 'One file missing'
-
-      return
-    }
-  }
 
   if (!polygons.includes(polygon)) {
     ctx.status = 400

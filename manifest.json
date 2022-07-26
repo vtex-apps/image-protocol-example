@@ -82,13 +82,11 @@
       "customerClassPriority": {
         "title": "Customer Class",
         "type": "number",
-        "default": 1,
         "description": "Only numbers 1,2,3..."
       },
       "polygonPriority": {
         "title": "Polygon",
         "type": "number",
-        "default": 2,
         "description": "Only numbers 1,2,3..."
       }
     }

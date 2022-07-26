@@ -4,7 +4,7 @@
 
 ## Description
 
-An example app to implement image protocol. This app creates a new section in the Admin panel through which the user can save data in vbase (in this case we are saving customer class, URLs for desktop and mobile, and the id for the image component that will render the image). At the same time this app creates the API endpoint to retrieve the URLs using the customer class and id of the image passed as params.
+An example app to implement image protocol. This app creates a new section in the Admin panel through which the user can save data in vbase (in this specific case we are saving customer class, polygon, URLs for desktop and mobile, href to redirect and the id for the component that will render the content). At the same time this app creates an endpoint to retrieve the URLs using the data passed as params.
 
 ## GraphQL mutations
 
@@ -80,9 +80,9 @@ After doing that, you will receive a response similar to this one:
 
 ```json
 {
-  "url": "https://lreyes.vtexassets.com/assets/vtex.file-manager-graphql/images/261f8852-22b6-4048-b688-37a7d61ddd48___200c03de6f2e80dc23434cff4caf7f9a.jpeg",
-  "urlMobile": "https://lreyes.vtexassets.com/assets/vtex.file-manager-graphql/images/0500ef76-eaf4-4b6c-bd01-08e69c4e4744___a3cf5c6525b1c13fdf06eb4a256f958d.jpg",
-  "hrefImg": "https://www.unsplash.com/es"
+  "url": "https://lreyes.vtexassets.com/assets/vtex.image-protocol-example/imgs/ae7c1f3f-d0e6-4dfe-a321-894b1c53cd87___0e13e1a16ebaa79d8e4d6a9fd7d7e9ab.jpeg",
+  "urlMobile": "https://lreyes.vtexassets.com/assets/vtex.image-protocol-example/imgs/5e6a497b-509e-43df-b28f-118d6758872c___b555120936f3faa7681a39850c64b3ba.jpeg",
+  "hrefImg": "http://www.vtex.com"
 }
 ```
 

@@ -8,6 +8,7 @@ import {
   getUserCustomerClass,
   validations,
   saveInfo,
+  deleteRecord,
 } from './middlewares'
 import { saveDataInfo } from './resolvers/saveDataInfo'
 import { getPolygons } from './resolvers/getPolygons'
@@ -80,5 +81,6 @@ export default new Service<Clients, State, Context>({
       GET: [errorHandler, getUsersPolygon, getUserCustomerClass, getImgUrl],
     }),
     saveInfo: method({ POST: [validations, saveInfo] }),
+    deleteRecord: method({ DELETE: [deleteRecord] }),
   },
 })

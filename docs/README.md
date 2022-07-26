@@ -70,23 +70,28 @@ Query variables:
 }
 ```
 
-### API REST Endpoint to get data from vbase (passing user Id and image protocol Id)
+### API REST Endpoint to save data from vbase
+
+There is an endpoint that can be used on Postman to save data in vbase.
+http://{workspace}--{account}.myvtex.com/\_v/image-protocol-example/save-info
+To do that, you can set
+![Save Info](../public/metadata/images/save-info.png)
+
+### API REST Endpoint to delete data from vbase
+
+There is an endpoint that can be used on Postman to delete data saved in vbase.
+http://{workspace}--{account}.myvtex.com/\_v/image-protocol-example/remove
+To do that, you have to send a body with customer class, polygon and image protocol id
+![Delete Info](../public/metadata/images/delete-info.png)
+
+### API REST Endpoint to get data from vbase
 
 There is an endpoint that can be used on Postman to get the data saved in vbase.
+http://{workspace}--{account}.myvtex.com/\_v/image-protocol-example/get-url
 To do that, you can set userId and imageProtocolId as params
-![Postman](../public//metadata/images/postman.png)
+![Get Info](../public/metadata/images/get-info.png)
 
-After doing that, you will receive a response similar to this one:
-
-```json
-{
-  "url": "https://lreyes.vtexassets.com/assets/vtex.image-protocol-example/imgs/ae7c1f3f-d0e6-4dfe-a321-894b1c53cd87___0e13e1a16ebaa79d8e4d6a9fd7d7e9ab.jpeg",
-  "urlMobile": "https://lreyes.vtexassets.com/assets/vtex.image-protocol-example/imgs/5e6a497b-509e-43df-b28f-118d6758872c___b555120936f3faa7681a39850c64b3ba.jpeg",
-  "hrefImg": "http://www.vtex.com"
-}
-```
-
-The endpoint used in the previous step is defined as a route in `node/index.ts`
+The endpoints used in the previous step is defined as a route in `node/index.ts`
 
 ### Defining the route on _service.json_
 
@@ -102,6 +107,14 @@ The endpoint used in the previous step is defined as a route in `node/index.ts`
     "getUrl": {
       "path": "/_v/image-protocol-example/get-url",
       "public": true
+    },
+    "saveInfo": {
+      "path": "/_v/image-protocol-example/save-info",
+      "public": true
+    },
+    "deleteRecord": {
+      "path": "/_v/image-protocol-example/remove",
+      "public": true
     }
   }
 }
@@ -115,8 +128,24 @@ For cach _key_ on the `routes` object, there should be a **corresponding entry**
 import { method } from '@vtex/api'
 export default new Service({
   ...
+  graphql: {
+    resolvers: {
+      Mutation: {
+        saveDataInfo,
+        removeFromList,
+      },
+      Query: {
+        getDataList,
+        getPolygons,
+      },
+    },
+  },
   routes: {
-    getUrl: method({ GET: [errorHandler, getImgUrl] }),
+    getUrl: method({
+      GET: [errorHandler, getUsersPolygon, getUserCustomerClass, getImgUrl],
+    }),
+    saveInfo: method({ POST: [validations, saveInfo] }),
+    deleteRecord: method({ DELETE: [deleteRecord] }),
   },
   ...
 })

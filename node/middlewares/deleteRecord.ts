@@ -31,7 +31,7 @@ export async function deleteRecord(ctx: Context) {
     return entries
   }
 
-  if (customerClass.length > 0 && polygon.length > 0) {
+  if (customerClass.trim().length > 0 && polygon.trim().length > 0) {
     try {
       key = `${customerClass}-${polygon}-${imgId}`
       getDataList = await vbase.getJSON(BUCKET, CONFIG_PATH_CCPOLYGON, true)
@@ -55,7 +55,7 @@ export async function deleteRecord(ctx: Context) {
       ctx.body = `error: ${e}`
     }
   } else if (
-    customerClass.length > 0 &&
+    customerClass.trim().length > 0 &&
     (!polygon ||
       polygon === undefined ||
       polygon === '' ||
@@ -83,7 +83,7 @@ export async function deleteRecord(ctx: Context) {
       ctx.body = `error: ${e}`
     }
   } else if (
-    polygon.length > 0 &&
+    polygon.trim().length > 0 &&
     (!customerClass ||
       customerClass === undefined ||
       customerClass === '' ||

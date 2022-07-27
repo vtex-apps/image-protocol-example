@@ -4,7 +4,7 @@
 
 ## Description
 
-An example app to implement image protocol. This app creates a new section in the Admin panel through which the user can save data in vbase (in this case we are saving customer class, URLs for desktop and mobile, and the id for the image component that will render the image). At the same time this app creates the API endpoint to retrieve the URLs using the customer class and id of the image passed as params.
+An example app to implement image protocol. This app creates a new section in the Admin panel through which the user can save data in vbase (in this specific case we are saving customer class, polygon, URLs for desktop and mobile, href to redirect and the id for the component that will render the content). At the same time this app creates an endpoint to retrieve the URLs using the data passed as params.
 
 ## GraphQL mutations
 
@@ -70,23 +70,28 @@ Query variables:
 }
 ```
 
-### API REST Endpoint to get data from vbase (passing user Id and image protocol Id)
+### API REST Endpoint to save data from vbase
+
+There is an endpoint that can be used on Postman to save data in vbase.
+http://{workspace}--{account}.myvtex.com/\_v/image-protocol-example/save-info
+To do that, you can set
+![Save Info](../public/metadata/images/save-info.png)
+
+### API REST Endpoint to delete data from vbase
+
+There is an endpoint that can be used on Postman to delete data saved in vbase.
+http://{workspace}--{account}.myvtex.com/\_v/image-protocol-example/remove
+To do that, you have to send a body with customer class, polygon and image protocol id
+![Delete Info](../public/metadata/images/delete-info.png)
+
+### API REST Endpoint to get data from vbase
 
 There is an endpoint that can be used on Postman to get the data saved in vbase.
+http://{workspace}--{account}.myvtex.com/\_v/image-protocol-example/get-url
 To do that, you can set userId and imageProtocolId as params
-![Postman](../public//metadata/images/postman.png)
+![Get Info](../public/metadata/images/get-info.png)
 
-After doing that, you will receive a response similar to this one:
-
-```json
-{
-  "url": "https://lreyes.vtexassets.com/assets/vtex.file-manager-graphql/images/261f8852-22b6-4048-b688-37a7d61ddd48___200c03de6f2e80dc23434cff4caf7f9a.jpeg",
-  "urlMobile": "https://lreyes.vtexassets.com/assets/vtex.file-manager-graphql/images/0500ef76-eaf4-4b6c-bd01-08e69c4e4744___a3cf5c6525b1c13fdf06eb4a256f958d.jpg",
-  "hrefImg": "https://www.unsplash.com/es"
-}
-```
-
-The endpoint used in the previous step is defined as a route in `node/index.ts`
+The endpoints used in the previous step is defined as a route in `node/index.ts`
 
 ### Defining the route on _service.json_
 
@@ -102,6 +107,14 @@ The endpoint used in the previous step is defined as a route in `node/index.ts`
     "getUrl": {
       "path": "/_v/image-protocol-example/get-url",
       "public": true
+    },
+    "saveInfo": {
+      "path": "/_v/image-protocol-example/save-info",
+      "public": true
+    },
+    "deleteRecord": {
+      "path": "/_v/image-protocol-example/remove",
+      "public": true
     }
   }
 }
@@ -115,8 +128,24 @@ For cach _key_ on the `routes` object, there should be a **corresponding entry**
 import { method } from '@vtex/api'
 export default new Service({
   ...
+  graphql: {
+    resolvers: {
+      Mutation: {
+        saveDataInfo,
+        removeFromList,
+      },
+      Query: {
+        getDataList,
+        getPolygons,
+      },
+    },
+  },
   routes: {
-    getUrl: method({ GET: [errorHandler, getImgUrl] }),
+    getUrl: method({
+      GET: [errorHandler, getUsersPolygon, getUserCustomerClass, getImgUrl],
+    }),
+    saveInfo: method({ POST: [validations, saveInfo] }),
+    deleteRecord: method({ DELETE: [deleteRecord] }),
   },
   ...
 })

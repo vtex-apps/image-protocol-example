@@ -1,2 +1,5 @@
 export * from './errorHandler'
-export * from './getImgUrl'
+export * from './getCustomData'
+export * from './deleteRecord'
+export * from './saveInfo'
+export * from './validations'

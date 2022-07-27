@@ -2,8 +2,8 @@
   "name": "image-protocol-example",
   "vendor": "vtex",
   "version": "0.3.2",
-  "title": "Service Example",
-  "description": "Reference app for VTEX IO Services",
+  "title": "Image Protocol Example",
+  "description": "Example of the protocol implementation",
   "mustUpdateAt": "2018-01-04",
   "categories": [],
   "dependencies": {
@@ -16,7 +16,8 @@
     "vtex.pixel-manager": "1.x",
     "vtex.on-view": "1.x",
     "vtex.session-client": "1.x",
-    "vtex.file-manager-graphql": "0.x"
+    "vtex.file-manager-graphql": "0.x",
+    "vtex.file-manager": "0.x"
   },
   "builders": {
     "react": "3.x",
@@ -68,6 +69,9 @@
     },
     {
       "name": "LogisticsAdmin"
+    },
+    {
+      "name": "vtex.file-manager:file-manager-read-write"
     }
   ],
   "settingsSchema": {
@@ -75,16 +79,14 @@
     "type": "object",
     "description": "Set the priority for each of the following",
     "properties": {
-      "customerclass": {
+      "customerClassPriority": {
         "title": "Customer Class",
         "type": "number",
-        "default": 1,
         "description": "Only numbers 1,2,3..."
       },
-      "endpoint": {
+      "polygonPriority": {
         "title": "Polygon",
         "type": "number",
-        "default": 2,
         "description": "Only numbers 1,2,3..."
       }
     }

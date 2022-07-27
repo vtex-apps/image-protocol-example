@@ -9,6 +9,14 @@
     "getUrl": {
       "path": "/_v/image-protocol-example/get-url",
       "public": true
+    },
+    "saveInfo": {
+      "path": "/_v/image-protocol-example/save-info",
+      "public": true
+    },
+    "deleteRecord": {
+      "path": "/_v/image-protocol-example/remove",
+      "public": true
     }
   }
 }

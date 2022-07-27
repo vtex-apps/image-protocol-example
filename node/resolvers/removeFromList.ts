@@ -7,12 +7,6 @@ import {
   CONFIG_PATH_POLYGON,
 } from '../constants/index'
 
-interface DataToDelete {
-  customerClass: string
-  polygon: string
-  imageProtocolId: string
-}
-
 export const removeFromList = async (
   _: unknown,
   args: DataToDelete,

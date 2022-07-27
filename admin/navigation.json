@@ -1,6 +1,19 @@
-{
-  "section": "other",
-  "titleId": "admin/image-protocol.navigation.label",
-  "searchKeyWordsHelpers": "admin/image-protocol.navigation.search.kws",
-  "path": "/admin/imageprotocol/list"
-}
+[
+  {
+    "adminVersion": 4,
+    "section": "apps",
+    "subSection": "installedApps",
+    "subSectionItems": [
+      {
+        "labelId": "admin/image-protocol.navigation.label",
+        "path": "/admin/imageprotocol/list"
+      }
+    ]
+  },
+  {
+    "section": "other",
+    "titleId": "admin/image-protocol.navigation.label",
+    "searchKeyWordsHelpers": "admin/image-protocol.navigation.search.kws",
+    "path": "/admin/imageprotocol/list"
+  }
+]

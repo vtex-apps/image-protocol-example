@@ -53,14 +53,14 @@ const fakeData = [
   },
 ]
 
-interface Item {
+/* interface Item {
   id: number
   name: string
   valid: string
   active: string
   rule: string
   position: number
-}
+} */
 function CampaignTable() {
   const [items, setItems] = useState(fakeData)
   const state = useTableState({

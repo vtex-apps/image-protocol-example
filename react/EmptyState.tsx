@@ -1,12 +1,19 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 
 import styles from './styles.css'
 
 interface EmptyStateProps {
   fileName: string
 }
+
+const messages = defineMessages({
+  dropzone: { id: 'admin/image-protocol.dropzone.text' },
+})
+
 const EmptyState = ({ fileName }: EmptyStateProps) => {
+  const { formatMessage } = useIntl()
+
   return (
     <div
       className={`flex justify-center align-center items-center ${styles.emptyStateContainer}`}
@@ -17,9 +24,7 @@ const EmptyState = ({ fileName }: EmptyStateProps) => {
         {fileName !== '' ? (
           <div className={`tc ${styles.imageUploaderText}`}>{fileName}</div>
         ) : (
-          <div>
-            <FormattedMessage id="admin/image-protocol.dropzone.text" />
-          </div>
+          <div>{formatMessage(messages.dropzone)}</div>
         )}
       </div>
     </div>

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import type { FC } from 'react'
 import React, { useEffect, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import { Layout, PageBlock, Table, Button } from 'vtex.styleguide'
 import { useQuery, useMutation } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
@@ -9,7 +9,16 @@ import { useRuntime } from 'vtex.render-runtime'
 import GET_DATA_LIST from './graphql/getDataList.graphql'
 import REMOVE_FROM_LIST from './graphql/removeFromList.graphql'
 
+const messages = defineMessages({
+  edit: { id: 'admin/image-protocol.table.edit' },
+  delete: { id: 'admin/image-protocol.table.delete' },
+  infolist: { id: 'admin/image-protocol.navigation.label-infolist' },
+  nodata: { id: 'admin/image-protocol.table-no-data' },
+  create: { id: 'admin/image-protocol.create-new' },
+})
+
 const DataList: FC = () => {
+  const { formatMessage } = useIntl()
   const { navigate, query } = useRuntime()
 
   const [list, setList] = useState<DataInfo[]>([])
@@ -35,7 +44,9 @@ const DataList: FC = () => {
 
   const lineActions = [
     {
-      label: () => <FormattedMessage id="admin/image-protocol.table.edit" />,
+      label: () => {
+        formatMessage(messages.edit)
+      },
       onClick: ({ rowData }: TableItem) => {
         navigate({
           to: '/admin/app/imageprotocol/protocol',
@@ -44,7 +55,9 @@ const DataList: FC = () => {
       },
     },
     {
-      label: () => <FormattedMessage id="admin/image-protocol.table.delete" />,
+      label: () => {
+        formatMessage(messages.delete)
+      },
       isDangerous: true,
       onClick: ({ rowData }: TableItem) => {
         const { customerClass, polygon, imageProtocolId } = rowData
@@ -129,11 +142,7 @@ const DataList: FC = () => {
   return (
     <Layout fullWidth>
       <div className="bg-muted-5 pa8">
-        <PageBlock
-          title={
-            <FormattedMessage id="admin/image-protocol.navigation.label-infolist" />
-          }
-        >
+        <PageBlock title={formatMessage(messages.infolist)}>
           <div className="mt4 mb4">
             <Table
               loading={loading}
@@ -142,15 +151,13 @@ const DataList: FC = () => {
               items={list}
               dynamicRowHeight
               lineActions={lineActions}
-              emptyStateLabel={
-                <FormattedMessage id="admin/image-protocol.table-no-data" />
-              }
+              emptyStateLabel={formatMessage(messages.nodata)}
             />
           </div>
         </PageBlock>
         <div>
           <Button href="/admin/app/imageprotocol/protocol">
-            <FormattedMessage id="admin/image-protocol.create-new" />
+            {formatMessage(messages.create)}
           </Button>
         </div>
       </div>

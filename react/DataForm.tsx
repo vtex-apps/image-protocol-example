@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import type { FC, ChangeEvent } from 'react'
 import React, { useState, useEffect } from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
+import { useIntl, defineMessages } from 'react-intl'
 import {
   Layout,
   PageBlock,
@@ -22,7 +22,18 @@ import UPLOAD_mutation from './graphql/uploadFile.graphql'
 import POST_DataInfo from './graphql/saveDataInfo.graphql'
 import GET_Polygons from './graphql/getPolygons.graphql'
 
+const messages = defineMessages({
+  success: { id: 'admin/image-protocol.form.success' },
+  title: { id: 'admin/image-protocol.title.label' },
+  newpolygon: { id: 'admin/image-protocol.form.create-new-polygon.label' },
+  desktopimage: { id: 'admin/image-protocol.form.desktop-image.label' },
+  mobileimage: { id: 'admin/image-protocol.form.mobile-image.label' },
+  submit: { id: 'admin/image-protocol.form.submit.label' },
+  error: { id: 'admin/image-protocol.form.error' },
+})
+
 const CustomerClassInfo: FC = () => {
+  const { formatMessage } = useIntl()
   const { query, navigate } = useRuntime()
   const { data } = useQuery(GET_Polygons)
 
@@ -216,14 +227,12 @@ const CustomerClassInfo: FC = () => {
             onClose={() => setSuccess(false)}
             type="success"
           >
-            <FormattedMessage id="admin/image-protocol.form.success" />
+            {formatMessage(messages.success)}
           </Alert>
         </div>
       )}
       <div className="bg-muted-5 pa8">
-        <PageBlock
-          title={<FormattedMessage id="admin/image-protocol.title.label" />}
-        >
+        <PageBlock title={formatMessage(messages.title)}>
           <form
             onSubmit={(e: any) => {
               handleSubmit(e)
@@ -264,7 +273,7 @@ const CustomerClassInfo: FC = () => {
                 />
                 <div className="mt4">
                   <Button href="/admin/iframe/logistics/#/geolocation">
-                    <FormattedMessage id="admin/image-protocol.form.create-new-polygon.label" />
+                    {formatMessage(messages.newpolygon)}
                   </Button>
                 </div>
               </div>
@@ -272,7 +281,7 @@ const CustomerClassInfo: FC = () => {
 
             <div className="mt4 mb4">
               <p className="t-small mb3 c-on-base">
-                <FormattedMessage id="admin/image-protocol.form.desktop-image.label" />
+                {formatMessage(messages.desktopimage)}
               </p>
               <Dropzone
                 onDrop={(acceptedFiles) => handleDesktopFile(acceptedFiles)}
@@ -307,7 +316,7 @@ const CustomerClassInfo: FC = () => {
             </div>
             <div className="mb4">
               <p className="t-small mb3 c-on-base">
-                <FormattedMessage id="admin/image-protocol.form.mobile-image.label" />
+                {formatMessage(messages.mobileimage)}
               </p>
               <Dropzone
                 onDrop={(acceptedFiles) => handleMobileFile(acceptedFiles)}
@@ -381,9 +390,7 @@ const CustomerClassInfo: FC = () => {
               />
             </div>
             <div className="mt4" style={{ alignSelf: 'end' }}>
-              <Button type="submit">
-                <FormattedMessage id="admin/image-protocol.form.submit.label" />
-              </Button>
+              <Button type="submit">{formatMessage(messages.submit)}</Button>
             </div>
             {err === true && (
               <div className="mv5">
@@ -395,7 +402,7 @@ const CustomerClassInfo: FC = () => {
                   }}
                   type="error"
                 >
-                  <FormattedMessage id="admin/image-protocol.form.error" />
+                  {formatMessage(messages.error)}
                 </Alert>
               </div>
             )}

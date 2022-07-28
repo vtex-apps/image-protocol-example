@@ -4,7 +4,7 @@
     "path": "/admin/app/imageprotocol/protocol"
   },
   "admin.app.customerclass": {
-    "component": "DataList",
+    "component": "CampaignTable",
     "path": "/admin/app/imageprotocol/list"
   }
 }

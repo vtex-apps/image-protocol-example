@@ -22,5 +22,10 @@
   "admin/image-protocol.table.edit": "Editar",
   "admin/image-protocol.table.delete": "Eliminar",
   "admin/image-protocol.form.error": "Hubo un error",
-  "admin/image-protocol.form.success": "Enviado"
+  "admin/image-protocol.form.success": "Enviado",
+  "admin/image-protocol.table.campaings": "Campañas",
+  "admin/image-protocol.table.rules": "Reglas",
+  "admin/image-protocol.new-campaign": "Crea nueva campaña",
+  "admin/image-protocol.new-rule": "Crear nueva regla",
+  "admin/image-protocol.table.rule-types": "Tipo de regla"
 }

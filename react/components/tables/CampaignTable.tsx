@@ -4,19 +4,16 @@ import React, { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import type { DropResult } from 'react-beautiful-dnd'
 import {
-  createSystem,
-  Page,
   Table,
   IconDotsSixVertical,
   TableHead,
   useTableState,
   TableBody,
   TableBodyRow,
-  /* IconPencil,
-  IconTrash, */
+  IconPencil,
+  IconTrash,
+  MenuItem,
 } from '@vtex/admin-ui'
-
-const [TableProvider] = createSystem()
 
 const fakeData = [
   {
@@ -51,18 +48,19 @@ const fakeData = [
     rule: 'RuleSet1',
     position: 4,
   },
+  {
+    id: 4,
+    name: 'Campaign 2',
+    valid: '10/09/2022',
+    active: 'true',
+    rule: 'RuleSet2',
+    position: 5,
+  },
 ]
 
-/* interface Item {
-  id: number
-  name: string
-  valid: string
-  active: string
-  rule: string
-  position: number
-} */
 function CampaignTable() {
   const [items, setItems] = useState(fakeData)
+
   const state = useTableState({
     columns: [
       {
@@ -101,28 +99,27 @@ function CampaignTable() {
         header: 'Rule Set',
         width: 100,
       },
-      /* {
+      {
         id: 'menu',
+        header: 'Actions',
+        width: 50,
         resolver: {
-          type: 'menu',
-          actions: [
-            {
-              label: 'Edit',
-              icon: <IconPencil />,
-              onClick: (item: Item) => {
-                console.info(item)
-              },
-            },
-            {
-              label: 'Delete',
-              icon: <IconTrash />,
-              onClick: (item: Item) => {
-                setItems(items.filter((i) => i.id !== item.id))
-              },
-            },
-          ],
+          type: 'root',
+          render: function Actions() {
+            return (
+              <>
+                <MenuItem label icon={<IconPencil />} onClick={() => {}} />
+                <MenuItem
+                  label
+                  icon={<IconTrash />}
+                  critical
+                  onClick={() => {}}
+                />
+              </>
+            )
+          },
         },
-      }, */
+      },
     ],
     items,
   })
@@ -157,45 +154,43 @@ function CampaignTable() {
   }
 
   return (
-    <TableProvider>
-      <Page>
-        <Table state={state}>
-          <TableHead />
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable">
-              {(droppableProvided) => (
-                <TableBody ref={droppableProvided.innerRef}>
-                  {(renderRow: any) => (
-                    <>
-                      {renderRow(({ key, item, index }: any) => (
-                        <Draggable draggableId={key} index={index}>
-                          {(draggableProvided, draggableSnapshot) => (
-                            <TableBodyRow
-                              id={key}
-                              item={item}
-                              ref={draggableProvided.innerRef}
-                              {...draggableProvided.draggableProps}
-                              {...draggableProvided.dragHandleProps}
-                              csx={{
-                                ...draggableProvided.draggableProps.style,
-                                boxShadow: draggableSnapshot.isDragging
-                                  ? 'menu'
-                                  : 'none',
-                              }}
-                            />
-                          )}
-                        </Draggable>
-                      ))}
-                      {droppableProvided.placeholder}
-                    </>
-                  )}
-                </TableBody>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </Table>
-      </Page>
-    </TableProvider>
+    <>
+      <Table state={state} csx={{ margin: '3% auto', width: '80%' }}>
+        <TableHead />
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(droppableProvided) => (
+              <TableBody ref={droppableProvided.innerRef}>
+                {(renderRow: any) => (
+                  <>
+                    {renderRow(({ key, item, index }: any) => (
+                      <Draggable draggableId={key} index={index}>
+                        {(draggableProvided, draggableSnapshot) => (
+                          <TableBodyRow
+                            id={key}
+                            item={item}
+                            ref={draggableProvided.innerRef}
+                            {...draggableProvided.draggableProps}
+                            {...draggableProvided.dragHandleProps}
+                            csx={{
+                              ...draggableProvided.draggableProps.style,
+                              boxShadow: draggableSnapshot.isDragging
+                                ? 'menu'
+                                : 'none',
+                            }}
+                          />
+                        )}
+                      </Draggable>
+                    ))}
+                    {droppableProvided.placeholder}
+                  </>
+                )}
+              </TableBody>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Table>
+    </>
   )
 }
 

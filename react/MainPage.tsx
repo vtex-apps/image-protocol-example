@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable react/jsx-no-bind */
 import React from 'react'
@@ -15,6 +16,7 @@ import {
   TabPanel,
   useTabState,
   Button,
+  useModalState,
 } from '@vtex/admin-ui'
 
 import CampaignTable from './components/tables/CampaignTable'
@@ -34,6 +36,7 @@ const messages = defineMessages({
 function MainPage() {
   const { formatMessage } = useIntl()
   const state = useTabState()
+  const ruleModalState = useModalState({ visible: false })
 
   return (
     <PageProvider>
@@ -50,8 +53,14 @@ function MainPage() {
             <TabPanelList state={state}>
               <TabPanel>
                 <CampaignTable />
-                <Button>{formatMessage(messages.createcampaing)}</Button>
-                <ModalRule />
+                <Button
+                  onClick={() => {
+                    ruleModalState.setVisible(true)
+                  }}
+                >
+                  {formatMessage(messages.createcampaing)}
+                </Button>
+                <ModalRule state={ruleModalState} />
               </TabPanel>
               <TabPanel>
                 <RulesTable />

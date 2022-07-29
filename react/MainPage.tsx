@@ -38,6 +38,10 @@ function MainPage() {
   const state = useTabState()
   const ruleModalState = useModalState({ visible: false })
 
+  const handleCreateRule = () => {
+    ruleModalState.setVisible(true)
+  }
+
   return (
     <PageProvider>
       <Page>
@@ -53,18 +57,18 @@ function MainPage() {
             <TabPanelList state={state}>
               <TabPanel>
                 <CampaignTable />
-                <Button
-                  onClick={() => {
-                    ruleModalState.setVisible(true)
-                  }}
-                >
-                  {formatMessage(messages.createcampaing)}
-                </Button>
-                <ModalRule state={ruleModalState} />
+                <Button>{formatMessage(messages.createcampaing)}</Button>
               </TabPanel>
               <TabPanel>
                 <RulesTable />
-                <Button>{formatMessage(messages.createrule)}</Button>
+                <Button
+                  onClick={() => {
+                    handleCreateRule()
+                  }}
+                >
+                  {formatMessage(messages.createrule)}
+                </Button>
+                <ModalRule state={ruleModalState} />
               </TabPanel>
             </TabPanelList>
           </PageHeaderBottom>

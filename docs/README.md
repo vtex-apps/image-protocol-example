@@ -8,7 +8,7 @@ An example app to implement image protocol. This app creates a new section in th
 
 ## GraphQL mutations
 
-### In this example app, there are two mutations configured
+### In this example app, there are three mutations configured
 
 - The first mutation is used to save the files and return the url
 
@@ -70,6 +70,36 @@ Query variables:
 }
 ```
 
+- The third one related to delete data in vbase
+
+```graphql
+mutation removeFromList(
+  $customerClass: String
+  $polygon: String
+  $imageProtocolId: String
+) {
+  removeFromList(
+    customerClass: $customerClass
+    polygon: $polygon
+    imageProtocolId: $imageProtocolId
+  ) {
+    customerClass
+    polygon
+    imageProtocolId
+  }
+}
+```
+
+Query variables:
+
+```json
+{
+  "customerClass": " test",
+  "polygon": "test",
+  "imgId": "banner"
+}
+```
+
 ### API REST Endpoint to save data from vbase
 
 There is an endpoint that can be used on Postman to save data in vbase.
@@ -91,7 +121,7 @@ http://{workspace}--{account}.myvtex.com/\_v/image-protocol-example/get-url
 To do that, you can set userId and imageProtocolId as params
 ![Get Info](../public/metadata/images/get-info.png)
 
-The endpoints used in the previous step is defined as a route in `node/index.ts`
+The endpoints used in the previous steps are defined as routes in `node/index.ts`
 
 ### Defining the route on _service.json_
 
@@ -163,10 +193,3 @@ In this case we use the GET method:
 ## Testing the app
 
 In order to test it, first you need to link this application to your workspace and check if you see the section in the Admin panel. Then you can try in GraphiQL the mutation to save data and then test the endpoint on Postman to make sure this work as expected and you get the data saved.
-
-
-**Upcoming documentation:**
-
- - [Customer class & polygon image selection](https://github.com/vtex-apps/image-protocol-example/pull/5)
- - [Img protocol middlewares](https://github.com/vtex-apps/image-protocol-example/pull/4)
- - [Development](https://github.com/vtex-apps/image-protocol-example/pull/6)

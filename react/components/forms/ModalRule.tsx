@@ -31,10 +31,25 @@ const ModalRule = ({ state }: { state: ReturnType<typeof useModalState> }) => {
   const [time, setTime] = useState('')
   const [weather, setWeather] = useState('')
 
-  const handleSubmit = (data: any) => {
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(data))
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+    console.info(
+      'selection: ',
+      selection,
+      ' customer: ',
+      customer,
+      ' polygon: ',
+      polygon,
+      ' time: ',
+      time,
+      ' weather: ',
+      weather
+    )
   }
+
+  const ruletypes = ['Customer Class', 'Polygon', 'Time of day', 'Weather']
+  const locations = ['Barcelona', 'Madrid', 'Valencia']
+  const climate = ['Sunny', 'Ranny', 'Snow', 'Windy']
 
   return (
     <Modal aria-label="select-rule-type" state={state}>
@@ -51,12 +66,13 @@ const ModalRule = ({ state }: { state: ReturnType<typeof useModalState> }) => {
               value={selection}
               onChange={(e) => setSelection(e.target.value)}
             >
-              <option value="customerclass">Customer Class</option>
-              <option value="polygon">Polygon</option>
-              <option value="time">Time of day</option>
-              <option value="weather">Weather</option>
+              {ruletypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
             </Select>
-            {selection === 'customerclass' && (
+            {selection === 'Customer Class' && (
               <>
                 <TextInput
                   label="Customer"
@@ -65,22 +81,24 @@ const ModalRule = ({ state }: { state: ReturnType<typeof useModalState> }) => {
                 />
               </>
             )}
-            {selection === 'polygon' && (
+            {selection === 'Polygon' && (
               <Flex align="end">
                 <Select
                   label="Polygon"
                   value={polygon}
                   onChange={(e) => setPolygon(e.target.value)}
                 >
-                  <option value="barcelona">Barcelona</option>
-                  <option value="madrid">Madrid</option>
-                  <option value="valencia">Valencia</option>
+                  {locations.map((location) => (
+                    <option key={location} value={location}>
+                      {location}
+                    </option>
+                  ))}
                 </Select>
                 <FlexSpacer csx={{ width: '50px' }} />
                 <Button>{formatMessage(messages.create)}</Button>
               </Flex>
             )}
-            {selection === 'time' && (
+            {selection === 'Time of day' && (
               <>
                 <TextInput
                   label="Time"
@@ -89,17 +107,18 @@ const ModalRule = ({ state }: { state: ReturnType<typeof useModalState> }) => {
                 />
               </>
             )}
-            {selection === 'weather' && (
+            {selection === 'Weather' && (
               <>
                 <Select
                   label="Weather"
                   value={weather}
                   onChange={(e) => setWeather(e.target.value)}
                 >
-                  <option value="sun">Sunny</option>
-                  <option value="rain">Rainy</option>
-                  <option value="snow">Snow</option>
-                  <option value="windy">Windy</option>
+                  {climate.map((w) => (
+                    <option key={w} value={w}>
+                      {w}
+                    </option>
+                  ))}
                 </Select>
               </>
             )}

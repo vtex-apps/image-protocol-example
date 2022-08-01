@@ -2,5 +2,9 @@
   "admin.app.customerclass": {
     "component": "MainPage",
     "path": "/admin/app/imageprotocol/list"
+  },
+  "admin.app.rule": {
+    "component": "CreateRule",
+    "path": "/admin/app/imageprotocol/create-rule"
   }
 }

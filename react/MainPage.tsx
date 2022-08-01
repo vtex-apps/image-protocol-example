@@ -16,12 +16,11 @@ import {
   TabPanel,
   useTabState,
   Button,
-  useModalState,
+  Anchor,
 } from '@vtex/admin-ui'
 
 import CampaignTable from './components/tables/CampaignTable'
 import RulesTable from './components/tables/RulesTable'
-import ModalRule from './components/forms/ModalRule'
 
 const [PageProvider] = createSystem()
 
@@ -36,11 +35,6 @@ const messages = defineMessages({
 function MainPage() {
   const { formatMessage } = useIntl()
   const state = useTabState()
-  const ruleModalState = useModalState({ visible: false })
-
-  const handleCreateRule = () => {
-    ruleModalState.setVisible(true)
-  }
 
   return (
     <PageProvider>
@@ -61,14 +55,9 @@ function MainPage() {
               </TabPanel>
               <TabPanel>
                 <RulesTable />
-                <Button
-                  onClick={() => {
-                    handleCreateRule()
-                  }}
-                >
-                  {formatMessage(messages.createrule)}
-                </Button>
-                <ModalRule state={ruleModalState} />
+                <Anchor href="/admin/app/imageprotocol/create-rule">
+                  <Button>{formatMessage(messages.createrule)}</Button>
+                </Anchor>
               </TabPanel>
             </TabPanelList>
           </PageHeaderBottom>

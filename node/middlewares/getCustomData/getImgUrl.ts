@@ -21,7 +21,7 @@ export async function getImgUrl(ctx: Context) {
 
   logger.log(
     {
-      message: `Data received for customer class: ${customerClass} & polygons: ${polygons}`,
+      message: `In getImgUrl, data received for customer class: ${customerClass} & polygons: ${polygons}`,
       detail: {
         ...queryString,
         customerClass,
@@ -99,7 +99,7 @@ export async function getImgUrl(ctx: Context) {
 
   logger.log(
     {
-      message: `Protocol returned data for customer class: ${customerClass} & polygons: ${polygons}`,
+      message: `In getImgUrl, protocol data returned for customer class: ${customerClass} & polygons: ${polygons}`,
       detail: protocolData,
     },
     LogLevel.Info

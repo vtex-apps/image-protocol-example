@@ -14,7 +14,7 @@ export async function getUserCustomerClass(
 
   const queryString = parse(querystring)
 
-  if (queryString?.userId !== 'undefined') {
+  if (queryString?.userId !== 'undefined' && queryString?.userId.length !== 0) {
     const client: ClientMasterdataEntityType[] = await masterdata.searchDocuments(
       {
         dataEntity: 'CL',
@@ -26,7 +26,7 @@ export async function getUserCustomerClass(
 
     logger.log(
       {
-        message: `User fetched from masterdata from userId: ${queryString.userId}`,
+        message: `In getCustomerClass, user fetched from masterdata from userId: ${queryString.userId}`,
         detail: {
           client,
         },
@@ -42,6 +42,15 @@ export async function getUserCustomerClass(
 
     await next()
   } else {
+    logger.log(
+      {
+        message: `In getcustomerClass, user id is undefined`,
+        detail: {
+          queryString,
+        },
+      },
+      LogLevel.Info
+    )
     await next()
   }
 }

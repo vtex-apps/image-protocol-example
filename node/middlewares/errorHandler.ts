@@ -1,3 +1,5 @@
+import { LogLevel } from '@vtex/api'
+
 export async function errorHandler(ctx: Context, next: () => Promise<void>) {
   const {
     vtex: { logger },
@@ -6,10 +8,13 @@ export async function errorHandler(ctx: Context, next: () => Promise<void>) {
   try {
     await next()
   } catch (error) {
-    logger.error({
-      message: error.message,
-      error,
-    })
+    logger.log(
+      {
+        message: error.message,
+        error,
+      },
+      LogLevel.Error
+    )
 
     ctx.status = error.status || 500
     ctx.body = error.message

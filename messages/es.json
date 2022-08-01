@@ -14,7 +14,7 @@
   "admin/image-protocol.form.mobile-image.label": "Imagen para móvil",
   "admin/image-protocol.form.href.label": "Link para las imágenes",
   "admin/image-protocol.form.href.helpText": "Ejemplo del formato URL: https://www.google.es",
-  "admin/image-protocol.form.image-.protocol-id.label": "Id de la imagen del protocolo",
+  "admin/image-protocol.form.image-protocol-id.label": "Id de la imagen del protocolo",
   "admin/image-protocol.form.submit.label": "Enviar",
   "admin/image-protocol.dropzone.text": "Arrastre y suelte su archivo aquí, o haga clic para seleccionar un archivo",
   "admin/image-protocol.create-new": "Crear nuevo",
@@ -27,5 +27,6 @@
   "admin/image-protocol.table.rules": "Reglas",
   "admin/image-protocol.new-campaign": "Crea nueva campaña",
   "admin/image-protocol.new-rule": "Crear nueva regla",
-  "admin/image-protocol.table.rule-types": "Tipo de regla"
+  "admin/image-protocol.table.rule-types": "Tipo de regla",
+  "admin/image-protocol.form.element": "Tipo de contenido"
 }

@@ -27,5 +27,6 @@
   "admin/image-protocol.table.rules": "Rules",
   "admin/image-protocol.new-campaign": "Create New Campaign",
   "admin/image-protocol.new-rule": "Create New Rule",
-  "admin/image-protocol.table.rule-types": "Rule Type"
+  "admin/image-protocol.table.rule-types": "Rule Type",
+  "admin/image-protocol.form.element": "Content Type"
 }

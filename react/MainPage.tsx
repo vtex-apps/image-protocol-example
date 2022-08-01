@@ -28,7 +28,7 @@ const messages = defineMessages({
   title: { id: 'admin/image-protocol.title.label' },
   campaigns: { id: 'admin/image-protocol.table.campaings' },
   rules: { id: 'admin/image-protocol.table.rules' },
-  createcampaing: { id: 'admin/image-protocol.new-campaign' },
+  createcampaign: { id: 'admin/image-protocol.new-campaign' },
   createrule: { id: 'admin/image-protocol.new-rule' },
 })
 
@@ -51,7 +51,9 @@ function MainPage() {
             <TabPanelList state={state}>
               <TabPanel>
                 <CampaignTable />
-                <Button>{formatMessage(messages.createcampaing)}</Button>
+                <Anchor href="/admin/app/imageprotocol/create-campaign">
+                  <Button>{formatMessage(messages.createcampaign)}</Button>
+                </Anchor>
               </TabPanel>
               <TabPanel>
                 <RulesTable />

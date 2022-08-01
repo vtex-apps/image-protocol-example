@@ -6,5 +6,9 @@
   "admin.app.rule": {
     "component": "CreateRule",
     "path": "/admin/app/imageprotocol/create-rule"
+  },
+  "admin.app.campaign": {
+    "component": "CreateCampaign",
+    "path": "/admin/app/imageprotocol/create-campaign"
   }
 }
